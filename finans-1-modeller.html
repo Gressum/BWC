@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
+<title>Bygge Finansielle Modeller med AI</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=DM+Sans:wght@400;500;600;700&family=Fraunces:ital,wght@0,700;0,900;1,700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#06060c;--sf:#0f0f1a;--sf2:#161625;--sf3:#1e1e30;--bd:#2a2a42;--tx:#e8e8f2;--dim:#8888aa;--ac:#6366f1;--gr:#34d399;--or:#f59e0b;--bl:#60a5fa;--pk:#f472b6;--cy:#22d3ee;--gld:#fbbf24}
+*{margin:0;padding:0;box-sizing:border-box}body{background:var(--bg);color:var(--tx);font-family:'DM Sans',sans-serif;line-height:1.8}
+a{color:var(--ac);text-decoration:none}a:hover{text-decoration:underline}
+.nav{position:sticky;top:0;z-index:100;background:rgba(6,6,12,.92);backdrop-filter:blur(20px);border-bottom:1px solid var(--bd);padding:.7rem 1.5rem;display:flex;align-items:center;gap:1rem;flex-wrap:wrap}
+.nav-brand{font-family:'Fraunces',serif;font-weight:900;font-size:1rem;background:linear-gradient(135deg,var(--gld),var(--or));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.nav-links{display:flex;gap:.5rem;flex-wrap:wrap;margin-left:auto}
+.nav-links a{font-size:.75rem;padding:.3rem .7rem;border-radius:100px;border:1px solid var(--bd);color:var(--dim);transition:.2s}
+.nav-links a:hover,.nav-links a.active{border-color:var(--ac);color:var(--tx);text-decoration:none}
+.ct{max-width:820px;margin:0 auto;padding:2.5rem 1.5rem 5rem}
+h1{font-family:'Fraunces',serif;font-weight:900;font-size:clamp(1.6rem,4vw,2.4rem);margin-bottom:.5rem}
+h1 em{font-style:normal;background:linear-gradient(135deg,var(--gld),var(--or));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.sub{color:var(--dim);font-size:.88rem;margin-bottom:2.5rem}
+h2{font-family:'Fraunces',serif;font-weight:700;font-size:1.35rem;margin:2.5rem 0 .8rem;display:flex;align-items:center;gap:.6rem}
+h3{font-size:1.05rem;margin:1.5rem 0 .5rem}
+p{color:var(--dim);margin-bottom:.8rem;font-size:.9rem}
+.box{background:var(--sf);border:1px solid var(--bd);border-radius:14px;padding:1.5rem;margin:1rem 0}
+.box.gold{border-color:rgba(251,191,36,.3);background:linear-gradient(135deg,rgba(251,191,36,.06),rgba(245,158,11,.03))}
+.box.blue{border-color:rgba(99,102,241,.3);background:linear-gradient(135deg,rgba(99,102,241,.06),rgba(96,165,250,.03))}
+.box.green{border-color:rgba(52,211,153,.3);background:linear-gradient(135deg,rgba(52,211,153,.06),rgba(34,211,238,.03))}
+.box.warn{border-color:rgba(239,68,68,.3);background:linear-gradient(135deg,rgba(239,68,68,.06),rgba(244,114,182,.03))}
+.box strong{display:block;margin-bottom:.3rem;color:var(--tx);font-size:.92rem}
+.box p{margin-bottom:.4rem}
+pre{background:rgba(0,0,0,.4);border:1px solid var(--bd);border-radius:10px;padding:1rem 1.2rem;font-family:'JetBrains Mono',monospace;font-size:.78rem;color:var(--gr);overflow-x:auto;line-height:1.7;margin:.8rem 0;white-space:pre-wrap}
+.label{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--gld);margin-bottom:.3rem}
+.sheets{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:.6rem;margin:1rem 0}
+.sheet{background:var(--sf2);border:1px solid var(--bd);border-radius:8px;padding:.7rem .9rem;font-size:.78rem}
+.sheet b{color:var(--tx);display:block;margin-bottom:.15rem}.sheet span{color:var(--dim);font-size:.72rem}
+.step{display:flex;gap:1rem;margin:1.2rem 0;align-items:flex-start}
+.step-n{width:36px;height:36px;border-radius:50%;background:rgba(251,191,36,.12);color:var(--gld);display:flex;align-items:center;justify-content:center;font-family:'Fraunces',serif;font-weight:900;flex-shrink:0;font-size:1rem}
+.step-c{flex:1}
+.step-c strong{color:var(--tx);font-size:.92rem}
+.step-c p{margin-top:.2rem;font-size:.84rem}
+.nav-bottom{display:flex;justify-content:space-between;flex-wrap:wrap;gap:1rem;margin-top:3rem;padding-top:2rem;border-top:1px solid var(--bd)}
+.nav-bottom a{font-size:.82rem;padding:.5rem 1rem;border-radius:100px;border:1px solid var(--bd);color:var(--dim);transition:.2s}
+.nav-bottom a:hover{border-color:var(--ac);color:var(--tx);text-decoration:none}
+@media(max-width:768px){.ct{padding:1.5rem 1rem 4rem}.sheets{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+<a href="finans-modellering.html" class="nav-brand" style="text-decoration:none">📊 Finans × AI</a>
+<div class="nav-links">
+<a href="finans-1-modeller.html" class="active">Modeller</a>
+<a href="finans-2-sensitivitet.html">Sensitivitet</a>
+<a href="finans-3-tolkning.html">Tolkning</a>
+<a href="finans-4-trading.html">Trading</a>
+<a href="finans-5-prompts.html">Prompts</a>
+</div>
+</nav>
+
+<div class="ct">
+
+<h1>🏗️ Bygge Finansielle Modeller med <em>AI</em></h1>
+<p class="sub">Fra en enkel beskrivelse til en komplett 13-arks Excel-modell med formler som henger sammen. Endre én celle — hele modellen oppdateres.</p>
+
+<h2>🎯 Hva Er En Finansiell Modell?</h2>
+<p>En finansiell modell er et regneark som simulerer en bedrifts økonomi. Den tar inn <strong>antagelser</strong> (vekstrate, marginer, kostnader) og spytter ut <strong>resultater</strong> (verdsettelse, avkastning, kontantstrøm). Poenget er: endre input → se hvordan output endres.</p>
+
+<div class="box gold">
+<strong>💡 Hvorfor AI endrer alt</strong>
+<p>Tradisjonelt tar en 3-setningsmodell 6–10 timer å bygge manuelt i Excel. Claudes Financial Modeling-skill bygger en komplett 13-arks modell med DCF, sensitivitet og formler — på under 1 time. Analytikere hos Albusi i Zürich rapporterer at de kuttet modelleringstiden med 50%.</p>
+</div>
+
+<h2>📋 Modelltyper Du Kan Bygge</h2>
+
+<h3>1. Tre-Setningsmodell (3-Statement Model)</h3>
+<p>Grunnmuren i all finansiell modellering. Kobler sammen resultatregnskapet, balansen og kontantstrømoppstillingen slik at endringer i én automatisk påvirker de andre.</p>
+<div class="sheets">
+<div class="sheet"><b>📄 Resultatregnskap</b><span>Inntekter → Kostnader → Resultat</span></div>
+<div class="sheet"><b>📊 Balanse</b><span>Eiendeler = Gjeld + EK</span></div>
+<div class="sheet"><b>💰 Kontantstrøm</b><span>Drift + Investering + Finansiering</span></div>
+<div class="sheet"><b>⚙️ Antagelser</b><span>Vekst, marginer, capex, skatt</span></div>
+</div>
+
+<div class="label">Prompt — 3-setningsmodell</div>
+<pre>Bygg en komplett 3-setningsmodell i Excel for et SaaS-selskap.
+
+Input-antagelser (som skal være enkle å endre):
+- Årlig inntektsvekst: 25%
+- Brutto margin: 72%
+- OPEX som % av inntekt: 55%
+- Capex som % av inntekt: 8%
+- Skattesats: 22% (norsk)
+- Historiske tall: 3 år bakover
+- Projeksjon: 5 år framover
+
+Krav:
+- Alle tre statements skal henge sammen med formler
+- Balansen MÅ balansere (eiendeler = gjeld + EK)
+- Kontantstrøm skal reconcile mot endring i kontanter
+- Fargekodet: blå = input, svart = formel
+- Eget ark for antagelser som driver hele modellen</pre>
+
+<h3>2. DCF-Modell (Discounted Cash Flow)</h3>
+<p>Den mest brukte verdsettelsesmetoden. Beregner hva en bedrift er verdt basert på fremtidige kontantstrømmer, diskontert med en avkastningskrav (WACC). Brukes av investeringsbanker, PE-fond og analytikere globalt.</p>
+
+<div class="label">Prompt — DCF-modell</div>
+<pre>Bygg en DCF-verdsettelsesmodell i Excel.
+
+Selskap: [Selskapsnavn / eller fiktivt eksempel]
+Metode: Unlevered Free Cash Flow → Enterprise Value → Equity Value
+
+Inkluder:
+- WACC-beregning med eget ark (risk-free, beta, ERP, cost of debt)
+- Terminal value: Både Gordon Growth og Exit Multiple-metode
+- 5-års projeksjon av FCF
+- Bridge: Enterprise Value → Equity Value → Pris per aksje
+- Sensitivitetstabell: WACC vs Terminal Growth Rate
+- Alle nøkkeltall som input-celler (blå) som er lette å endre
+
+Output: Implisert aksjepris med bull/base/bear case</pre>
+
+<h3>3. Comps-Analyse (Comparable Companies)</h3>
+<p>Sammenligner et selskap med lignende børsnoterte selskaper basert på multipler som EV/EBITDA, P/E, og EV/Revenue. Raskeste veien til en «hva er dette verdt»-vurdering.</p>
+
+<div class="label">Prompt — Comps</div>
+<pre>Lag en comps-analyse (sammenlignbare selskaper) i Excel.
+
+Målselskap: [Navn]
+Peers: [Liste 5-8 sammenlignbare selskaper]
+
+Inkluder disse multiplene:
+- EV/Revenue (LTM og NTM)
+- EV/EBITDA (LTM og NTM)
+- P/E (LTM og NTM)
+- Revenue Growth YoY
+- EBITDA Margin
+- Net Margin
+
+Vis: Gjennomsnitt, median, min, max for peer-gruppen.
+Beregn implisert verdi for målselskapet basert på median multipler.
+Lag football field chart som viser range.</pre>
+
+<h3>4. LBO-Modell (Leveraged Buyout)</h3>
+<p>Modellerer oppkjøp finansiert med gjeld. Beregner IRR (internrente) for investor basert på ulike exit-scenarier. Standard i private equity.</p>
+
+<div class="label">Prompt — LBO</div>
+<pre>Bygg en enkel LBO-modell i Excel.
+
+Antagelser (som input-celler):
+- Oppkjøpspris (Enterprise Value): 500 MNOK
+- Gjeldsandel: 60%
+- Rentesats på gjeld: 5%
+- EBITDA år 1: 80 MNOK
+- EBITDA-vekst: 8% p.a.
+- Exit-multippel: 7x EBITDA
+- Holdingperiode: 5 år
+- Capex og working capital-antagelser
+
+Output:
+- Årlig gjeldsnedbetalingsplan
+- Exit Enterprise Value
+- Equity Value ved exit
+- IRR og MOIC (multiple on invested capital)
+- Sensitivitetstabell: Entry Multiple vs Exit Multiple vs IRR</pre>
+
+<h2>🔧 Steg-for-Steg: Bygg Din Første Modell</h2>
+
+<div class="step"><div class="step-n">1</div><div class="step-c"><strong>Samle data</strong><p>Last opp årsrapport, 10-K, kvartalsrapport eller CIM til Claude. Jo mer kontekst, jo bedre modell. Si: «Her er årsrapporten. Trekk ut historiske tall for de siste 3 årene.»</p></div></div>
+
+<div class="step"><div class="step-n">2</div><div class="step-c"><strong>Definer antagelser</strong><p>Vær spesifikk om vekstrater, marginer, capex, skatt, og arbeidskapital. Disse blir input-cellene du endrer senere. Tip: Bruk blå celle-farge for inputs.</p></div></div>
+
+<div class="step"><div class="step-n">3</div><div class="step-c"><strong>La Claude bygge modellen</strong><p>Bruk en av promptene over. Claude lager en komplett Excel-fil med formler, ikke hardkodede tall. Vent — sjekk at balansen balanserer og kontantstrøm reconciler.</p></div></div>
+
+<div class="step"><div class="step-n">4</div><div class="step-c"><strong>Verifiser og fiks</strong><p>Åpne i Excel. Sjekk: Balanserer balansen? Reconciler kontantstrømmen? Hvis ikke, last opp filen tilbake: «Balansen balanserer ikke i FY26E. Fiks dette.»</p></div></div>
+
+<div class="step"><div class="step-n">5</div><div class="step-c"><strong>Legg til analyse</strong><p>Nå har du en fungerende modell. Neste steg: <a href="finans-2-sensitivitet.html">sensitivitetsanalyse →</a></p></div></div>
+
+<div class="box warn">
+<strong>⚠️ Viktig: AI erstatter ikke ekspertise</strong>
+<p>AI bygger strukturen — du validerer logikken. Sjekk alltid: stemmer formlene? Er antagelsene rimelige? Bruk modellen som utgangspunkt, ikke som fasit. Som Oljefondet sier: «All kode dobbeltsjekkes.»</p>
+</div>
+
+<h2>🛠️ Verktøy for Finansiell Modellering</h2>
+
+<div class="box">
+<strong>Claude (claude.ai)</strong>
+<p>Best for å bygge Excel-modeller fra bunnen. Støtter filopplasting av årsrapporter. Financial Services Skills lager 13-arks modeller automatisk. Forstår DCF, LBO, comps, 3-statement.</p>
+</div>
+
+<div class="box">
+<strong>Claude i Excel (nytt 2026)</strong>
+<p>Sidebar direkte i Excel. Forstår hele arbeidsboken, kan redigere celler, lage formler, og bygge nye ark — uten å forlate Excel. Krever Claude Pro ($20/mnd).</p>
+</div>
+
+<div class="box">
+<strong>Claude Code (terminal)</strong>
+<p>For de som vil bygge modeller programmatisk med Python/openpyxl. Lager .xlsx-filer med perfekte formler. Best for gjentakende modellering av mange selskaper.</p>
+</div>
+
+<div class="box">
+<strong>ChatGPT Code Interpreter</strong>
+<p>Bra på å lage visualiseringer og grafer fra finansdata. Kjører Python-kode for å analysere modeller. Komplementerer Claude godt som «second opinion».</p>
+</div>
+
+<div class="nav-bottom">
+<a href="finans-modellering.html">← Tilbake til Hub</a>
+<a href="finans-2-sensitivitet.html">Neste: Sensitivitetsanalyse →</a>
+</div>
+
+</div>
+</body>
+</html>
