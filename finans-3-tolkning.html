@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
+<title>AI-Drevet Tolkning av Finansielle Modeller</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=DM+Sans:wght@400;500;600;700&family=Fraunces:ital,wght@0,700;0,900;1,700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#06060c;--sf:#0f0f1a;--sf2:#161625;--sf3:#1e1e30;--bd:#2a2a42;--tx:#e8e8f2;--dim:#8888aa;--ac:#6366f1;--gr:#34d399;--or:#f59e0b;--bl:#60a5fa;--pk:#f472b6;--cy:#22d3ee;--gld:#fbbf24}
+*{margin:0;padding:0;box-sizing:border-box}body{background:var(--bg);color:var(--tx);font-family:'DM Sans',sans-serif;line-height:1.8}
+a{color:var(--ac)}a:hover{text-decoration:underline}
+.nav{position:sticky;top:0;z-index:100;background:rgba(6,6,12,.92);backdrop-filter:blur(20px);border-bottom:1px solid var(--bd);padding:.7rem 1.5rem;display:flex;align-items:center;gap:1rem;flex-wrap:wrap}
+.nav-brand{font-family:'Fraunces',serif;font-weight:900;font-size:1rem;background:linear-gradient(135deg,var(--gld),var(--or));-webkit-background-clip:text;-webkit-text-fill-color:transparent;text-decoration:none}
+.nav-links{display:flex;gap:.5rem;flex-wrap:wrap;margin-left:auto}
+.nav-links a{font-size:.75rem;padding:.3rem .7rem;border-radius:100px;border:1px solid var(--bd);color:var(--dim);transition:.2s;text-decoration:none}
+.nav-links a:hover,.nav-links a.active{border-color:var(--ac);color:var(--tx)}
+.ct{max-width:820px;margin:0 auto;padding:2.5rem 1.5rem 5rem}
+h1{font-family:'Fraunces',serif;font-weight:900;font-size:clamp(1.6rem,4vw,2.4rem);margin-bottom:.5rem}
+h1 em{font-style:normal;background:linear-gradient(135deg,var(--gr),var(--cy));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.sub{color:var(--dim);font-size:.88rem;margin-bottom:2.5rem}
+h2{font-family:'Fraunces',serif;font-weight:700;font-size:1.35rem;margin:2.5rem 0 .8rem}
+h3{font-size:1.05rem;margin:1.5rem 0 .5rem}
+p{color:var(--dim);margin-bottom:.8rem;font-size:.9rem}
+.box{background:var(--sf);border:1px solid var(--bd);border-radius:14px;padding:1.5rem;margin:1rem 0}
+.box.green{border-color:rgba(52,211,153,.3);background:linear-gradient(135deg,rgba(52,211,153,.06),rgba(34,211,238,.03))}
+.box.gold{border-color:rgba(251,191,36,.3);background:linear-gradient(135deg,rgba(251,191,36,.06),rgba(245,158,11,.03))}
+.box strong{display:block;margin-bottom:.3rem;color:var(--tx);font-size:.92rem}
+pre{background:rgba(0,0,0,.4);border:1px solid var(--bd);border-radius:10px;padding:1rem 1.2rem;font-family:'JetBrains Mono',monospace;font-size:.78rem;color:var(--gr);overflow-x:auto;line-height:1.7;margin:.8rem 0;white-space:pre-wrap}
+.label{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--gr);margin-bottom:.3rem}
+.flow{display:flex;flex-direction:column;gap:0;margin:1.5rem 0}
+.flow-step{display:flex;gap:1rem;padding:1.2rem;background:var(--sf);border:1px solid var(--bd);position:relative}
+.flow-step:first-child{border-radius:14px 14px 0 0}.flow-step:last-child{border-radius:0 0 14px 14px}.flow-step+.flow-step{border-top:0}
+.flow-n{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Fraunces',serif;font-weight:900;flex-shrink:0;font-size:.9rem}
+.flow-n.c{background:rgba(99,102,241,.15);color:var(--ac)}.flow-n.g{background:rgba(52,211,153,.15);color:var(--gr)}.flow-n.p{background:rgba(96,165,250,.15);color:var(--bl)}.flow-n.o{background:rgba(245,158,11,.15);color:var(--or)}
+.flow-c{flex:1}.flow-c strong{color:var(--tx);font-size:.9rem}.flow-c p{font-size:.82rem;margin-top:.15rem}
+.vs{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin:1rem 0}
+.vs-card{background:var(--sf);border:1px solid var(--bd);border-radius:12px;padding:1.2rem}
+.vs-card h4{font-size:.92rem;margin-bottom:.3rem}.vs-card p{font-size:.82rem}
+.vs-card .best{font-size:.72rem;color:var(--gr);font-weight:700;margin-top:.4rem}
+.nav-bottom{display:flex;justify-content:space-between;flex-wrap:wrap;gap:1rem;margin-top:3rem;padding-top:2rem;border-top:1px solid var(--bd)}
+.nav-bottom a{font-size:.82rem;padding:.5rem 1rem;border-radius:100px;border:1px solid var(--bd);color:var(--dim);transition:.2s;text-decoration:none}
+.nav-bottom a:hover{border-color:var(--ac);color:var(--tx)}
+@media(max-width:768px){.ct{padding:1.5rem 1rem 4rem}.vs{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+<a href="finans-modellering.html" class="nav-brand">📊 Finans × AI</a>
+<div class="nav-links">
+<a href="finans-1-modeller.html">Modeller</a>
+<a href="finans-2-sensitivitet.html">Sensitivitet</a>
+<a href="finans-3-tolkning.html" class="active">Tolkning</a>
+<a href="finans-4-trading.html">Trading</a>
+<a href="finans-5-prompts.html">Prompts</a>
+</div>
+</nav>
+
+<div class="ct">
+
+<h1>🧠 AI-Drevet <em>Tolkning</em></h1>
+<p class="sub">Du har bygget modellen. Nå: kombiner flere AI-verktøy for å tolke resultatene, finne blinde flekker, og få en «second opinion» på dine antagelser.</p>
+
+<h2>🔄 Multi-AI Workflow</h2>
+<p>Ingen enkelt AI er best på alt. Den smarteste tilnærmingen er å bruke <strong>ulike verktøy for ulike oppgaver</strong> — akkurat som Oljefondet bruker Claude, Copilot, Perplexity, Cursor og Deep Research side om side.</p>
+
+<div class="flow">
+<div class="flow-step"><div class="flow-n c">1</div><div class="flow-c"><strong>Claude → Bygg modellen</strong><p>Claude er best på å bygge strukturerte Excel-modeller med korrekte formler. Start her.</p></div></div>
+<div class="flow-step"><div class="flow-n g">2</div><div class="flow-c"><strong>ChatGPT → Visualisér og analyser</strong><p>Last opp Excel-filen til ChatGPT Code Interpreter. Den lager grafer, kjører Python-analyse, og finner mønster.</p></div></div>
+<div class="flow-step"><div class="flow-n p">3</div><div class="flow-c"><strong>Perplexity → Fakta-sjekk antagelser</strong><p>«Er 25% revenue growth realistisk for SaaS i 2025? Hva er bransjegjennomsnittet? Vis kilder.»</p></div></div>
+<div class="flow-step"><div class="flow-n o">4</div><div class="flow-c"><strong>Claude → Tolk og konkludér</strong><p>Tilbake til Claude med all info: «Gitt disse resultatene og denne markedsdataen — hva er ditt syn?»</p></div></div>
+</div>
+
+<h2>💬 Tolknings-Prompts</h2>
+
+<h3>«Forklar Modellen Til Meg»</h3>
+<div class="label">Prompt — Modellforklaring</div>
+<pre>Her er min DCF-modell [last opp Excel].
+
+Forklar som om jeg er en investor uten finans-bakgrunn:
+1. Hva sier modellen om selskapets verdi?
+2. Hvilke antagelser driver mest av verdien?
+3. Hva er de 3 største risikoene i modellen?
+4. Er antagelsene mine rimelige sammenlignet med bransjen?
+5. Hva er oppsiden og nedsiden i kroner?
+
+Vær ærlig. Si ifra hvis noe ser urealistisk ut.</pre>
+
+<h3>«Second Opinion»</h3>
+<div class="label">Prompt — Kritisk gjennomgang</div>
+<pre>Vær djevelens advokat for denne modellen [last opp Excel].
+
+Finn:
+- Antagelser som er for optimistiske eller pessimistiske
+- Formler som kan være feil eller mangler logikk
+- Variabler jeg har glemt (har jeg med working capital? Capex?)
+- Scenarioer jeg ikke har testet
+- Risikofaktorer jeg ikke har vurdert
+
+Gi meg en ærlig vurdering: ville du investert basert på dette?
+Hva mangler for at du ville vært komfortabel?</pre>
+
+<h3>«Benchmark Mot Virkeligheten»</h3>
+<div class="label">Prompt — Perplexity / Claude med web</div>
+<pre>Jeg har laget en finansiell modell for [selskap/bransje].
+
+Mine nøkkelantagelser:
+- Revenue growth: 25% p.a.
+- EBITDA margin: 30%
+- WACC: 10%
+
+Oppgave:
+1. Hva er typisk revenue growth for denne bransjen?
+2. Hva er median EBITDA-margin blant peers?
+3. Er min WACC rimelig gitt dagens rentemiljø?
+4. Vis sammenlignbare selskaper med deres faktiske tall.
+5. Basert på dette: er modellen min for aggressiv eller konservativ?
+
+Vis kilder for alle tall.</pre>
+
+<h2>⚔️ Claude vs ChatGPT — Når Bruke Hva</h2>
+
+<div class="vs">
+<div class="vs-card" style="border-color:rgba(99,102,241,.3)">
+<h4 style="color:var(--ac)">Claude</h4>
+<p>Bygger Excel-filer med formler. Leser lange dokumenter (200k tokens). Bedre på strukturert output og logiske sammenhenger mellom ark.</p>
+<div class="best">✅ Best for: Modellbygging, dokumentanalyse, logisk resonnering</div>
+</div>
+<div class="vs-card" style="border-color:rgba(52,211,153,.3)">
+<h4 style="color:var(--gr)">ChatGPT</h4>
+<p>Code Interpreter kjører Python. Lager grafer og visualiseringer. Bedre på kreativ brainstorming og «hva-om»-spørsmål.</p>
+<div class="best">✅ Best for: Visualisering, Python-analyse, kreative scenarioer</div>
+</div>
+<div class="vs-card" style="border-color:rgba(245,158,11,.3)">
+<h4 style="color:var(--or)">Perplexity</h4>
+<p>AI-søkemotor med kilder. Finner ferske markedsdata, bransjemultipler, og konkurrentinfo med kildehenvisning.</p>
+<div class="best">✅ Best for: Fakta-sjekk, markedsdata, bransjeanalyse</div>
+</div>
+<div class="vs-card" style="border-color:rgba(244,114,182,.3)">
+<h4 style="color:var(--pk)">Deep Research</h4>
+<p>Bruker 5-30 min på grundig analyse. Leverer rapport-kvalitet. Tilgjengelig i Claude og ChatGPT.</p>
+<div class="best">✅ Best for: Dype markedsanalyser, trendrapporter, due diligence</div>
+</div>
+</div>
+
+<h2>🔁 Praktisk Multi-AI Eksempel</h2>
+<p>La oss si du vurderer å investere i et norsk tech-selskap:</p>
+
+<div class="box green">
+<strong>Steg 1 — Claude: Bygg modell</strong>
+<p>«Bygg en DCF-modell for Kahoot basert på siste årsrapport [last opp]. 5-års projeksjon med bull/base/bear.»</p>
+</div>
+
+<div class="box">
+<strong>Steg 2 — Perplexity: Sjekk markedsdata</strong>
+<p>«Hva er median EV/Revenue for EdTech SaaS-selskaper globalt? Hva er analytikerens konsensus for Kahoots revenue growth?»</p>
+</div>
+
+<div class="box">
+<strong>Steg 3 — ChatGPT: Visualisér</strong>
+<p>«Her er modellen [last opp]. Lag: 1) Waterfall chart fra Enterprise Value til Equity Value. 2) Scenario-sammenligning bar chart. 3) Historisk vs projected revenue graf.»</p>
+</div>
+
+<div class="box gold">
+<strong>Steg 4 — Claude: Syntetisér og konkludér</strong>
+<p>«Gitt DCF-modellen som sier 85 NOK/aksje (base), markedsdata fra Perplexity som viser bransjemedian EV/Rev på 8x, og dagens aksjekurs på 72 NOK — er dette et kjøp? Hva er risikoen? Lag et 1-siders investeringsnotat.»</p>
+</div>
+
+<div class="box" style="border-color:rgba(239,68,68,.3)">
+<strong>⚠️ Viktig</strong>
+<p>AI gir deg <strong>analyse, ikke investeringsråd</strong>. Du tar beslutningen. Modellen er et verktøy for å tenke klarere — ikke en krystallkule. Dobbeltsjekk alltid kritiske antagelser mot faktiske tall.</p>
+</div>
+
+<div class="nav-bottom">
+<a href="finans-2-sensitivitet.html">← Sensitivitetsanalyse</a>
+<a href="finans-4-trading.html">Neste: Trading & Beslutninger →</a>
+</div>
+
+</div>
+</body>
+</html>

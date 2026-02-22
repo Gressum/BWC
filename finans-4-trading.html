@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
+<title>Trading & Investeringsbeslutninger med AI</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=DM+Sans:wght@400;500;600;700&family=Fraunces:ital,wght@0,700;0,900;1,700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#06060c;--sf:#0f0f1a;--sf2:#161625;--sf3:#1e1e30;--bd:#2a2a42;--tx:#e8e8f2;--dim:#8888aa;--ac:#6366f1;--gr:#34d399;--or:#f59e0b;--bl:#60a5fa;--pk:#f472b6;--cy:#22d3ee;--gld:#fbbf24;--rd:#ef4444}
+*{margin:0;padding:0;box-sizing:border-box}body{background:var(--bg);color:var(--tx);font-family:'DM Sans',sans-serif;line-height:1.8}
+a{color:var(--ac)}a:hover{text-decoration:underline}
+.nav{position:sticky;top:0;z-index:100;background:rgba(6,6,12,.92);backdrop-filter:blur(20px);border-bottom:1px solid var(--bd);padding:.7rem 1.5rem;display:flex;align-items:center;gap:1rem;flex-wrap:wrap}
+.nav-brand{font-family:'Fraunces',serif;font-weight:900;font-size:1rem;background:linear-gradient(135deg,var(--gld),var(--or));-webkit-background-clip:text;-webkit-text-fill-color:transparent;text-decoration:none}
+.nav-links{display:flex;gap:.5rem;flex-wrap:wrap;margin-left:auto}
+.nav-links a{font-size:.75rem;padding:.3rem .7rem;border-radius:100px;border:1px solid var(--bd);color:var(--dim);transition:.2s;text-decoration:none}
+.nav-links a:hover,.nav-links a.active{border-color:var(--ac);color:var(--tx)}
+.ct{max-width:820px;margin:0 auto;padding:2.5rem 1.5rem 5rem}
+h1{font-family:'Fraunces',serif;font-weight:900;font-size:clamp(1.6rem,4vw,2.4rem);margin-bottom:.5rem}
+h1 em{font-style:normal;background:linear-gradient(135deg,var(--pk),var(--or));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.sub{color:var(--dim);font-size:.88rem;margin-bottom:2.5rem}
+h2{font-family:'Fraunces',serif;font-weight:700;font-size:1.35rem;margin:2.5rem 0 .8rem}
+h3{font-size:1.05rem;margin:1.5rem 0 .5rem}
+p{color:var(--dim);margin-bottom:.8rem;font-size:.9rem}
+.box{background:var(--sf);border:1px solid var(--bd);border-radius:14px;padding:1.5rem;margin:1rem 0}
+.box.gold{border-color:rgba(251,191,36,.3);background:linear-gradient(135deg,rgba(251,191,36,.06),rgba(245,158,11,.03))}
+.box.red{border-color:rgba(239,68,68,.3);background:linear-gradient(135deg,rgba(239,68,68,.06),rgba(244,114,182,.03))}
+.box strong{display:block;margin-bottom:.3rem;color:var(--tx);font-size:.92rem}
+pre{background:rgba(0,0,0,.4);border:1px solid var(--bd);border-radius:10px;padding:1rem 1.2rem;font-family:'JetBrains Mono',monospace;font-size:.78rem;color:var(--gr);overflow-x:auto;line-height:1.7;margin:.8rem 0;white-space:pre-wrap}
+.label{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--pk);margin-bottom:.3rem}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin:1rem 0}
+.gc{background:var(--sf);border:1px solid var(--bd);border-radius:12px;padding:1.2rem}
+.gc h4{font-size:.9rem;margin-bottom:.3rem;color:var(--tx)}.gc p{font-size:.82rem;color:var(--dim)}
+.checklist{list-style:none;margin:1rem 0}
+.checklist li{padding:.5rem 0;border-bottom:1px solid rgba(42,42,66,.5);font-size:.88rem;color:var(--dim);display:flex;gap:.5rem}
+.checklist li::before{content:'☐';color:var(--gld)}
+.nav-bottom{display:flex;justify-content:space-between;flex-wrap:wrap;gap:1rem;margin-top:3rem;padding-top:2rem;border-top:1px solid var(--bd)}
+.nav-bottom a{font-size:.82rem;padding:.5rem 1rem;border-radius:100px;border:1px solid var(--bd);color:var(--dim);transition:.2s;text-decoration:none}
+.nav-bottom a:hover{border-color:var(--ac);color:var(--tx)}
+@media(max-width:768px){.ct{padding:1.5rem 1rem 4rem}.grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+<a href="finans-modellering.html" class="nav-brand">📊 Finans × AI</a>
+<div class="nav-links">
+<a href="finans-1-modeller.html">Modeller</a>
+<a href="finans-2-sensitivitet.html">Sensitivitet</a>
+<a href="finans-3-tolkning.html">Tolkning</a>
+<a href="finans-4-trading.html" class="active">Trading</a>
+<a href="finans-5-prompts.html">Prompts</a>
+</div>
+</nav>
+
+<div class="ct">
+
+<h1>📈 Trading & <em>Investeringsbeslutninger</em></h1>
+<p class="sub">Bruk AI til å analysere aksjer, vurdere risiko, og ta bedre beslutninger — uten å la maskinen trykke på knappen.</p>
+
+<div class="box red">
+<strong>⚠️ Disclaimer</strong>
+<p>Ingenting på denne siden er investeringsråd. AI er et analyseverktøy — du tar beslutningen. Gjør alltid din egen research. Investér bare det du har råd til å tape.</p>
+</div>
+
+<h2>🔍 Aksjescreening med AI</h2>
+<p>Finn investeringskandidater raskere. I stedet for å bla gjennom hundrevis av aksjer manuelt, la AI filtrere basert på dine kriterier.</p>
+
+<div class="label">Prompt — Aksjescreening</div>
+<pre>Hjelp meg screene aksjer med disse kriteriene:
+
+Sektor: Teknologi / SaaS
+Geografi: Nordisk
+Markedsverdi: 1-50 mrd NOK (small/mid-cap)
+
+Kriterier:
+- Revenue growth > 15% siste 3 år
+- Positiv eller nær-positiv EBITDA
+- Lav gjeld (Net Debt/EBITDA < 2x)
+- Rimelig prising: EV/Revenue < 8x
+
+For hvert selskap som matcher, vis:
+Navn, ticker, markedsverdi, siste revenue growth,
+EBITDA-margin, EV/Revenue, kort beskrivelse.
+
+Ranger etter «best overall» basert på vekst + verdsettelse.</pre>
+
+<h2>📊 Porteføljeanalyse</h2>
+<p>Last opp din egen portefølje og la AI finne risikoer, konsentrasjoner, og forbedringsforslag.</p>
+
+<div class="label">Prompt — Porteføljeanalyse</div>
+<pre>Her er min aksjeportefølje [last opp CSV/Excel]:
+
+Analyser:
+1. Sektorkonsentrasjon — er jeg overeksponert mot én sektor?
+2. Geografisk fordeling — er jeg for avhengig av ett marked?
+3. Korrelasjon — beveger aksjene mine seg likt? (høy korrelasjon = høy risiko)
+4. Yield/utbytte — hva er porteføljens samlede direkteavkastning?
+5. Verdsettelses-sjekk — er noen posisjoner priset veldig høyt vs historikk?
+
+Forslag:
+- Hvilke sektorer mangler jeg?
+- Har jeg nok diversifisering?
+- Forslag til rebalansering basert på risikoprofilen min</pre>
+
+<h2>⚡ Earnings-Analyse i Sanntid</h2>
+<p>Når selskaper rapporterer kvartalstall, kan AI hjelpe deg tolke resultatene på minutter i stedet for timer.</p>
+
+<div class="label">Prompt — Earnings-analyse</div>
+<pre>Selskapet [Navn] rapporterte nettopp kvartalstall.
+
+Her er pressemeldingen / rapporten [last opp / lim inn].
+
+Analyser:
+1. Beat/miss: Slo de konsensus på revenue, EBITDA, EPS?
+2. Guidance: Hevet, senket, eller opprettholdt de guiding?
+3. Nøkkeltall: Hva endret seg mest vs forrige kvartal?
+4. Red flags: Er det noe bekymringsverdig i tallene?
+5. Management-kommentarer: Hva er tonen? Optimistisk eller forsiktig?
+6. Implikasjon: Basert på dette, bør jeg oppdatere min modell?
+
+Gi en kort vurdering: positivt, nøytralt, eller negativt for aksjen.</pre>
+
+<h2>🛡️ Risiko-Rammeverk</h2>
+<p>Før du tar en beslutning, kjør den gjennom et strukturert rammeverk:</p>
+
+<div class="grid">
+<div class="gc" style="border-color:rgba(52,211,153,.3)"><h4>✅ Kjøps-Case</h4><p>Hva må gå rett for at dette er en god investering? Hva er katalysatorene? Hva er margin of safety?</p></div>
+<div class="gc" style="border-color:rgba(239,68,68,.3)"><h4>❌ Salgs-Case</h4><p>Hva kan gå galt? Hva er de 3 største risikoene? Hva ville fått deg til å selge?</p></div>
+<div class="gc" style="border-color:rgba(251,191,36,.3)"><h4>📐 Posisjonsstørrelse</h4><p>Hvor mye av porteføljen? 1-2% for høy risiko, 3-5% for normal. Aldri mer enn 10% i én aksje.</p></div>
+<div class="gc" style="border-color:rgba(99,102,241,.3)"><h4>📅 Tidshorisont</h4><p>Er dette en kort-trade (uker) eller langsiktig (år)? Exit-kriterier definert PÅ FORHÅND.</p></div>
+</div>
+
+<div class="label">Prompt — Investeringsbeslutning</div>
+<pre>Jeg vurderer å investere i [selskap] til [pris] per aksje.
+
+Hjelp meg strukturere beslutningen:
+
+1. BULL CASE: 3 grunner til at dette er en god investering
+2. BEAR CASE: 3 grunner til at dette kan gå galt
+3. VERDSETTELSE: Er aksjen rimelig priset vs peers og historikk?
+4. KATALYSATORER: Hva kan drive aksjen opp de neste 6-12 mnd?
+5. RISIKOFAKTORER: Hva kan drive den ned?
+6. POSITION SIZE: Gitt min [konservativ/moderat/aggressiv] risikoprofil,
+   hvor mye bør jeg allokere?
+
+Avslutt med: «Ville du investert?» og gi en ærlig vurdering
+med sannsynlighets-vektet forventet avkastning.</pre>
+
+<h2>📋 Sjekkliste Før Investering</h2>
+<ul class="checklist">
+<li>Forstår jeg hva selskapet gjør og hvordan de tjener penger?</li>
+<li>Har jeg bygget en finansiell modell med bull/base/bear?</li>
+<li>Er antagelsene mine fakta-sjekket mot bransjedata?</li>
+<li>Har jeg fått en «second opinion» fra en annen AI?</li>
+<li>Har jeg definert exit-kriterier (både opp og ned)?</li>
+<li>Er posisjonsstørrelsen fornuftig for min risikoprofil?</li>
+<li>Har jeg sjekket earnings-kalender og kommende katalysatorer?</li>
+<li>Er jeg komfortabel med å holde i 12+ måneder?</li>
+</ul>
+
+<div class="box gold">
+<strong>🧠 Oljefondets Tilnærming</strong>
+<p>Oljefondet bruker AI til å analysere 40-50 siders lønnsrapporter på sekunder, matche interne handler for å spare transaksjonskostnader, og overvåke ESG-risiko. Men <strong>mennesker tar beslutningene</strong>. AI sparer tid — og den sparte tiden brukes på å tenke dypere om de viktigste spørsmålene.</p>
+</div>
+
+<div class="nav-bottom">
+<a href="finans-3-tolkning.html">← AI-Drevet Tolkning</a>
+<a href="finans-5-prompts.html">Neste: Prompt-Bibliotek →</a>
+</div>
+
+</div>
+</body>
+</html>

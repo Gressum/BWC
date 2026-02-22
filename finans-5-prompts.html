@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
+<title>Prompt-Bibliotek: Finansiell Modellering</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=DM+Sans:wght@400;500;600;700&family=Fraunces:ital,wght@0,700;0,900;1,700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#06060c;--sf:#0f0f1a;--sf2:#161625;--sf3:#1e1e30;--bd:#2a2a42;--tx:#e8e8f2;--dim:#8888aa;--ac:#6366f1;--gr:#34d399;--or:#f59e0b;--bl:#60a5fa;--pk:#f472b6;--cy:#22d3ee;--gld:#fbbf24}
+*{margin:0;padding:0;box-sizing:border-box}body{background:var(--bg);color:var(--tx);font-family:'DM Sans',sans-serif;line-height:1.8}
+a{color:var(--ac)}a:hover{text-decoration:underline}
+.nav{position:sticky;top:0;z-index:100;background:rgba(6,6,12,.92);backdrop-filter:blur(20px);border-bottom:1px solid var(--bd);padding:.7rem 1.5rem;display:flex;align-items:center;gap:1rem;flex-wrap:wrap}
+.nav-brand{font-family:'Fraunces',serif;font-weight:900;font-size:1rem;background:linear-gradient(135deg,var(--gld),var(--or));-webkit-background-clip:text;-webkit-text-fill-color:transparent;text-decoration:none}
+.nav-links{display:flex;gap:.5rem;flex-wrap:wrap;margin-left:auto}
+.nav-links a{font-size:.75rem;padding:.3rem .7rem;border-radius:100px;border:1px solid var(--bd);color:var(--dim);transition:.2s;text-decoration:none}
+.nav-links a:hover,.nav-links a.active{border-color:var(--ac);color:var(--tx)}
+.ct{max-width:820px;margin:0 auto;padding:2.5rem 1.5rem 5rem}
+h1{font-family:'Fraunces',serif;font-weight:900;font-size:clamp(1.6rem,4vw,2.4rem);margin-bottom:.5rem}
+h1 em{font-style:normal;background:linear-gradient(135deg,var(--ac),#a78bfa);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.sub{color:var(--dim);font-size:.88rem;margin-bottom:2.5rem}
+h2{font-family:'Fraunces',serif;font-weight:700;font-size:1.3rem;margin:2.5rem 0 .8rem;display:flex;align-items:center;gap:.5rem}
+p{color:var(--dim);margin-bottom:.8rem;font-size:.9rem}
+.prompt-card{background:var(--sf);border:1px solid var(--bd);border-radius:14px;margin:1.2rem 0;overflow:hidden}
+.prompt-header{padding:1rem 1.3rem;cursor:pointer;display:flex;justify-content:space-between;align-items:center;transition:.2s}
+.prompt-header:hover{background:var(--sf2)}
+.prompt-header h3{font-size:.95rem;margin:0;display:flex;align-items:center;gap:.5rem}
+.prompt-header .tag{padding:.12rem .5rem;border-radius:100px;font-size:.62rem;font-weight:700}
+.tag.b{background:rgba(96,165,250,.12);color:var(--bl)}.tag.a{background:rgba(244,114,182,.12);color:var(--pk)}.tag.i{background:rgba(52,211,153,.12);color:var(--gr)}
+.prompt-header .arrow{color:var(--dim);transition:.3s;font-size:1.2rem}
+.prompt-card.open .arrow{transform:rotate(180deg)}
+.prompt-body{max-height:0;overflow:hidden;transition:max-height .4s ease}
+.prompt-card.open .prompt-body{max-height:2000px}
+.prompt-body-inner{padding:0 1.3rem 1.3rem}
+.prompt-body-inner p{font-size:.84rem}
+pre{background:rgba(0,0,0,.4);border:1px solid var(--bd);border-radius:10px;padding:1rem 1.2rem;font-family:'JetBrains Mono',monospace;font-size:.76rem;color:var(--gr);overflow-x:auto;line-height:1.7;margin:.6rem 0;white-space:pre-wrap;position:relative}
+pre .copy-btn{position:absolute;top:.5rem;right:.5rem;background:var(--sf3);border:1px solid var(--bd);color:var(--dim);padding:.2rem .5rem;border-radius:6px;font-size:.65rem;cursor:pointer;transition:.2s;font-family:'DM Sans',sans-serif}
+pre .copy-btn:hover{border-color:var(--ac);color:var(--tx)}
+.use{font-size:.78rem;color:var(--or);font-weight:600;margin-top:.5rem}
+.nav-bottom{display:flex;justify-content:space-between;flex-wrap:wrap;gap:1rem;margin-top:3rem;padding-top:2rem;border-top:1px solid var(--bd)}
+.nav-bottom a{font-size:.82rem;padding:.5rem 1rem;border-radius:100px;border:1px solid var(--bd);color:var(--dim);transition:.2s;text-decoration:none}
+.nav-bottom a:hover{border-color:var(--ac);color:var(--tx)}
+@media(max-width:768px){.ct{padding:1.5rem 1rem 4rem}.nav-links{margin-left:0}}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+<a href="finans-modellering.html" class="nav-brand">📊 Finans × AI</a>
+<div class="nav-links">
+<a href="finans-1-modeller.html">Modeller</a>
+<a href="finans-2-sensitivitet.html">Sensitivitet</a>
+<a href="finans-3-tolkning.html">Tolkning</a>
+<a href="finans-4-trading.html">Trading</a>
+<a href="finans-5-prompts.html" class="active">Prompts</a>
+</div>
+</nav>
+
+<div class="ct">
+
+<h1>💬 Prompt-Bibliotek: <em>Finans</em></h1>
+<p class="sub">Kopier-og-bruk prompts for alle typer finansiell analyse. Klikk for å åpne, tilpass [variablene], og lim inn i Claude eller ChatGPT.</p>
+
+<h2>🏗️ Modellbygging</h2>
+
+<div class="prompt-card"><div class="prompt-header"><h3>Komplett 3-Statement fra Årsrapport <span class="tag b">Begynner</span></h3><span class="arrow">▼</span></div><div class="prompt-body"><div class="prompt-body-inner">
+<p>Last opp en årsrapport og få en komplett koblet modell.</p>
+<pre>Her er årsrapporten for [SELSKAP] [last opp PDF].
+
+Bygg en komplett 3-setningsmodell i Excel:
+- Trekk ut historiske tall for siste 3 år
+- Projiser 5 år fremover basert på historiske trender
+- Resultatregnskap, Balanse, Kontantstrøm — alle koblet med formler
+- Eget «Inputs»-ark med alle antagelser (blå celler)
+- Balansen MÅ balansere. Kontantstrøm MÅ reconcile.
+- Norsk skattesats (22%)
+
+Farger: Blå = input, Svart = formel, Grønn = check-celler<span class="copy-btn" onclick="copyPrompt(this)">Kopier</span></pre>
+<p class="use">🔧 Bruk i: Claude (claude.ai) med filopplasting</p>
+</div></div></div>
+
+<div class="prompt-card"><div class="prompt-header"><h3>DCF-Verdsettelse med Scenario-Switch <span class="tag b">Begynner</span></h3><span class="arrow">▼</span></div><div class="prompt-body"><div class="prompt-body-inner">
+<pre>Bygg en DCF-modell for [SELSKAP] i Excel.
+
+Struktur:
+- WACC-ark: Risk-free rate, Beta, ERP, Cost of Debt, D/E ratio
+- FCF-projeksjon: 5 år basert på [vedlagte tall / antagelser]
+- Terminal Value: Både Gordon Growth OG Exit Multiple
+- Bridge: Enterprise Value → Netto gjeld → Equity Value → Per aksje
+- Scenario-dropdown (Bear/Base/Bull) som endrer alle antagelser
+- Sensitivitetstabell: WACC vs Terminal Growth → Aksjepris
+
+Alle drivere på ett «Inputs»-ark. Null hardkodede tall i formler.<span class="copy-btn" onclick="copyPrompt(this)">Kopier</span></pre>
+<p class="use">🔧 Bruk i: Claude (claude.ai) — lager .xlsx direkte</p>
+</div></div></div>
+
+<div class="prompt-card"><div class="prompt-header"><h3>LBO-Modell for Oppkjøp <span class="tag a">Avansert</span></h3><span class="arrow">▼</span></div><div class="prompt-body"><div class="prompt-body-inner">
+<pre>Bygg en LBO-modell (Leveraged Buyout) i Excel.
+
+Sources & Uses:
+- Enterprise Value: [X] MNOK
+- Gjeldsandel: [60]%
+- Senior Debt: [X] × EBITDA, rente [5]%
+- Mezzanine: [X] MNOK, rente [8]%
+- Sponsor Equity: Resten
+
+Operating Model: [Bruk vedlagt data eller disse antagelsene]
+- EBITDA år 1: [X] MNOK
+- EBITDA-vekst: [X]% p.a.
+- Capex: [X]% av revenue
+- Working capital: [X] dagers endring per år
+
+Exit: Etter [5] år ved [7]x EBITDA-multippel
+
+Output: IRR, MOIC, Cash-on-Cash, gjeldsnedbetalingsplan.
+Sensitivitet: Entry Multiple vs Exit Multiple → IRR tabell.<span class="copy-btn" onclick="copyPrompt(this)">Kopier</span></pre>
+<p class="use">🔧 Bruk i: Claude eller Claude Code</p>
+</div></div></div>
+
+<h2>🎛️ Analyse & Sensitivitet</h2>
+
+<div class="prompt-card"><div class="prompt-header"><h3>Sensitivitetstabell med Conditional Formatting <span class="tag b">Begynner</span></h3><span class="arrow">▼</span></div><div class="prompt-body"><div class="prompt-body-inner">
+<pre>Legg til sensitivitetsanalyse i denne modellen [last opp Excel].
+
+Lag 3 tabeller:
+1. WACC (7-13%) vs Terminal Growth (1-4%) → Aksjepris
+2. Revenue Growth (10-40%) vs EBITDA Margin (20-45%) → EV
+3. Entry Multiple vs Exit Multiple → IRR (for LBO)
+
+Bruk Excels DATA TABLE-funksjon.
+Conditional formatting: Grønn gradient for høye verdier, rød for lave.
+Marker celle der current assumptions er (base case).
+Legg i eget «Sensitivity» ark.<span class="copy-btn" onclick="copyPrompt(this)">Kopier</span></pre>
+</div></div></div>
+
+<div class="prompt-card"><div class="prompt-header"><h3>Monte Carlo-Simulering (Python) <span class="tag a">Avansert</span></h3><span class="arrow">▼</span></div><div class="prompt-body"><div class="prompt-body-inner">
+<pre>Kjør Monte Carlo-simulering basert på denne modellen [last opp].
+
+Variabler (normalfordeling):
+- Revenue growth: μ=[20]%, σ=[8]%
+- EBITDA margin: μ=[30]%, σ=[5]%
+- WACC: μ=[10]%, σ=[1.5]%
+- Terminal growth: μ=[2.5]%, σ=[0.75]%
+
+Parametere:
+- 10,000 iterasjoner
+- Korreler revenue growth og margin (ρ = -0.3)
+
+Output (Python + matplotlib):
+- Histogram: Fordeling av implisert aksjepris
+- CDF: Sannsynlighet for ulike prisutfall
+- Tabell: P10, P25, P50, P75, P90
+- VaR (95%): Minimum forventet verdi
+- Tornado: Hvilken variabel påvirker mest
+
+Eksporter til Excel med openpyxl.<span class="copy-btn" onclick="copyPrompt(this)">Kopier</span></pre>
+<p class="use">🔧 Bruk i: Claude Code (terminal) eller ChatGPT Code Interpreter</p>
+</div></div></div>
+
+<h2>🔍 Research & Due Diligence</h2>
+
+<div class="prompt-card"><div class="prompt-header"><h3>Komparativ Selsaksanalyse (Comps) <span class="tag i">Intermediate</span></h3><span class="arrow">▼</span></div><div class="prompt-body"><div class="prompt-body-inner">
+<pre>Lag en comps-analyse for [SELSKAP].
+
+Peer-gruppe: [Liste selskaper, eller: «Finn 6-8 sammenlignbare
+selskaper i [bransje] med markedsverdi mellom [X] og [Y]»]
+
+Multipler å inkludere:
+- EV/Revenue (LTM + NTM)
+- EV/EBITDA (LTM + NTM)
+- P/E (LTM + NTM)
+- Revenue Growth (YoY)
+- EBITDA Margin, Net Margin
+- FCF Yield
+
+Vis: Mean, Median, Min, Max for peer-gruppen.
+Beregn implisert verdi for [SELSKAP] basert på median.
+Lag et «football field» visuelt som viser range.
+
+Eksporter til Excel med formatering.<span class="copy-btn" onclick="copyPrompt(this)">Kopier</span></pre>
+</div></div></div>
+
+<div class="prompt-card"><div class="prompt-header"><h3>Earnings Quick-Analyse <span class="tag b">Begynner</span></h3><span class="arrow">▼</span></div><div class="prompt-body"><div class="prompt-body-inner">
+<pre>[Last opp kvartalsrapport / pressemelding]
+
+Analyser kvartalstallene for [SELSKAP] Q[X] [ÅRSTALL]:
+
+1. BEAT/MISS: Revenue vs konsensus, EBITDA vs konsensus, EPS vs konsensus
+2. TRENDER: Hva endret seg vs forrige kvartal og vs for ett år siden?
+3. GUIDANCE: Hevet, senket, eller uendret? Hva sier management?
+4. RED FLAGS: Fallende marginer? Økende gjeld? Customer churn?
+5. POSITIVE SIGNALER: Nye kontrakter? Marginforbedring? Veksttegn?
+6. MODELL-IMPLIKASJON: Bør jeg endre mine antagelser?
+
+Oppsummer i én setning: Positivt / Nøytralt / Negativt for aksjen.
+Gi en 1-10 score på rapportkvaliteten.<span class="copy-btn" onclick="copyPrompt(this)">Kopier</span></pre>
+</div></div></div>
+
+<div class="prompt-card"><div class="prompt-header"><h3>Investeringsnotat (1-Pager) <span class="tag i">Intermediate</span></h3><span class="arrow">▼</span></div><div class="prompt-body"><div class="prompt-body-inner">
+<pre>Lag et profesjonelt 1-siders investeringsnotat for [SELSKAP].
+
+Struktur:
+HEADER: Selskap, ticker, aksjekurs, anbefaling, target price
+
+INVESTMENT THESIS (3 setninger)
+
+BULL CASE (3 punkter med tall)
+BEAR CASE (3 punkter med tall)
+
+NØKKELTALL-TABELL:
+Revenue, EBITDA, Margin, EPS, P/E, EV/EBITDA — siste 2 år + 2 år proj.
+
+VERDSETTELSE: DCF-basert range (bear/base/bull)
+KATALYSATORER: De 2-3 viktigste driverne neste 12 mnd
+
+ANBEFALING: Kjøp / Hold / Selg med begrunnelse
+RISIKO: Top 3 risikofaktorer
+
+Tone: Profesjonell, stram, faktabasert. Maks 500 ord.<span class="copy-btn" onclick="copyPrompt(this)">Kopier</span></pre>
+<p class="use">🔧 Bruk i: Claude → eksporter som Word-dokument</p>
+</div></div></div>
+
+<h2>📈 Portefølje & Risiko</h2>
+
+<div class="prompt-card"><div class="prompt-header"><h3>Portefølje-Helsesjekk <span class="tag b">Begynner</span></h3><span class="arrow">▼</span></div><div class="prompt-body"><div class="prompt-body-inner">
+<pre>Her er min portefølje [last opp CSV/Excel, eller list opp]:
+[Aksje, Antall, Kjøpskurs, Nåværende kurs]
+
+Kjør en komplett helsesjekk:
+1. Totalavkastning (urealisert P&L per posisjon og totalt)
+2. Sektorfordeling (pie chart)
+3. Geografisk fordeling
+4. Topp 5 konsentrasjoner — er noen posisjoner for store?
+5. Korrelasjonsanalyse — beveger aksjene seg likt?
+6. Yield/utbytte — samlet direkteavkastning
+7. Verdsettelsessjekk — P/E og EV/EBITDA vs sektormedian
+
+Gi forslag til rebalansering.
+Vis hva som skjer med porteføljen i et -20% markedsfall.<span class="copy-btn" onclick="copyPrompt(this)">Kopier</span></pre>
+</div></div></div>
+
+<div class="prompt-card"><div class="prompt-header"><h3>Risiko-Stresstest <span class="tag a">Avansert</span></h3><span class="arrow">▼</span></div><div class="prompt-body"><div class="prompt-body-inner">
+<pre>Stresstest min portefølje [last opp] mot disse scenarioene:
+
+1. RENTEKRISE: Renten øker 200 bps, obligasjoner faller
+2. TECH-KRAKK: Tech-aksjer faller 40%
+3. RESESJON: Bred nedgang 25%, flight to quality
+4. INFLASJON: 8%+ inflasjon, råvarepriser skyter opp
+5. GEOPOLITIKK: Ny handelskonflikt, supply chain-brudd
+
+For hvert scenario:
+- Estimert porteføljetap i %
+- Hvilke posisjoner taper mest/minst
+- Naturlige hedges i porteføljen
+- Anbefalte tiltak for å redusere risiko
+
+Vis resultater i en tabell + bar chart per scenario.<span class="copy-btn" onclick="copyPrompt(this)">Kopier</span></pre>
+</div></div></div>
+
+<div class="nav-bottom">
+<a href="finans-4-trading.html">← Trading & Beslutninger</a>
+<a href="finans-modellering.html">Tilbake til Hub →</a>
+</div>
+
+</div>
+
+<script>
+document.querySelectorAll('.prompt-header').forEach(h=>{
+  h.addEventListener('click',()=>{h.parentElement.classList.toggle('open')});
+});
+function copyPrompt(btn){
+  const pre=btn.parentElement;
+  const text=pre.textContent.replace('Kopier','').trim();
+  navigator.clipboard.writeText(text).then(()=>{btn.textContent='✓ Kopiert!';setTimeout(()=>{btn.textContent='Kopier'},2000)});
+}
+</script>
+</body>
+</html>

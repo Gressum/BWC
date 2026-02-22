@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
+<title>Sensitivitets- & Scenarioanalyse med AI</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=DM+Sans:wght@400;500;600;700&family=Fraunces:ital,wght@0,700;0,900;1,700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#06060c;--sf:#0f0f1a;--sf2:#161625;--sf3:#1e1e30;--bd:#2a2a42;--tx:#e8e8f2;--dim:#8888aa;--ac:#6366f1;--gr:#34d399;--or:#f59e0b;--bl:#60a5fa;--pk:#f472b6;--cy:#22d3ee;--gld:#fbbf24}
+*{margin:0;padding:0;box-sizing:border-box}body{background:var(--bg);color:var(--tx);font-family:'DM Sans',sans-serif;line-height:1.8}
+a{color:var(--ac)}a:hover{text-decoration:underline}
+.nav{position:sticky;top:0;z-index:100;background:rgba(6,6,12,.92);backdrop-filter:blur(20px);border-bottom:1px solid var(--bd);padding:.7rem 1.5rem;display:flex;align-items:center;gap:1rem;flex-wrap:wrap}
+.nav-brand{font-family:'Fraunces',serif;font-weight:900;font-size:1rem;background:linear-gradient(135deg,var(--gld),var(--or));-webkit-background-clip:text;-webkit-text-fill-color:transparent;text-decoration:none}
+.nav-links{display:flex;gap:.5rem;flex-wrap:wrap;margin-left:auto}
+.nav-links a{font-size:.75rem;padding:.3rem .7rem;border-radius:100px;border:1px solid var(--bd);color:var(--dim);transition:.2s;text-decoration:none}
+.nav-links a:hover,.nav-links a.active{border-color:var(--ac);color:var(--tx)}
+.ct{max-width:820px;margin:0 auto;padding:2.5rem 1.5rem 5rem}
+h1{font-family:'Fraunces',serif;font-weight:900;font-size:clamp(1.6rem,4vw,2.4rem);margin-bottom:.5rem}
+h1 em{font-style:normal;background:linear-gradient(135deg,var(--bl),var(--ac));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.sub{color:var(--dim);font-size:.88rem;margin-bottom:2.5rem}
+h2{font-family:'Fraunces',serif;font-weight:700;font-size:1.35rem;margin:2.5rem 0 .8rem}
+h3{font-size:1.05rem;margin:1.5rem 0 .5rem}
+p{color:var(--dim);margin-bottom:.8rem;font-size:.9rem}
+.box{background:var(--sf);border:1px solid var(--bd);border-radius:14px;padding:1.5rem;margin:1rem 0}
+.box.blue{border-color:rgba(99,102,241,.3);background:linear-gradient(135deg,rgba(99,102,241,.06),rgba(96,165,250,.03))}
+.box.gold{border-color:rgba(251,191,36,.3);background:linear-gradient(135deg,rgba(251,191,36,.06),rgba(245,158,11,.03))}
+.box.green{border-color:rgba(52,211,153,.3);background:linear-gradient(135deg,rgba(52,211,153,.06),rgba(34,211,238,.03))}
+.box strong{display:block;margin-bottom:.3rem;color:var(--tx);font-size:.92rem}
+pre{background:rgba(0,0,0,.4);border:1px solid var(--bd);border-radius:10px;padding:1rem 1.2rem;font-family:'JetBrains Mono',monospace;font-size:.78rem;color:var(--gr);overflow-x:auto;line-height:1.7;margin:.8rem 0;white-space:pre-wrap}
+.label{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--bl);margin-bottom:.3rem}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin:1rem 0}
+.gc{background:var(--sf);border:1px solid var(--bd);border-radius:12px;padding:1.2rem}
+.gc h4{font-size:.9rem;margin-bottom:.3rem;color:var(--tx)}.gc p{font-size:.82rem}
+.table-demo{width:100%;border-collapse:collapse;margin:1rem 0;font-size:.78rem}
+.table-demo th,.table-demo td{border:1px solid var(--bd);padding:.45rem .7rem;text-align:center}
+.table-demo th{background:var(--sf2);color:var(--dim);font-weight:600}
+.table-demo td{color:var(--dim)}
+.table-demo .hi{color:var(--gr);font-weight:600}
+.table-demo .lo{color:var(--pk);font-weight:600}
+.table-demo .mid{color:var(--gld);font-weight:600}
+.nav-bottom{display:flex;justify-content:space-between;flex-wrap:wrap;gap:1rem;margin-top:3rem;padding-top:2rem;border-top:1px solid var(--bd)}
+.nav-bottom a{font-size:.82rem;padding:.5rem 1rem;border-radius:100px;border:1px solid var(--bd);color:var(--dim);transition:.2s;text-decoration:none}
+.nav-bottom a:hover{border-color:var(--ac);color:var(--tx)}
+@media(max-width:768px){.ct{padding:1.5rem 1rem 4rem}.grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+<a href="finans-modellering.html" class="nav-brand">📊 Finans × AI</a>
+<div class="nav-links">
+<a href="finans-1-modeller.html">Modeller</a>
+<a href="finans-2-sensitivitet.html" class="active">Sensitivitet</a>
+<a href="finans-3-tolkning.html">Tolkning</a>
+<a href="finans-4-trading.html">Trading</a>
+<a href="finans-5-prompts.html">Prompts</a>
+</div>
+</nav>
+
+<div class="ct">
+
+<h1>🎛️ Sensitivitets- & <em>Scenarioanalyse</em></h1>
+<p class="sub">Bygg modeller der du bare endrer input. Se hvordan én endring påvirker hele resultatet — på sekunder, ikke timer.</p>
+
+<h2>📐 Sensitivitetsanalyse</h2>
+<p>Tester hvordan <strong>én eller to variabler</strong> påvirker resultatet mens alt annet holdes konstant. Svaret presenteres som en tabell (data table) der du umiddelbart ser «hva skjer hvis».</p>
+
+<h3>To-Variabel Sensitivitetstabell</h3>
+<p>Det klassiske formatet: WACC langs én akse, terminal growth rate langs den andre, verdsettelse i cellene.</p>
+
+<table class="table-demo">
+<tr><th>Aksjepris (NOK)</th><th>WACC 8%</th><th>WACC 9%</th><th>WACC 10%</th><th>WACC 11%</th><th>WACC 12%</th></tr>
+<tr><td style="font-weight:600;color:var(--tx)">TGR 1.5%</td><td class="hi">142</td><td class="mid">118</td><td>99</td><td class="lo">84</td><td class="lo">72</td></tr>
+<tr><td style="font-weight:600;color:var(--tx)">TGR 2.0%</td><td class="hi">158</td><td class="mid">129</td><td>107</td><td>90</td><td class="lo">77</td></tr>
+<tr><td style="font-weight:600;color:var(--tx)">TGR 2.5%</td><td class="hi">178</td><td class="hi">142</td><td class="mid">116</td><td>97</td><td class="lo">82</td></tr>
+<tr><td style="font-weight:600;color:var(--tx)">TGR 3.0%</td><td class="hi">203</td><td class="hi">158</td><td class="mid">127</td><td>105</td><td>88</td></tr>
+</table>
+<p style="font-size:.76rem;color:var(--dim);text-align:center;margin-top:.4rem">Eksempel: Sensitivitetstabell — Implisert aksjepris ved ulike WACC og Terminal Growth Rate</p>
+
+<div class="label">Prompt — Sensitivitetstabell</div>
+<pre>Legg til en sensitivitetstabell i DCF-modellen min.
+
+Tabell 1: WACC (7%-13%, steg 0.5%) vs Terminal Growth Rate (1%-4%, steg 0.5%)
+→ Vis implisert aksjepris i hver celle
+
+Tabell 2: Revenue Growth (10%-40%) vs EBITDA Margin (20%-45%)
+→ Vis Enterprise Value i hver celle
+
+Krav:
+- Bruk Excel DATA TABLE-funksjon (ikke hardkodede verdier)
+- Fargekodet: grønn = over current price, rød = under
+- Conditional formatting slik at man visuelt ser rangen</pre>
+
+<h3>Tornado-Diagram</h3>
+<p>Viser hvilke variabler som har <strong>størst påvirkning</strong> på resultatet. Variablene rangeres fra topp (mest sensitiv) til bunn. Essensielt for å vite hvor du bør bruke mest tid på research.</p>
+
+<div class="label">Prompt — Tornado-diagram</div>
+<pre>Lag et tornado-diagram (sensitivity tornado chart) i modellen.
+
+Test disse variablene ±20% fra base case:
+- Revenue growth rate
+- EBITDA margin
+- WACC
+- Terminal growth rate
+- Capex as % of revenue
+- Tax rate
+- Working capital days
+
+Vis: Horisontalt bar-chart der den mest sensitive variabelen
+er øverst. Inkluder base case, low case og high case for hver.
+Legg til i et eget «Sensitivity» ark i Excel.</pre>
+
+<h2>🎬 Scenarioanalyse</h2>
+<p>Mens sensitivitet endrer én variabel, endrer scenarioanalyse <strong>mange variabler samtidig</strong> for å simulere ulike virkeligheter: bull case, base case, bear case.</p>
+
+<div class="grid">
+<div class="gc" style="border-color:rgba(52,211,153,.3)"><h4>🟢 Bull Case</h4><p>Alt går bra. Høy vekst, gode marginer, lavt rentemiljø. «Hva er oppsiden?»</p></div>
+<div class="gc" style="border-color:rgba(251,191,36,.3)"><h4>🟡 Base Case</h4><p>Mest sannsynlige utfall basert på nåværende trender. «Hva forventer vi?»</p></div>
+<div class="gc" style="border-color:rgba(239,68,68,.3)"><h4>🔴 Bear Case</h4><p>Alt går galt. Lav vekst, marginpress, økonomisk nedgang. «Hva er nedsiden?»</p></div>
+<div class="gc" style="border-color:rgba(99,102,241,.3)"><h4>🔵 Stress Test</h4><p>Ekstremscenario. Pandemi, krig, regulering. «Overlever selskapet dette?»</p></div>
+</div>
+
+<div class="label">Prompt — Scenarioanalyse</div>
+<pre>Legg til scenarioanalyse i modellen med en scenario-switch.
+
+Lag et «Scenarios»-ark med disse kolonnene:
+| Variabel | Bear | Base | Bull |
+Inkluder: Revenue growth, EBITDA margin, Capex/Rev,
+WACC, Terminal Growth, Tax Rate, Working Capital Days
+
+I hovedmodellen: Lag én dropdown-celle (data validation)
+der brukeren velger "Bear", "Base", eller "Bull".
+Alle antagelser hentes automatisk med INDEX/MATCH
+fra Scenarios-arket.
+
+Effekt: Endre dropdown → hele modellen oppdateres.
+Inkluder et sammendrag som viser alle tre scenarier
+side-by-side med implisert aksjepris for hvert.</pre>
+
+<div class="box gold">
+<strong>💡 Nøkkelen: Input-Drevet Modell</strong>
+<p>Det viktigste prinsippet i finansiell modellering er at modellen skal være <strong>100% drevet av input-celler</strong>. Ingen hardkodede tall i formlene. Alt kobles til antagelsesarket. Da kan du kjøre hundrevis av scenarioer ved å bare endre noen få celler — og hele modellen oppdateres automatisk.</p>
+</div>
+
+<h2>🎲 Monte Carlo-Simulering</h2>
+<p>For når du vil teste <strong>tusenvis av scenarioer</strong> samtidig. I stedet for 3 scenarier (bull/base/bear) kjører du 5000+ simuleringer der hver variabel trekkes fra en sannsynlighetsfordeling.</p>
+
+<div class="label">Prompt — Monte Carlo</div>
+<pre>Kjør en Monte Carlo-simulering på DCF-modellen min.
+
+Variabler med usikkerhet (normalfordeling):
+- Revenue growth: mean 20%, std 8%
+- EBITDA margin: mean 30%, std 5%
+- WACC: mean 10%, std 1.5%
+- Terminal growth: mean 2.5%, std 0.75%
+
+Kjør 5000 iterasjoner. Vis:
+- Histogram over implisert aksjepris
+- Konfidensintervall: 10%, 25%, 50%, 75%, 90%
+- Sannsynlighet for at aksjeprisen > current price
+- Korrelasjon mellom variabler og output (tornado)
+- Value at Risk (VaR) ved 95% konfidensintervall
+
+Bruk Python med numpy + matplotlib.
+Eksporter resultatene til Excel med openpyxl.</pre>
+
+<div class="box green">
+<strong>🧠 Når Bruker Du Hva?</strong>
+<p><strong>Sensitivitet:</strong> Når du vil forstå én variabels påvirkning. «Hva skjer med prisen hvis WACC øker med 1%?»</p>
+<p><strong>Scenario:</strong> Når du vil se ulike virkeligheter. «Hva er oppsiden vs nedsiden?»</p>
+<p><strong>Monte Carlo:</strong> Når du vil kvantifisere usikkerhet. «Hva er sannsynligheten for at dette er en god investering?»</p>
+</div>
+
+<h2>⚡ Rask-Oppsett: Input-Drevet Modell</h2>
+<p>Her er den enkleste måten å komme i gang — en modell som er 100% styrt av én input-side:</p>
+
+<div class="label">Prompt — Komplett input-drevet modell</div>
+<pre>Lag en finansiell modell med følgende struktur:
+
+ARK 1 — «DASHBOARD» (utskriftsvennlig):
+- Nøkkeltall: Enterprise Value, Equity Value, Pris/aksje
+- Bull/Base/Bear sammendrag
+- Sensitivitetstabell (WACC vs TGR)
+- Mini-graf med inntektsutvikling
+
+ARK 2 — «INPUTS» (dette er den eneste siden brukeren endrer):
+- Alle antagelser samlet: vekst, marginer, capex, WACC osv.
+- Scenario-dropdown: Bear / Base / Bull
+- Fargekode: BLÅTT = kan endres, SVART = formel
+
+ARK 3-5 — P&L, Balance Sheet, Cash Flow
+ARK 6 — DCF Valuation
+ARK 7 — Sensitivitetstabeller (auto-generert)
+ARK 8 — Scenario-sammendrag
+
+Regelen: Brukeren rører BARE ark 2. Alt annet oppdateres
+automatisk med formler. Null hardkodede tall.</pre>
+
+<div class="nav-bottom">
+<a href="finans-1-modeller.html">← Bygge Modeller</a>
+<a href="finans-3-tolkning.html">Neste: AI-Drevet Tolkning →</a>
+</div>
+
+</div>
+</body>
+</html>
