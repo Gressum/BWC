@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>Build & Ship Apps med Claude Code — Mac Guide</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=DM+Sans:wght@400;500;600;700&family=Fraunces:ital,wght@0,700;0,900;1,700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0a0a0f;--sf:#12121a;--sf2:#1a1a26;--sf3:#222233;--bd:#2a2a3a;--tx:#e8e8f0;--dim:#8888a8;--ac:#7c5cff;--acg:rgba(124,92,255,.25);--gr:#34d399;--grd:rgba(52,211,153,.15);--or:#f59e0b;--ord:rgba(245,158,11,.12);--rd:#ef4444;--rdd:rgba(239,68,68,.12);--bl:#60a5fa;--bld:rgba(96,165,250,.12);--pk:#f472b6;--pkd:rgba(244,114,182,.12);--cy:#22d3ee;--cyd:rgba(34,211,238,.12)}
+*{margin:0;padding:0;box-sizing:border-box}html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--tx);font-family:'DM Sans',sans-serif;line-height:1.7;overflow-x:hidden}
+
+/* TOOLTIP */
+.t{position:relative;border-bottom:1.5px dashed var(--ac);cursor:help;color:var(--tx);transition:.2s}
+.t:hover{color:var(--ac)}
+.t .tp{position:absolute;bottom:calc(100% + 10px);left:50%;transform:translateX(-50%) scale(.95);background:var(--sf3);border:1px solid var(--ac);border-radius:12px;padding:1rem 1.2rem;width:310px;max-width:88vw;font-size:.83rem;line-height:1.65;color:var(--dim);pointer-events:none;opacity:0;transition:all .25s cubic-bezier(.4,0,.2,1);z-index:1000;box-shadow:0 12px 40px rgba(0,0,0,.5);white-space:normal}
+.t .tp::after{content:'';position:absolute;top:100%;left:50%;transform:translateX(-50%);border:6px solid transparent;border-top-color:var(--ac)}
+.t:hover .tp{opacity:1;transform:translateX(-50%) scale(1);pointer-events:auto}
+.t .tp b{display:block;color:var(--ac);font-size:.76rem;text-transform:uppercase;letter-spacing:.06em;margin-bottom:.3rem}
+.t .tp .an{margin-top:.45rem;padding-top:.45rem;border-top:1px solid var(--bd);color:var(--gr);font-size:.79rem;font-style:italic}
+.t.fl .tp{bottom:auto;top:calc(100% + 10px)}
+.t.fl .tp::after{top:auto;bottom:100%;border-top-color:transparent;border-bottom-color:var(--ac)}
+
+/* WHY EXPAND */
+.wt{display:inline-flex;align-items:center;gap:.4rem;margin-top:.6rem;padding:.35rem .85rem;border-radius:100px;font-size:.78rem;font-weight:600;cursor:pointer;background:var(--sf2);border:1px solid var(--bd);color:var(--dim);transition:.25s;user-select:none}
+.wt:hover{border-color:var(--cy);color:var(--cy);background:var(--cyd)}
+.wb{max-height:0;overflow:hidden;transition:max-height .5s cubic-bezier(.4,0,.2,1),padding .3s,margin .3s;margin:0;padding:0 1rem;background:var(--cyd);border-radius:12px;border:1px solid transparent}
+.wb.open{max-height:700px;padding:1.2rem;margin-top:.7rem;border-color:rgba(34,211,238,.2)}
+.wb p{font-size:.87rem;color:var(--dim);line-height:1.75}.wb p strong{color:var(--cy)}
+.wb .el{font-size:.74rem;text-transform:uppercase;letter-spacing:.06em;color:var(--cy);font-weight:700;margin-bottom:.5rem}
+
+/* NAV */
+.nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(10,10,15,.85);backdrop-filter:blur(20px);border-bottom:1px solid var(--bd);padding:0 2rem;display:flex;align-items:center;justify-content:space-between;height:56px}
+.nav-l{font-family:'Fraunces',serif;font-weight:900;font-size:1.05rem;background:linear-gradient(135deg,var(--ac),var(--pk));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.nav-r{display:flex;gap:.2rem;flex-wrap:wrap}
+.nav-r a{color:var(--dim);text-decoration:none;font-size:.76rem;padding:.3rem .55rem;border-radius:6px;transition:.2s;font-weight:500}
+.nav-r a:hover{color:var(--tx);background:var(--sf2)}
+.pb{position:fixed;top:56px;left:0;height:2px;background:linear-gradient(90deg,var(--ac),var(--pk),var(--or));z-index:101;width:0%}
+
+/* HERO */
+.hero{min-height:58vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:7rem 2rem 3rem;position:relative}
+.hero::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:900px;height:900px;background:radial-gradient(circle,var(--acg) 0%,transparent 65%);pointer-events:none;opacity:.4}
+.hero h1{font-family:'Fraunces',serif;font-weight:900;font-size:clamp(2.2rem,5.5vw,3.8rem);line-height:1.12;margin-bottom:1.2rem;max-width:760px}
+.hero h1 em{font-style:normal;background:linear-gradient(135deg,var(--ac),var(--pk),var(--or));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.hero p{color:var(--dim);font-size:1.05rem;max-width:540px;margin-bottom:.7rem}
+.hint{color:var(--cy);font-size:.84rem;margin-bottom:2rem;display:flex;align-items:center;gap:.5rem}
+.hd{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--cy);animation:pu 2s infinite}
+@keyframes pu{0%,100%{opacity:1}50%{opacity:.3}}
+.pills{display:flex;gap:.4rem;flex-wrap:wrap;justify-content:center}
+.pill{padding:.45rem 1rem;border-radius:100px;font-size:.78rem;font-weight:600;cursor:pointer;border:1px solid var(--bd);background:var(--sf);color:var(--dim);transition:.3s;text-decoration:none;-webkit-tap-highlight-color:transparent}
+.pill:hover{border-color:var(--ac);color:var(--tx);transform:translateY(-2px)}
+
+/* CONTENT */
+.ct{max-width:860px;margin:0 auto;padding:0 2rem 6rem}
+.ph{display:flex;align-items:center;gap:1rem;margin:4.5rem 0 1.2rem;padding-top:2rem}
+.pn{width:44px;height:44px;border-radius:13px;display:flex;align-items:center;justify-content:center;font-family:'Fraunces',serif;font-weight:900;font-size:1.15rem;flex-shrink:0}
+.pn.g{background:var(--grd);color:var(--gr)}.pn.b{background:var(--bld);color:var(--bl)}.pn.o{background:var(--ord);color:var(--or)}.pn.k{background:var(--pkd);color:var(--pk)}.pn.v{background:var(--acg);color:var(--ac)}.pn.r{background:var(--rdd);color:var(--rd)}.pn.c{background:var(--cyd);color:var(--cy)}
+.pt{font-family:'Fraunces',serif;font-weight:900;font-size:clamp(1.4rem,3vw,2rem)}
+.ps{color:var(--dim);font-size:.92rem;margin-bottom:1.8rem}
+
+.cd{background:var(--sf);border:1px solid var(--bd);border-radius:15px;padding:1.6rem;margin-bottom:1.4rem;transition:border-color .3s}
+.cd:hover{border-color:rgba(124,92,255,.25)}
+.cd h3{font-size:1.05rem;font-weight:700;margin-bottom:.7rem;display:flex;align-items:center;gap:.6rem}
+.cd p,.cd li{color:var(--dim);font-size:.88rem;line-height:1.75}
+.cd ul{list-style:none;padding:0}.cd ul li{padding:.25rem 0 .25rem 1.4rem;position:relative}
+.cd ul li::before{content:'→';position:absolute;left:0;color:var(--ac);font-weight:700}
+
+.cb{background:#0d0d14;border:1px solid var(--bd);border-radius:11px;padding:1.1rem 1.3rem;margin:.7rem 0;overflow-x:auto;position:relative}
+.cb code{font-family:'JetBrains Mono',monospace;font-size:.79rem;line-height:1.8;color:var(--gr);white-space:pre}
+.cl{position:absolute;top:.45rem;right:.65rem;font-size:.6rem;font-family:'JetBrains Mono',monospace;color:var(--dim);background:var(--sf2);padding:.1rem .4rem;border-radius:4px;text-transform:uppercase;letter-spacing:.05em}
+.cb .cm{color:#555577}.cb .c{color:var(--bl)}.cb .f{color:var(--or)}.cb .s{color:var(--pk)}
+
+.st{display:flex;gap:1.1rem;margin-bottom:1.4rem;align-items:flex-start}
+.sn{width:29px;height:29px;border-radius:50%;background:var(--acg);color:var(--ac);display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-weight:700;font-size:.76rem;flex-shrink:0;margin-top:.15rem}
+.sc h4{font-size:.96rem;margin-bottom:.2rem}.sc p{color:var(--dim);font-size:.86rem}
+
+.co{border-radius:11px;padding:1.1rem 1.3rem;margin:1.2rem 0;border-left:4px solid}
+.co.tip{background:var(--grd);border-color:var(--gr)}.co.warn{background:var(--ord);border-color:var(--or)}.co.info{background:var(--bld);border-color:var(--bl)}
+.co strong{display:block;margin-bottom:.2rem;font-size:.85rem}.co p{font-size:.85rem;color:var(--dim)}
+
+.cg{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin:1rem 0}
+.cx{background:var(--sf2);border-radius:12px;padding:1.3rem;border:1px solid var(--bd)}
+.cx h4{font-size:.9rem;margin-bottom:.55rem;display:flex;align-items:center;gap:.5rem}
+
+.ct-t{width:100%;border-collapse:collapse;margin:1rem 0;font-size:.84rem}
+.ct-t th{text-align:left;padding:.65rem .85rem;border-bottom:2px solid var(--bd);color:var(--dim);font-weight:600;font-size:.73rem;text-transform:uppercase;letter-spacing:.04em}
+.ct-t td{padding:.65rem .85rem;border-bottom:1px solid var(--bd);color:var(--dim)}
+.ct-t tr:hover td{background:rgba(124,92,255,.04)}
+.pr{color:var(--gr);font-family:'JetBrains Mono',monospace;font-weight:600}.pr.pd{color:var(--or)}.pr.ex{color:var(--rd)}
+.tg{display:inline-block;padding:.1rem .5rem;border-radius:100px;font-size:.68rem;font-weight:600}
+.tg.fr{background:var(--grd);color:var(--gr)}.tg.pd{background:var(--ord);color:var(--or)}
+
+.ft{background:#0d0d14;border:1px solid var(--bd);border-radius:11px;padding:1.3rem;margin:1rem 0;font-family:'JetBrains Mono',monospace;font-size:.76rem;line-height:2;color:var(--dim)}
+.ft .fo{color:var(--bl);font-weight:600}.ft .hi{color:var(--gr);font-weight:600}.ft .cft{color:#555577;font-style:italic}
+
+.ai{border:1px solid var(--bd);border-radius:11px;margin-bottom:.5rem;overflow:hidden;background:var(--sf)}
+.ah{padding:.85rem 1.2rem;cursor:pointer;display:flex;align-items:center;justify-content:space-between;font-weight:600;font-size:.9rem;transition:background .2s}
+.ah:hover{background:var(--sf2)}
+.ah .ar{transition:transform .3s;color:var(--dim)}.ai.op .ah .ar{transform:rotate(180deg)}
+.ab{max-height:0;overflow:hidden;transition:max-height .4s ease;padding:0 1.2rem}
+.ai.op .ab{max-height:2000px;padding-bottom:1.2rem}
+
+.cc{background:linear-gradient(135deg,rgba(124,92,255,.08),rgba(244,114,182,.06));border:1px solid rgba(124,92,255,.3)}
+.cc:hover{border-color:rgba(124,92,255,.5)}
+
+.chi{display:flex;align-items:flex-start;gap:.65rem;padding:.5rem 0;border-bottom:1px solid rgba(42,42,58,.5);font-size:.86rem;color:var(--dim)}
+.chb{width:20px;height:20px;border-radius:6px;border:2px solid var(--bd);flex-shrink:0;margin-top:.15rem;cursor:pointer;transition:.2s;display:flex;align-items:center;justify-content:center}
+.chb:hover{border-color:var(--ac)}.chb.ck{background:var(--ac);border-color:var(--ac)}.chb.ck::after{content:'✓';color:#fff;font-size:.7rem;font-weight:700}
+
+.biz{background:linear-gradient(135deg,rgba(245,158,11,.07),rgba(239,68,68,.05));border:1px solid rgba(245,158,11,.35);border-radius:15px;padding:1.4rem;margin:1.4rem 0}
+.biz h4{color:var(--or);font-size:.92rem;margin-bottom:.6rem;display:flex;align-items:center;gap:.5rem}
+.biz p,.biz li{color:var(--dim);font-size:.84rem;line-height:1.75}
+.biz ul{list-style:none;padding:0;margin:.5rem 0 0}.biz ul li{padding:.25rem 0 .25rem 1.4rem;position:relative}
+.biz ul li::before{content:'💼';position:absolute;left:0;font-size:.7rem}
+.biz a{color:var(--or);text-decoration:underline;text-decoration-style:dotted}
+.biz .bt{display:inline-block;padding:.15rem .55rem;border-radius:100px;font-size:.68rem;font-weight:700;margin-left:.4rem}
+.biz .bt.no{background:rgba(96,165,250,.15);color:var(--bl)}.biz .bt.us{background:rgba(239,68,68,.15);color:var(--rd)}.biz .bt.all{background:rgba(52,211,153,.15);color:var(--gr)}
+
+@media(max-width:768px){
+.nav-r{display:none}
+.cg{grid-template-columns:1fr}
+.hero{min-height:auto;padding:5.5rem 1rem 2rem}
+.hero h1{font-size:1.65rem}
+.hero p{font-size:.9rem}
+.ct{padding:0 .85rem 4rem}
+.cd{padding:1rem}
+.cb{padding:.8rem;font-size:.72rem}
+.cb code{font-size:.72rem;white-space:pre-wrap;word-break:break-all}
+.st{gap:.7rem}
+.t .tp{position:fixed!important;bottom:1rem!important;left:.75rem!important;right:.75rem!important;top:auto!important;transform:none!important;width:auto!important;max-width:none!important;z-index:9999;border-radius:14px;padding:1.1rem;font-size:.88rem}
+.t .tp::after{display:none}
+.ct-t{font-size:.72rem;display:block;overflow-x:auto}
+.pills{gap:.3rem}.pill{font-size:.7rem;padding:.35rem .75rem}
+.ft{font-size:.66rem;overflow-x:auto}
+.ph{margin:3rem 0 1rem}.pt{font-size:1.2rem}
+.biz{padding:1rem}.biz ul li{font-size:.8rem}
+.co{padding:.85rem 1rem}
+.pn{width:36px;height:36px;font-size:1rem}
+.hint{font-size:.78rem}
+}
+@supports(-webkit-touch-callout:none){
+body{-webkit-text-size-adjust:100%}
+.cb code{-webkit-overflow-scrolling:touch}
+}
+</style>
+</head>
+<body>
+
+<div class="pb" id="pbar"></div>
+<nav class="nav">
+  <div class="nav-l">🛠 Build med Claude Code</div>
+  <div class="nav-r">
+    <a href="#s1">Setup</a><a href="#s2">Verktøy</a><a href="#s3">Bygg</a><a href="#s4">Deploy</a><a href="#s5">iOS</a><a href="#s6">Kostnader</a><a href="#s7">Claude Tips</a><a href="#mob">📱 Mobil</a>
+  </div>
+</nav>
+
+<section class="hero">
+  <h1>Bygg &amp; Publiser Apper med <em>Claude Code</em></h1>
+  <p>Komplett nybegynner-guide for Mac. Hold musen over <span class="t" style="border-color:var(--cy)">stiplede begreper<span class="tp"><b>Tooltip-system</b>Alle tekniske ord i denne guiden har slike forklaringsbokser. Hold musen over for å lære hva de betyr.<span class="an">💡 En innebygd ordbok rett i siden</span></span></span> for å forstå hva de betyr.</p>
+  <div class="hint"><span class="hd"></span> Trykk/hold over stiplede ord = forklaring</div>
+  <div class="pills">
+    <a href="#s1" class="pill">① Mac Setup</a>
+    <a href="#s2" class="pill">② Verktøy</a>
+    <a href="#s3" class="pill">③ Bygg App</a>
+    <a href="#s4" class="pill">④ Publiser Web</a>
+    <a href="#s5" class="pill">⑤ iOS App</a>
+    <a href="#s6" class="pill">⑥ Kostnader</a>
+    <a href="#s7" class="pill">⑦ Slik Tenker Claude</a>
+    <a href="ai-i-bedriften.html" class="pill" style="border-color:var(--or);color:var(--or)">🧠 AI i Bedriften</a>
+  </div>
+</section>
+
+<div class="ct">
+
+<!-- ============ PHASE 1 ============ -->
+<div class="ph" id="s1"><div class="pn g">1</div><div class="pt">Mac Setup</div></div>
+<p class="ps">Installer alt i rekkefølge. Hvert steg tar 2–5 minutter.</p>
+
+<div class="cd"><div class="st"><div class="sn">1</div><div class="sc">
+  <h4>Installer <span class="t">Xcode Command Line Tools<span class="tp"><b>Xcode Command Line Tools</b>En pakke med grunnleggende utviklerverktøy fra Apple. Inkluderer Git (versjonskontroll), kompilere (oversettere som gjør kode til programmer), og andre nødvendige verktøy.<span class="an">🔧 Grunnmuren du trenger før du kan bygge noe</span></span></span></h4>
+  <p>Åpne <span class="t">Terminal<span class="tp"><b>Terminal</b>Et program på din Mac der du skriver tekstkommandoer i stedet for å klikke. All installasjon i denne guiden gjøres her.<span class="an">💬 En chat med datamaskinen din</span></span></span> (Cmd+Space → skriv "Terminal") og kjør:</p>
+  <div class="cb"><span class="cl">Terminal</span><code><span class="c">xcode-select</span> <span class="f">--install</span></code></div>
+  <p>Et popup-vindu dukker opp. Klikk «Install».</p>
+  <div class="wt" onclick="tw(this)"><span>▶</span> Hvorfor trenger jeg dette?</div>
+  <div class="wb"><div class="el">🤔 Forklaring</div><p>Nesten alle utviklerverktøy på Mac <strong>forventer at Command Line Tools er installert</strong>. Uten dette får du feil når du prøver å installere Homebrew, Node.js, eller bruke Git. Du gjør det én gang og glemmer det.<br><br>Du trenger <strong>ikke</strong> den fulle Xcode-appen (12 GB) ennå — det er bare nødvendig i fase 5 for iOS.</p></div>
+</div></div></div>
+
+<div class="cd"><div class="st"><div class="sn">2</div><div class="sc">
+  <h4>Installer <span class="t">Homebrew<span class="tp"><b>Homebrew</b>En pakke-manager for Mac. Installerer utviklerverktøy med én linje kode i Terminal, i stedet for å søke og laste ned manuelt.<span class="an">🍺 En app-butikk for utviklerverktøy</span></span></span></h4>
+  <div class="cb"><span class="cl">Terminal</span><code><span class="c">/bin/bash</span> -c <span class="s">"$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"</span></code></div>
+  <p>Følg instruksjonene. Kan be deg kjøre to ekstra linjer etterpå — kopier og lim inn dem.</p>
+  <div class="wt" onclick="tw(this)"><span>▶</span> Hvorfor trenger jeg dette?</div>
+  <div class="wb"><div class="el">🤔 Forklaring</div><p>Mac har ingen innebygd måte å installere utviklerverktøy. Homebrew fyller det gapet. Etterpå skriver du bare <code>brew install noe</code> for å installere Node.js, Git, GitHub CLI og hundrevis av andre verktøy. <strong>Standard for alle Mac-utviklere.</strong></p></div>
+</div></div></div>
+
+<div class="cd"><div class="st"><div class="sn">3</div><div class="sc">
+  <h4>Installer <span class="t">Node.js<span class="tp"><b>Node.js</b>Et program som kjører JavaScript utenfor nettleseren. JavaScript driver de fleste nettsider. Med Node.js bygger du hele apper, servere og verktøy.<span class="an">⚡ En motor som driver JavaScript-kode på maskinen din</span></span></span> via <span class="t">nvm<span class="tp"><b>nvm — Node Version Manager</b>Lar deg installere og veksle mellom ulike versjoner av Node.js. Ulike prosjekter kan kreve ulike versjoner.<span class="an">🔄 En fjernkontroll for Node-versjoner</span></span></span></h4>
+  <div class="cb"><span class="cl">Terminal</span><code><span class="cm"># Installer nvm</span>
+<span class="c">curl</span> -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
+<span class="c">source</span> ~/.zshrc
+
+<span class="cm"># Installer nyeste stabile Node</span>
+<span class="c">nvm install</span> <span class="f">--lts</span>
+<span class="c">nvm use</span> <span class="f">--lts</span>
+
+<span class="cm"># Sjekk at det fungerer</span>
+<span class="c">node</span> <span class="f">--version</span>
+<span class="c">npm</span> <span class="f">--version</span></code></div>
+  <div class="wt" onclick="tw(this)"><span>▶</span> Hvorfor trenger jeg dette?</div>
+  <div class="wb"><div class="el">🤔 Forklaring</div><p>Moderne web-verktøy er bygget med JavaScript. <strong>Node.js</strong> lar deg kjøre dem på din Mac. Når du bygger med <strong>React</strong> eller <strong>Next.js</strong>, gjør Node.js arbeidet bak kulissene.<br><br><strong>npm</strong> (Node Package Manager) følger med. Det er en nettbutikk for kode-pakker — tusenvis av ferdige komponenter du bruker i prosjektet.<br><br><strong>--lts</strong> = «Long Term Support» — den mest stabile, trygge versjonen.</p></div>
+</div></div></div>
+
+<div class="cd"><div class="st"><div class="sn">4</div><div class="sc">
+  <h4>Installer <span class="t">Claude Code<span class="tp"><b>Claude Code</b>Anthropics AI-verktøy som bor i Terminal. Skriv hva du vil bygge på vanlig norsk/engelsk, og Claude skriver koden. Kan opprette filer, installere pakker, kjøre tester — direkte i prosjektet ditt.<span class="an">🤖 En kompetent programmerer-assistent i Terminal</span></span></span></h4>
+  <div class="cb"><span class="cl">Terminal</span><code><span class="cm"># Native installer (auto-oppdaterer)</span>
+<span class="c">curl</span> -fsSL https://cli.anthropic.com/install.sh | <span class="c">sh</span>
+
+<span class="c">claude</span> <span class="f">--version</span>   <span class="cm"># Sjekk</span>
+<span class="c">claude</span>              <span class="cm"># Start → åpner nettleser for innlogging</span></code></div>
+  <div class="co warn"><strong>⚠️ Krever betalt plan</strong><p>Claude Code trenger Claude Pro ($20/mnd) eller Claude Max ($100–200/mnd). Free-planen gir ikke tilgang.</p></div>
+
+<div class="biz"><h4>💼 Forretnings-Steg: Registrer Firma</h4>
+<p>Når du vet hva du bygger, registrer firma. Du trenger org.nr for fakturering, domene (.no), og bankkontoer.</p>
+<ul>
+<li><strong>🇳🇴 Enkeltpersonforetak (ENK)</strong> — Enklest: registrer via <a href="https://altinn.no" target="_blank">Altinn.no</a> → Samordnet registermelding. Koster ~2 200 kr (Enhetsregisteret). Etternavnet ditt må være i firmanavnet, men du kan ha et eget markedsføringsnavn <span class="bt no">Norge</span></li>
+<li><strong>🇳🇴 Aksjeselskap (AS)</strong> — Bedre hvis dere er to (du + broren): begrenset ansvar, koster 30 000 kr i aksjekapital + ~6 000 kr i gebyrer <span class="bt no">Norge</span></li>
+<li><strong>🇺🇸 LLC (USA)</strong> — Trengs for App Store i USA. Delaware/Wyoming mest populært. Koster $50–200 i statlig gebyr + ~$100/år registered agent <span class="bt us">USA</span></li>
+</ul>
+<div class="wt" onclick="tw(this)"><span>▶</span> ENK vs AS — hva passer for oss?</div>
+<div class="wb"><div class="el">🤔 Valget</div><p><strong>ENK</strong> passer for: én person, lite risiko, vil teste en idé raskt. Du er personlig ansvarlig for gjeld.<br><br><strong>AS</strong> passer for: to+ personer (du og broren!), investorer later, ansvar begrenset til aksjekapital. Anbefalt om appen skal tjene penger.<br><br><strong>Tips:</strong> Start med ENK for å teste idéen. Gjør om til AS når dere har inntekter.</p></div>
+</div>
+  <div class="wt" onclick="tw(this)"><span>▶</span> Hvorfor trenger jeg dette?</div>
+  <div class="wb"><div class="el">🤔 Forklaring</div><p>Claude Code er <strong>hjertet av hele guiden</strong>. I stedet for å lære programmering fra scratch, forteller du Claude hva du vil — og den bygger det. Den leser hele prosjektet ditt, forstår konteksten, og kan gjøre alt fra å lage en ny app til å fikse bugs.<br><br>Fungerer best med tydelige instruksjoner og et <strong>CLAUDE.md</strong>-dokument (mer i fase 3).</p></div>
+</div></div></div>
+
+<div class="cd"><div class="st"><div class="sn">5</div><div class="sc">
+  <h4>Installer <span class="t">VS Code<span class="tp"><b>Visual Studio Code</b>Gratis teksteditor fra Microsoft for å skrive kode. Fargekodet syntaks, fil-utforsker, innebygd Terminal, tusenvis av utvidelser. Verdens mest brukte kode-editor.<span class="an">📝 Microsoft Word, men for kode</span></span></span></h4>
+  <p>Last ned fra <strong>code.visualstudio.com</strong> → dra til Applications. Installer Claude Code-<span class="t">extension<span class="tp"><b>Extension (utvidelse)</b>Tillegg du installerer i VS Code for ekstra funksjonalitet — fargetemaer, språkstøtte, AI-hjelp og mer.<span class="an">🧩 Puslespillbiter for VS Code</span></span></span>: ⇧⌘X → søk «Claude Code» → Install.</p>
+  <div class="wt" onclick="tw(this)"><span>▶</span> Hvorfor trenger jeg begge?</div>
+  <div class="wb"><div class="el">🤔 Forklaring</div><p>VS Code er der du <strong>ser og forstår</strong> koden Claude lager. Mens Claude Code i Terminal gjør arbeidet, lar VS Code deg se alle filene, gjøre manuelle endringer, og ha oversikt. Du trenger begge — Claude som bygger, VS Code som viser.</p></div>
+</div></div></div>
+
+<div class="cd"><div class="st"><div class="sn">6</div><div class="sc">
+  <h4>Sett opp <span class="t">Git<span class="tp"><b>Git</b>Versjonskontroll-system. Holder styr på alle endringer i koden slik at du kan angre, sammenligne, og samarbeide. Hver «lagring» kalles en commit.<span class="an">💾 Ctrl+Z på steroider — gå tilbake til hvilken som helst versjon</span></span></span> &amp; <span class="t">GitHub<span class="tp"><b>GitHub</b>Nettside som lagrer Git-prosjektene dine i skyen. Andre kan se koden, og tjenester som Vercel kobler seg direkte til for å publisere appen.<span class="an">☁️ Sky-lagring for kode</span></span></span></h4>
+  <div class="cb"><span class="cl">Terminal</span><code><span class="c">git config</span> <span class="f">--global</span> user.name <span class="s">"Ditt Navn"</span>
+<span class="c">git config</span> <span class="f">--global</span> user.email <span class="s">"din@epost.no"</span>
+
+<span class="c">brew install</span> gh
+<span class="c">gh auth login</span>
+<span class="cm"># Velg: GitHub.com → HTTPS → Login with browser</span></code></div>
+  <div class="wt" onclick="tw(this)"><span>▶</span> Hvorfor trenger jeg dette?</div>
+  <div class="wb"><div class="el">🤔 Forklaring</div><p><strong>Git</strong> redder deg. Ødela Claude noe? <code>git checkout .</code> tar deg tilbake. Det er et sikkerhetsnett.<br><br><strong>GitHub</strong> gjør at koden lever i skyen, ikke bare på din Mac. Mister du Macen? Koden er trygg. Vercel henter koden direkte fra GitHub for publisering.<br><br><strong>gh</strong> (GitHub CLI) lar deg gjøre GitHub-ting fra Terminal — opprette repos, pushe kode — uten nettleseren.</p></div>
+</div></div></div>
+
+<div class="biz"><h4>💼 Forretnings-Steg: Sikre Navnet Ditt Tidlig</h4>
+<p>Før du lager kode — sikre navnet! Det hjelper ikke å bygge en app hvis noen andre eier navnet.</p>
+<ul>
+<li><strong>Sjekk tilgjengelighet</strong> — Søk på <a href="https://navnesok.no" target="_blank">navnesok.no</a> (Norge) for firma+domene+varemerke samtidig <span class="bt all">Alle</span></li>
+<li><strong>Registrer domene FØR firma</strong> — Folk overvåker nye firmaregistreringer og kjøper domener. Sikre .no og .com først <span class="bt all">Alle</span></li>
+<li><strong>.no domene</strong> — Via <a href="https://domene.shop" target="_blank">Domeneshop</a> eller <a href="https://uniweb.no" target="_blank">Uniweb</a>. Fra ~100–300 kr/år. Krever norsk adresse eller org.nr <span class="bt no">🇳🇴 Norge</span></li>
+<li><strong>.com domene</strong> — Via <a href="https://namecheap.com" target="_blank">Namecheap</a> eller <a href="https://cloudflare.com" target="_blank">Cloudflare</a>. ~$10–15/år <span class="bt us">🇺🇸 Internasjonalt</span></li>
+</ul>
+<div class="wt" onclick="tw(this)"><span>▶</span> Rekkefølgen er viktig!</div>
+<div class="wb"><div class="el">📋 Anbefalt rekkefølge</div><p><strong>1.</strong> Sjekk at navn er ledig (navnesok.no + domene)<br><strong>2.</strong> Kjøp domene (.no og .com)<br><strong>3.</strong> Registrer firma i Brønnøysund<br><strong>4.</strong> Registrer varemerke hos Patentstyret<br><br>Grunnen: Noen aktører <strong>overvåker nye firmaregistreringer</strong> og kjøper matchende domener for å selge dem dyrt tilbake. Kjøp domene først!</p></div>
+</div>
+
+<div class="cd cc" style="border-color:rgba(52,211,153,.4);background:linear-gradient(135deg,rgba(52,211,153,.08),rgba(96,165,250,.06))"><h3>👥 Del Prosjektet med Broren Din</h3>
+<p>Etter steg 6 kan du <strong>invitere samarbeidspartnere</strong>. GitHub lar dere begge jobbe på samme kode.</p>
+
+<div class="st" style="margin-top:.8rem"><div class="sn">1</div><div class="sc"><h4>Broren trenger</h4>
+<p>Gratis GitHub-konto (github.com) + fase 1 ferdig på sin Mac (steg 1–5).</p></div></div>
+
+<div class="st"><div class="sn">2</div><div class="sc"><h4>Inviter som samarbeider</h4>
+<div class="cb"><span class="cl">GitHub.com</span><code>Ditt repo → Settings → Collaborators
+→ Add people → skriv brukernavnet hans
+→ Send invite</code></div>
+<p>Han får e-post og godkjenner. Nå kan begge <span class="t">pushe<span class="tp"><b>Push</b>Laste opp dine lokale endringer til GitHub. Motsatt: <code>pull</code> henter andres endringer ned.<span class="an">📤 «Last opp» til felles kode-sky</span></span></span> og <span class="t">pulle<span class="tp"><b>Pull</b>Hente ned de nyeste endringene fra GitHub til din maskin. Gjør dette før du starter å kode!<span class="an">📥 «Last ned» fra felles kode-sky</span></span></span> kode.</p></div></div>
+
+<div class="st"><div class="sn">3</div><div class="sc"><h4>Broren kloner prosjektet</h4>
+<div class="cb"><span class="cl">Terminal (hans Mac)</span><code><span class="c">cd</span> ~/Projects
+<span class="c">gh repo clone</span> dittnavn/min-app
+<span class="c">cd</span> min-app &amp;&amp; <span class="c">npm install</span> &amp;&amp; <span class="c">npm run dev</span></code></div></div></div>
+
+<div class="st"><div class="sn">4</div><div class="sc"><h4>Daglig workflow for to</h4>
+<div class="cb"><span class="cl">Før du koder</span><code><span class="c">git pull</span>            <span class="cm"># Hent siste endringer</span></code></div>
+<div class="cb"><span class="cl">Når du er ferdig</span><code><span class="c">git add</span> . &amp;&amp; <span class="c">git commit</span> <span class="f">-m</span> <span class="s">"La til prisliste"</span> &amp;&amp; <span class="c">git push</span></code></div></div></div>
+
+<div class="co tip"><strong>💡 Når kan dere samarbeide?</strong><p><strong>Etter fase 1, steg 6</strong> — så snart GitHub-repoet er opprettet. Broren trenger bare fase 1 på sin Mac. Dere kan bygge sammen allerede i fase 3!</p></div>
+
+<div class="wt" onclick="tw(this)"><span>▶</span> Hva om vi endrer samme fil?</div>
+<div class="wb"><div class="el">🤔 Merge-konflikter</div><p>Hvis begge redigerer <strong>samme linje</strong>, får dere en <strong>merge-konflikt</strong>. Git markerer begge versjoner og ber dere velge. VS Code har innebygd verktøy. <strong>Tips:</strong> Jobb på forskjellige filer/komponenter for å unngå dette.</p></div>
+</div>
+
+<!-- ============ PHASE 2 ============ -->
+<div class="ph" id="s2"><div class="pn b">2</div><div class="pt">Verktøykassen</div></div>
+<p class="ps">Hvordan alt henger sammen og hvor filer lagres.</p>
+
+<div class="cd"><h3>🗂 Filstruktur — Hvor alt bor</h3>
+<div class="ft">
+<span class="fo">Din Mac</span>
+├── <span class="fo">Applications/</span>
+│   ├── Visual Studio Code.app    <span class="cft">← Kode-editoren din</span>
+│   └── Xcode.app                 <span class="cft">← Bare for iOS (fase 5)</span>
+├── <span class="fo">~/Projects/</span>                   <span class="cft">← DINE PROSJEKTER</span>
+│   └── <span class="fo">min-app/</span>
+│       ├── <span class="hi">package.json</span>          <span class="cft">← Liste over pakker appen trenger</span>
+│       ├── <span class="fo">src/</span>                  <span class="cft">← Kildekoden (her skjer magien)</span>
+│       │   ├── <span class="fo">app/</span>              <span class="cft">← Sider og navigasjon</span>
+│       │   ├── <span class="fo">components/</span>       <span class="cft">← Gjenbrukbare UI-blokker</span>
+│       │   └── <span class="fo">lib/</span>              <span class="cft">← Hjelpefunksjoner, database</span>
+│       ├── <span class="fo">public/</span>               <span class="cft">← Bilder, ikoner</span>
+│       ├── <span class="fo">node_modules/</span>         <span class="cft">← Auto-generert (aldri redigér!)</span>
+│       ├── <span class="hi">.env.local</span>            <span class="cft">← Hemmelige nøkler (ALDRI del)</span>
+│       ├── <span class="hi">CLAUDE.md</span>             <span class="cft">← Instruksjoner til Claude</span>
+│       └── <span class="hi">.git/</span>                 <span class="cft">← Git-historikk (skjult)</span>
+├── <span class="fo">~/.claude/</span>                    <span class="cft">← Claude Code innstillinger</span>
+└── <span class="fo">~/.nvm/</span>                       <span class="cft">← Node versjonmanager</span>
+
+<span class="fo">Sky-tjenester</span>
+├── GitHub.com                    <span class="cft">← Kode-lagring (gratis)</span>
+├── Vercel.com                    <span class="cft">← Publiserer web-appen (gratis)</span>
+├── Supabase.com                  <span class="cft">← Database + innlogging (gratis)</span>
+└── Stripe.com                    <span class="cft">← Betalinger (gratis oppsett)</span>
+</div></div>
+
+<div class="cd"><h3>🔧 Teknologi-ordbok</h3><p style="margin-bottom:.8rem">Alle teknologier du møter, forklart enkelt:</p>
+<table class="ct-t"><thead><tr><th>Begrep</th><th>Hva det er</th><th>Analogi</th></tr></thead><tbody>
+<tr><td><strong><span class="t">React<span class="tp"><b>React</b>JavaScript-bibliotek fra Meta for å bygge brukergrensesnitt. Bygger med «komponenter» — gjenbrukbare blokker som knapper, skjemaer, kort. Nettsider oppdateres uten å laste hele siden på nytt.<span class="an">🧱 LEGO-klosser for nettsider</span></span></span></strong></td><td>Bibliotek for interaktive nettsider</td><td>🧱 LEGO-klosser</td></tr>
+<tr><td><strong><span class="t">Next.js<span class="tp"><b>Next.js</b>Rammeverk bygget oppå React. Legger til ruter (navigering mellom sider), server-side rendering (raskere lasting), og enkel publisering. Laget av Vercel.<span class="an">🏗 React er murstein — Next.js er det komplette byggesettet</span></span></span></strong></td><td>Rammeverk oppå React</td><td>🏗 Byggesett</td></tr>
+<tr><td><strong><span class="t">Tailwind CSS<span class="tp"><b>Tailwind CSS</b>Et CSS-verktøy for å style elementer direkte i HTML med korte klasser som <code>bg-blue-500 text-white p-4</code>. Slipper separate CSS-filer.<span class="an">🎨 Ferdigblandede malingsfarger rett på veggen</span></span></span></strong></td><td>Stylings-verktøy med ferdiglagde klasser</td><td>🎨 Ferdigfarger</td></tr>
+<tr><td><strong><span class="t">API<span class="tp"><b>API — Application Programming Interface</b>En «dør» mellom to programmer. Når appen trenger data fra Supabase eller betaling via Stripe, sender den en forespørsel gjennom en API.<span class="an">🚪 En dør mellom programmer</span></span></span></strong></td><td>Grensesnitt mellom appen og tjenester</td><td>🚪 Dør</td></tr>
+<tr><td><strong><span class="t">npm<span class="tp"><b>npm — Node Package Manager</b>Verktøy som følger med Node.js. Laster ned ferdig-laget kode (pakker) — autentisering, styling, betalinger osv.<span class="an">📦 Nettbutikk for kode-pakker</span></span></span></strong></td><td>Pakke-manager for JavaScript</td><td>📦 App-butikk for kode</td></tr>
+<tr><td><strong><span class="t">Repository<span class="tp"><b>Repository (repo)</b>En mappe med all koden og hele endringshistorikken via Git. Når du «pusher» til GitHub, laster du opp din lokale repo til skyen.<span class="an">📁 Prosjektmappe som husker alt du har endret</span></span></span></strong></td><td>Prosjekt med Git-historikk</td><td>📁 Smart mappe</td></tr>
+<tr><td><strong><span class="t">Deploy<span class="tp"><b>Deploy (publisere)</b>Å ta koden fra din Mac og gjøre den tilgjengelig på internett. Vercel bygger appen og gir deg en URL.<span class="an">🚀 Trykke «publiser» for en hel app</span></span></span></strong></td><td>Publisere appen online</td><td>🚀 Publiser</td></tr>
+<tr><td><strong><span class="t">Environment Variables<span class="tp"><b>.env.local</b>Hemmelige verdier — API-nøkler, database-passord. Lagres i <code>.env.local</code> som ALDRI lastes til GitHub.<span class="an">🔑 Passord i en safe</span></span></span></strong></td><td>Hemmelige app-innstillinger</td><td>🔑 Safe</td></tr>
+<tr><td><strong><span class="t">Supabase<span class="tp"><b>Supabase</b>Åpen kildekode-tjeneste med database, bruker-innlogging og fil-lagring. Alternativ til Firebase. Generøs gratisplan.<span class="an">🗄 Ferdig backstage — lagring, innlogging, alt-i-ett</span></span></span></strong></td><td>Database + auth + lagring</td><td>🗄 Backstage</td></tr>
+<tr><td><strong><span class="t">Stripe<span class="tp"><b>Stripe</b>Betalingstjeneste for kortbetalinger og abonnementer. Sett opp produkter/priser i Stripe, integrér i koden. 2.9% + 30¢ per transaksjon.<span class="an">💳 Kassaapparat for appen din</span></span></span></strong></td><td>Betalingsløsning</td><td>💳 Kassaapparat</td></tr>
+<tr><td><strong><span class="t">Capacitor<span class="tp"><b>Capacitor</b>Verktøy fra Ionic som pakker web-appen i en native mobilapp. Du beholder web-koden men får tilgang til kamera, push-varsler, og kan publisere på App Store.<span class="an">📱 Konvolutt som gjør web-appen til en iPhone-app</span></span></span></strong></td><td>Web → native mobilapp</td><td>📱 Konvolutt</td></tr>
+<tr><td><strong><span class="t">PWA<span class="tp"><b>PWA — Progressive Web App</b>En nettside som oppfører seg som en app. Brukere «installerer» den på hjemskjermen, fungerer offline, kan sende push-varsler. Ingen App Store nødvendig.<span class="an">🌐 Nettside som later som den er en app</span></span></span></strong></td><td>Nettside som oppfører seg som app</td><td>🌐 Nett-app</td></tr>
+</tbody></table></div>
+
+<div class="cd"><h3>💾 Diskplass — Hva Tar Hvor Mye</h3>
+<p>Slik ser det ut på harddisken etter at alt er installert:</p>
+<table class="ct-t"><thead><tr><th>Verktøy</th><th>Størrelse</th><th>Merknader</th></tr></thead><tbody>
+<tr><td><strong>Xcode Command Line Tools</strong></td><td>~1.5 GB</td><td>Installeres én gang</td></tr>
+<tr><td><strong>Homebrew</strong></td><td>~0.5 GB</td><td>+ pakker du installerer</td></tr>
+<tr><td><strong>Node.js (via nvm)</strong></td><td>~0.3 GB</td><td>Per versjon</td></tr>
+<tr><td><strong>Claude Code CLI</strong></td><td>~0.1 GB</td><td>Liten — det meste er i skyen</td></tr>
+<tr><td><strong>VS Code</strong></td><td>~0.5 GB</td><td>+ extensions</td></tr>
+<tr><td><strong>Git + GitHub CLI</strong></td><td>~0.2 GB</td><td>Inkludert i CLI Tools</td></tr>
+<tr><td><strong>Xcode (full — kun iOS)</strong></td><td>~12 GB</td><td>Bare fase 5, krever ~35 GB ledig</td></tr>
+<tr><td><strong>Typisk Next.js-prosjekt</strong></td><td>~0.3–1 GB</td><td>node_modules er store!</td></tr>
+<tr><td><strong>Tailscale</strong></td><td>~0.05 GB</td><td>For mobil-workflow</td></tr>
+</tbody></table>
+<div class="co info"><strong>📊 Totalt uten iOS: ~3–4 GB · Med iOS: ~15–17 GB</strong><p>Sørg for minst 20 GB ledig disk. Sjekk: → Om denne Macen → Lagring.</p></div>
+</div>
+
+<div class="cd"><h3>🎬 YouTube-Videoer for Hver Fase</h3>
+<p>Korte videoer som forklarer hvert steg visuelt:</p>
+<table class="ct-t"><thead><tr><th>Fase</th><th>Video</th><th>Lengde</th></tr></thead><tbody>
+<tr><td><strong>Setup</strong></td><td><a href="https://youtu.be/GepHGs_CZdk" target="_blank" style="color:var(--ac)">Claude Code Beginner Tutorial — Peter Yang</a></td><td>~17 min</td></tr>
+<tr><td><strong>Setup</strong></td><td><a href="https://www.youtube.com/results?search_query=install+homebrew+node+mac+2025" target="_blank" style="color:var(--ac)">Install Homebrew & Node (søk)</a></td><td>~10 min</td></tr>
+<tr><td><strong>Bygg</strong></td><td><a href="https://www.youtube.com/results?search_query=claude+code+build+app+beginner+2025" target="_blank" style="color:var(--ac)">Build App med Claude Code (søk)</a></td><td>~15 min</td></tr>
+<tr><td><strong>Deploy</strong></td><td><a href="https://www.youtube.com/results?search_query=deploy+next.js+vercel+tutorial+2025" target="_blank" style="color:var(--ac)">Deploy Next.js til Vercel (søk)</a></td><td>~10 min</td></tr>
+<tr><td><strong>Git</strong></td><td><a href="https://www.youtube.com/results?search_query=git+github+beginner+tutorial+2025" target="_blank" style="color:var(--ac)">Git & GitHub for nybegynnere (søk)</a></td><td>~20 min</td></tr>
+<tr><td><strong>Claude Tips</strong></td><td><a href="https://www.youtube.com/results?search_query=claude+code+tips+tricks+2025" target="_blank" style="color:var(--ac)">Claude Code tips & triks (søk)</a></td><td>~30 min</td></tr>
+</tbody></table>
+</div>
+
+<!-- ============ PHASE 3 ============ -->
+<div class="ph" id="s3"><div class="pn o">3</div><div class="pt">Bygg Appen</div></div>
+<p class="ps">Bruk Claude Code til å lage en fungerende web-app fra scratch.</p>
+
+<div class="cd"><div class="st"><div class="sn">1</div><div class="sc">
+  <h4>Opprett prosjektmappe</h4>
+  <div class="cb"><span class="cl">Terminal</span><code><span class="c">mkdir</span> -p ~/Projects/min-app
+<span class="c">cd</span> ~/Projects/min-app</code></div>
+  <div class="wt" onclick="tw(this)"><span>▶</span> Hva gjør disse kommandoene?</div>
+  <div class="wb"><div class="el">📖 Forklaring</div><p><strong><code>mkdir -p</code></strong> = «make directory» — oppretter en mappe. <code>-p</code> lager alle undermapper som trengs.<br><strong><code>cd</code></strong> = «change directory» — flytter deg inn i mappen.<br><strong><code>~/</code></strong> = din hjemmemappe (f.eks. <code>/Users/dittnavn/</code>).</p></div>
+</div></div></div>
+
+<div class="cd"><div class="st"><div class="sn">2</div><div class="sc">
+  <h4>Start Claude Code og beskriv appen</h4>
+  <div class="cb"><span class="cl">Terminal</span><code><span class="c">claude</span></code></div>
+  <p>Du ser en <code>&gt;</code> prompt. Nå snakker du vanlig språk:</p>
+  <div class="cb"><span class="cl">Claude Code — Eksempel</span><code><span class="s">"Lag en Next.js web-app med Tailwind CSS.
+Jeg trenger:
+- En landingsside
+- Brukerinnlogging med Supabase
+- Et dashbord for innloggede brukere
+Sett opp hele prosjektet med alle
+nødvendige konfigurasjonsfiler."</span></code></div>
+  <div class="wt" onclick="tw(this)"><span>▶</span> Hva skjer egentlig her?</div>
+  <div class="wb"><div class="el">🤔 Bak kulissene</div><p>Claude gjør automatisk:<br>1. <strong>Kjører <code>npx create-next-app</code></strong> — setter opp prosjektstrukturen<br>2. <strong>Installerer pakker</strong> — Tailwind, Supabase-klient osv.<br>3. <strong>Oppretter filer</strong> — sider, komponenter, konfigurasjon<br>4. <strong>Skriver fungerende kode</strong><br><br>Du kan <strong>iterere</strong>: «Gjør knappen blå», «Legg til en prisliste», «Fiks denne feilen».</p></div>
+</div></div></div>
+
+<div class="cd"><div class="st"><div class="sn">3</div><div class="sc">
+  <h4>Lagre og last opp til GitHub</h4>
+  <div class="cb"><span class="cl">Terminal</span><code><span class="c">git init</span>
+<span class="c">git add</span> .
+<span class="c">git commit</span> <span class="f">-m</span> <span class="s">"Første versjon"</span>
+<span class="c">gh repo create</span> min-app <span class="f">--public --source=. --push</span></code></div>
+  <div class="wt" onclick="tw(this)"><span>▶</span> Hva gjør hver linje?</div>
+  <div class="wb"><div class="el">📖 Linje for linje</div><p><strong><code>git init</code></strong> — Start Git-tracking i mappen<br><strong><code>git add .</code></strong> — Marker alle filer for lagring (punktum = «alt»)<br><strong><code>git commit -m "..."</code></strong> — Lagre snapshot med en melding<br><strong><code>gh repo create</code></strong> — Opprett GitHub-repo og last opp<br><strong><code>--public</code></strong> — Alle kan se (bruk <code>--private</code> for hemmelig)<br><strong><code>--push</code></strong> — Last opp med én gang</p></div>
+</div></div></div>
+
+<div class="cd"><div class="st"><div class="sn">4</div><div class="sc">
+  <h4>Kjør lokalt og utvikle videre</h4>
+  <div class="cb"><span class="cl">Terminal</span><code><span class="c">npm run dev</span>
+<span class="cm"># Åpner på http://localhost:3000</span></code></div>
+  <p>Åpne <span class="t">localhost:3000<span class="tp"><b>localhost</b>Spesiell nettadresse som betyr «denne datamaskinen». <code>:3000</code> er portnummeret. Bare du ser den — den er ikke på internett ennå.<span class="an">🏠 Privat forhåndsvisning, bare for deg</span></span></span> i nettleseren. Be Claude Code om endringer i vanlig språk.</p>
+  <div class="wt" onclick="tw(this)"><span>▶</span> Hva skjer med «npm run dev»?</div>
+  <div class="wb"><div class="el">🤔 Forklaring</div><p><code>npm run dev</code> starter en <strong>utviklingsserver</strong>:<br>1. <strong>Kompilerer koden</strong> — oversetter React/Next.js til HTML/CSS/JS<br>2. <strong>Serverer filer</strong> — lokal webserver på <code>localhost:3000</code><br>3. <strong>Hot reload</strong> — endrer du en fil, oppdateres nettleseren automatisk<br><br>Stopp med <strong>Ctrl+C</strong>.</p></div>
+</div></div></div>
+
+<div class="cd cc"><h3>📄 Lag en CLAUDE.md-fil</h3>
+<p>Opprett i prosjektets rot. Claude Code leser den automatisk — gir <strong>mye bedre resultater</strong>:</p>
+<div class="cb"><span class="cl">CLAUDE.md</span><code><span class="cm"># Min App</span>
+
+<span class="s">## Hva appen gjør</span>
+En app som lar brukere [beskrivelse].
+
+<span class="s">## Tech stack</span>
+- Next.js 14 med App Router
+- Tailwind CSS for styling
+- Supabase for database og auth
+- Stripe for betalinger
+- Deployet på Vercel
+
+<span class="s">## Konvensjoner</span>
+- TypeScript for alle nye filer
+- Komponenter i src/components/
+- Norsk UI, engelske variabelnavn</code></div></div>
+
+<div class="biz"><h4>💼 Vanlig å Inkludere i Denne Fasen</h4>
+<p>Mens du bygger, tenk på disse tingene som ofte glemmes men er viktige fra starten:</p>
+<ul>
+<li><strong>Brukervilkår &amp; Personvernerklæring</strong> — Kreves av GDPR (Norge/EU) og App Store. Be Claude lage et utkast basert på appen din <span class="bt all">Påkrevd</span></li>
+<li><strong>Cookie-banner</strong> — Kreves i EU/EØS for alle nettsider med analytics eller tredjepartscookies <span class="bt no">Norge/EU</span></li>
+<li><strong>Bruker-innlogging (Auth)</strong> — Supabase Auth er gratis opptil 50 000 brukere. Vanlig å sette opp tidlig <span class="bt all">Anbefalt</span></li>
+<li><strong>Feilhåndtering</strong> — Tomme tilstander, lastehjul, feilmeldinger. Brukere hater blanke sider <span class="bt all">Viktig</span></li>
+<li><strong>Responsivt design</strong> — Test på mobil tidlig. Tailwind gjør dette enkelt med <code>md:</code> og <code>lg:</code> prefixer <span class="bt all">Viktig</span></li>
+</ul></div>
+
+<!-- ============ PHASE 4 ============ -->
+<div class="ph" id="s4"><div class="pn k">4</div><div class="pt">Publiser Web-Appen</div></div>
+<p class="ps">Få en live URL alle kan besøke — helt gratis.</p>
+
+<div class="cg">
+  <div class="cx"><h4>⚡ <span class="t">Vercel<span class="tp"><b>Vercel</b>Plattform som publiserer web-apper. Koblet til GitHub — hver push bygger og deployer automatisk. Laget av Next.js-teamet.<span class="an">🚀 Autopilot for publisering</span></span></span> <span class="tg fr">Gratis</span></h4><p style="color:var(--dim);font-size:.84rem">Best for Next.js/React.<br>✓ 100 GB bw/mnd · ✓ SSL · ✓ Preview-lenker · ✓ dinapp.vercel.app</p></div>
+  <div class="cx"><h4>🌐 <span class="t">Netlify<span class="tp"><b>Netlify</b>Ligner Vercel — publiserer web-apper. Ekstra populær for statiske sider. Innebygde skjemaer og serverless-funksjoner.<span class="an">🌐 Vercels rival — velg den du liker</span></span></span> <span class="tg fr">Gratis</span></h4><p style="color:var(--dim);font-size:.84rem">Bra for statiske sider.<br>✓ 100 GB bw/mnd · ✓ 125k funksjons-kall · ✓ Innebygde skjemaer</p></div>
+</div>
+
+<div class="cd"><h3>🚀 Deploy til Vercel</h3>
+  <div class="st" style="margin-top:.8rem"><div class="sn">1</div><div class="sc"><h4>Registrer deg på vercel.com</h4><p>Bruk «Continue with GitHub» for automatisk kobling.</p></div></div>
+  <div class="st"><div class="sn">2</div><div class="sc"><h4>Importer prosjektet</h4><p>«Add New → Project» → velg repo → Deploy.</p></div></div>
+  <div class="st"><div class="sn">3</div><div class="sc"><h4>Ferdig!</h4><p>Du får <code>min-app.vercel.app</code>. Hver <code>git push</code> oppdaterer automatisk.</p></div></div>
+  <div class="co info"><strong>🔄 Automatisk workflow</strong><p>Endre kode → <code>git add . && git commit -m "fix" && git push</code> → Vercel bygger → Live på ~30 sek.</p></div>
+</div>
+
+<div class="biz"><h4>💼 Forretnings-Steg: Domene, Sikkerhet &amp; Betalinger</h4>
+<p>Nå som appen er live, er det tid for de profesjonelle detaljene:</p>
+<ul>
+<li><strong>🌐 Koble eget domene</strong> — I Vercel: Settings → Domains → legg til «dinapp.no». Pek DNS-en hos domene-leverandøren til Vercel <span class="bt all">Viktig</span></li>
+<li><strong>🔒 SSL/HTTPS</strong> — Vercel gir gratis SSL automatisk. Sjekk at hengelåsen vises i nettleseren <span class="bt all">Automatisk</span></li>
+<li><strong>🔐 Sikkerhetssjekk</strong> — Be Claude kjøre <code>npm audit</code> og fikse sårbarheter. Gjør dette jevnlig <span class="bt all">Viktig</span></li>
+<li><strong>💳 Betalingsløsning</strong> — Stripe er vanligst. Sett opp nå hvis appen skal tjene penger. 2.9% + 30¢ per transaksjon. Krever bankkonto og selskapsinfo <span class="bt all">Når du har brukere</span></li>
+<li><strong>📊 Analytics</strong> — Vercel Analytics (gratis) eller <a href="https://plausible.io" target="_blank">Plausible</a> (GDPR-vennlig, €9/mnd) — se hvem som bruker appen <span class="bt all">Anbefalt</span></li>
+<li><strong>📧 Transaksjonell e-post</strong> — <a href="https://resend.com" target="_blank">Resend.com</a> (3 000/mnd gratis) for kvitteringer, velkommen-e-post, passord-reset <span class="bt all">Anbefalt</span></li>
+</ul>
+<div class="wt" onclick="tw(this)"><span>▶</span> Domene-registrering i detalj</div>
+<div class="wb"><div class="el">🌐 Norge vs USA</div><p><strong>🇳🇴 .no domene (Norge):</strong><br>
+Registrer via <strong>Domeneshop.no</strong>, <strong>Uniweb.no</strong>, eller <strong>Domene.no</strong>. Pris: ~100–300 kr/år. Krav: norsk adresse eller organisasjonsnummer. Privatpersoner trenger PID fra Norid. Maks 5 .no-domener per person.<br><br>
+<strong>🇺🇸 .com domene (Internasjonalt):</strong><br>
+<strong>Namecheap.com</strong> (~$10/år), <strong>Cloudflare Registrar</strong> (~$10/år, ingen påslag), eller <strong>Google Domains</strong>. Ingen krav til nasjonalitet. Anbefalt: kjøp BÅDE .no og .com for å beskytte merket.<br><br>
+<strong>Koble til Vercel:</strong> Logg inn hos domene-leverandøren → DNS → legg til CNAME eller A-record som Vercel oppgir.</p></div>
+</div>
+
+<!-- ============ PHASE 5 ============ -->
+<div class="ph" id="s5"><div class="pn v">5</div><div class="pt">iOS App</div></div>
+<p class="ps">Konverter web-appen til en iPhone-app.</p>
+
+<div class="cg">
+  <div class="cx"><h4>🔗 <span class="t">PWA<span class="tp"><b>PWA-strategi</b>Brukeren legger til nettstedet på hjemskjermen. Ser ut som en app men er en nettside. Gratis, men færre funksjoner.<span class="an">🆓 Gratis og enkel, med begrensninger</span></span></span> (Enklest)</h4><p style="color:var(--dim);font-size:.83rem">✓ Gratis · ✓ Ingen Xcode<br>✗ Ikke i App Store · ✗ Begrensede funksjoner</p></div>
+  <div class="cx"><h4>📦 <span class="t">Capacitor<span class="tp"><b>Capacitor for iOS</b>Pakker web-appen i en native iOS-app. Beholder web-koden, får tilgang til kamera, push-varsler. Kan publiseres i App Store. Krever Xcode + $99/år.<span class="an">📦 Mer jobb, men en «ekte» App Store-app</span></span></span> (Full Native)</h4><p style="color:var(--dim);font-size:.83rem">✓ App Store · ✓ Native funksjoner<br>⚠ Krever Xcode + $99/år</p></div>
+</div>
+
+<div class="cd"><h3>📦 Capacitor — Full Gjennomgang</h3>
+  <div class="st" style="margin-top:.8rem"><div class="sn">1</div><div class="sc"><h4>Installer <span class="t">Xcode<span class="tp"><b>Xcode</b>Apples utviklingsmiljø. Det eneste verktøyet som kan bygge og sende apper til App Store. Inkluderer iPhone-simulator. Gratis, ~12 GB.<span class="an">🍎 Apples «fabrikk» for iPhone-apper</span></span></span></h4><p>Søk «Xcode» i Mac App Store (gratis). Godta lisens:</p><div class="cb"><code><span class="c">sudo xcodebuild</span> <span class="f">-license accept</span></code></div></div></div>
+  <div class="st"><div class="sn">2</div><div class="sc"><h4>Legg til Capacitor</h4>
+    <div class="cb"><span class="cl">Terminal</span><code><span class="c">npm install</span> @capacitor/core @capacitor/cli @capacitor/ios
+<span class="c">npx cap init</span> <span class="s">"Min App"</span> <span class="s">"com.dittnavn.minapp"</span>
+<span class="c">npm run build</span>
+<span class="c">npx cap add ios</span>
+<span class="c">npx cap sync</span></code></div>
+    <div class="wt" onclick="tw(this)"><span>▶</span> Hva gjør disse?</div>
+    <div class="wb"><div class="el">📖 Forklaring</div><p><strong><code>npx cap init</code></strong> — Lager config med app-navn og ID<br><strong><code>"com.dittnavn.minapp"</code></strong> — Unik app-ID (standard format)<br><strong><code>npm run build</code></strong> — Kompilerer web-appen<br><strong><code>npx cap add ios</code></strong> — Oppretter <code>/ios</code>-mappe med Xcode-prosjekt<br><strong><code>npx cap sync</code></strong> — Kopierer web-appen inn i iOS-prosjektet</p></div>
+  </div></div>
+  <div class="st"><div class="sn">3</div><div class="sc"><h4>Åpne i Xcode</h4><div class="cb"><code><span class="c">npx cap open ios</span></code></div><p>Velg iPhone-simulator → trykk Play ▶</p></div></div>
+  <div class="st"><div class="sn">4</div><div class="sc"><h4><span class="t">Apple Developer Program<span class="tp"><b>Apple Developer Program</b>Apples betalte medlemskap ($99/år) for å publisere i App Store. Inkluderer App Store Connect, TestFlight, utviklersertifikater.<span class="an">🎫 Årskort for å selge apper i Apples butikk</span></span></span></h4><p><strong>developer.apple.com/programs</strong> → Enroll → $99/år.</p></div></div>
+  <div class="st"><div class="sn">5</div><div class="sc"><h4>Send til App Store</h4><p>Xcode: Product → <span class="t">Archive<span class="tp"><b>Archive</b>Xcode pakker appen i en ferdig «pakke» (IPA-fil) som kan lastes opp til Apple for godkjenning.<span class="an">📦 Pakke appen klar for levering</span></span></span> → Distribute App → App Store Connect. Legg til skjermbilder og beskrivelse.</p></div></div>
+</div>
+
+<div class="co warn"><strong>⚠️ App Store-krav</strong><p>Apple avviser apper som bare viser en nettside. Legg til offline-modus, push-varsler, eller native navigasjon.</p></div>
+
+<div class="biz"><h4>💼 Forretnings-Steg: App Store-Krav &amp; Juridisk</h4>
+<p>Apple er strenge. Ha dette klart FØR du sender inn:</p>
+<ul>
+<li><strong>Privacy Policy URL</strong> — Offentlig lenke til personvernerklæring. Kreves av Apple. Ha den på dinapp.no/personvern <span class="bt all">Påkrevd</span></li>
+<li><strong>Aldersgrense (Age Rating)</strong> — Må fylle ut spørreskjema i App Store Connect <span class="bt all">Påkrevd</span></li>
+<li><strong>Skjermbilder</strong> — Spesifikke størrelser for iPhone og iPad. Minst 3 per enhet <span class="bt all">Påkrevd</span></li>
+<li><strong>Eksportregelverk</strong> — Appen bruker HTTPS (kryptering) → svar «Ja» på spørsmål om eksportkryptering <span class="bt all">Påkrevd</span></li>
+<li><strong>Betalinger i appen</strong> — Apple krever at digitale kjøp bruker In-App Purchase (Apple tar 15–30%). Fysiske varer kan bruke Stripe direkte <span class="bt all">Ved salg</span></li>
+<li><strong>DUNS-nummer</strong> — Gratis bedrifts-ID fra Dun &amp; Bradstreet. Kreves for Apple Developer som organisasjon (ikke person) <span class="bt us">Organisasjoner</span></li>
+</ul></div>
+
+<!-- ============ PHASE 6 ============ -->
+<div class="ph" id="s6"><div class="pn r">6</div><div class="pt">Kostnader</div></div>
+<p class="ps">Alt som er gratis, og alt som koster penger.</p>
+
+<div class="cd"><h3>💰 Komplett Kostnadsoversikt</h3>
+<table class="ct-t"><thead><tr><th>Tjeneste</th><th>Gratis</th><th>Betalt</th><th>Når betaler du</th></tr></thead><tbody>
+<tr><td><strong>Claude Pro</strong></td><td>Begrenset chat</td><td><span class="pr pd">$20/mnd</span></td><td>Kreves for Claude Code</td></tr>
+<tr><td><strong>Claude Max</strong></td><td>—</td><td><span class="pr pd">$100–200/mnd</span></td><td>Tunge kode-økter</td></tr>
+<tr><td><strong>VS Code</strong></td><td><span class="tg fr">Gratis</span></td><td>—</td><td>Aldri</td></tr>
+<tr><td><strong>GitHub</strong></td><td><span class="tg fr">Gratis</span></td><td><span class="pr pd">$4/mnd</span></td><td>Avanserte features</td></tr>
+<tr><td><strong>Vercel</strong></td><td><span class="tg fr">Gratis</span></td><td><span class="pr pd">$20/mnd</span></td><td>Mer båndbredde</td></tr>
+<tr><td><strong>Supabase</strong></td><td><span class="tg fr">Gratis</span></td><td><span class="pr pd">$25/mnd</span></td><td>Mer lagring</td></tr>
+<tr><td><strong>Stripe</strong></td><td><span class="tg fr">Gratis</span></td><td><span class="pr pd">2.9%+30¢</span></td><td>Når du tjener</td></tr>
+<tr><td><strong>Domene</strong></td><td>Gratis subdomain</td><td><span class="pr pd">~$12/år</span></td><td>Valgfritt</td></tr>
+<tr><td><strong>Xcode</strong></td><td><span class="tg fr">Gratis</span></td><td>—</td><td>Aldri</td></tr>
+<tr><td><strong>Apple Developer</strong></td><td>Testing</td><td><span class="pr ex">$99/år</span></td><td>App Store</td></tr>
+<tr><td><strong>Apple provisjon</strong></td><td>—</td><td><span class="pr ex">15–30%</span></td><td>Av salg</td></tr>
+</tbody></table></div>
+
+<div class="cg">
+  <div class="cx" style="border-color:var(--gr)"><h4 style="color:var(--gr)">🌐 Bare Web</h4><p style="color:var(--dim);font-size:.9rem;line-height:1.9">Claude Pro: <strong>$20/mnd</strong><br>Alt annet: <strong>Gratis</strong><br><span style="color:var(--gr);font-weight:700;font-size:1.15rem">Totalt: $20/mnd</span></p></div>
+  <div class="cx" style="border-color:var(--or)"><h4 style="color:var(--or)">📱 Web + iOS</h4><p style="color:var(--dim);font-size:.9rem;line-height:1.9">Claude Pro: <strong>$20/mnd</strong><br>Apple: <strong>$99/år</strong><br><span style="color:var(--or);font-weight:700;font-size:1.15rem">Totalt: ~$28/mnd</span></p></div>
+</div>
+
+<div class="biz" style="margin-top:2rem"><h4>💼 Komplett Forretnings-Sjekkliste</h4>
+<p>Alt du bør ha på plass for å drive appen som en seriøs virksomhet:</p>
+
+<table class="ct-t"><thead><tr><th>Steg</th><th>Hva</th><th>Kostnad</th><th>Når</th></tr></thead><tbody>
+<tr><td><strong>Domene</strong></td><td>.no via Domeneshop/Uniweb</td><td>~100–300 kr/år</td><td>Før firmareg.</td></tr>
+<tr><td><strong>Domene .com</strong></td><td>Namecheap/Cloudflare</td><td>~$10–15/år</td><td>Før firmareg.</td></tr>
+<tr><td><strong>Firma 🇳🇴</strong></td><td>ENK via Altinn</td><td>~2 200 kr</td><td>Fase 1–3</td></tr>
+<tr><td><strong>Firma 🇳🇴</strong></td><td>AS via Altinn (2 pers+)</td><td>~6 000 kr + 30 000 aksjekapital</td><td>Fase 1–3</td></tr>
+<tr><td><strong>Firma 🇺🇸</strong></td><td>LLC (Delaware/Wyoming)</td><td>$50–200 + $100/år agent</td><td>Før US-lansering</td></tr>
+<tr><td><strong>Varemerke 🇳🇴</strong></td><td>Patentstyret</td><td>Fra 3 800 kr</td><td>Etter validering</td></tr>
+<tr><td><strong>Varemerke 🇺🇸</strong></td><td>USPTO</td><td>$350/klasse</td><td>Etter US-lansering</td></tr>
+<tr><td><strong>Bankkonto</strong></td><td>Bedriftskonto (DNB, Nordea osv.)</td><td>Varierer</td><td>Etter org.nr</td></tr>
+<tr><td><strong>Regnskap</strong></td><td>Fiken.no / Tripletex</td><td>Fra 0–99 kr/mnd</td><td>Fra dag 1</td></tr>
+<tr><td><strong>MVA-reg.</strong></td><td>Obligatorisk over 50 000 kr/år</td><td>Gratis</td><td>Når inntekter</td></tr>
+</tbody></table>
+
+<div class="wt" onclick="tw(this)"><span>▶</span> Varemerke og Patent — trenger jeg det?</div>
+<div class="wb"><div class="el">🛡 Beskytt idéen din</div><p><strong>Varemerke</strong> beskytter <strong>navnet og logoen</strong> (ikke idéen). Søk hos <a href="https://patentstyret.no">Patentstyret</a> (Norge, fra 3 800 kr) eller <a href="https://uspto.gov">USPTO</a> (USA, $350/klasse). Behandlingstid: 4–8 måneder.<br><br>
+<strong>Patent</strong> beskytter en <strong>unik teknisk løsning</strong>. Dyrt (50 000+ kr) og tar 2–4 år. Relevant kun hvis appen har helt ny teknologi — ikke for de fleste web-apper.<br><br>
+<strong>Anbefaling for de fleste:</strong><br>
+✅ Registrer varemerke (navn + logo) — rimelig og viktig<br>
+✅ Kjøp domener (.no + .com) — billig forsikring<br>
+⚠️ Patent — bare hvis du har oppfunnet noe teknisk nytt<br><br>
+<strong>Rekkefølge:</strong> Domene → Firma → Varemerke → (Patent om relevant)</p></div>
+
+<div class="wt" onclick="tw(this)"><span>▶</span> Samarbeid med broren — hvem eier hva?</div>
+<div class="wb"><div class="el">🤝 Eierskap og avtaler</div><p>Når to personer bygger sammen, <strong>avklar eierskap skriftlig</strong>:<br><br>
+<strong>Med ENK:</strong> Kun én eier. Broren er enten ansatt eller underleverandør. Ikke ideelt for samarbeid.<br><br>
+<strong>Med AS:</strong> Begge kan eie aksjer (f.eks. 50/50). Anbefalt! Lag en <strong>aksjonæravtale</strong> som dekker:<br>
+• Hvem eier hvor mye<br>
+• Hva skjer om én vil slutte<br>
+• Hvem bestemmer hva<br>
+• Hvordan fordeles inntekter<br><br>
+<strong>Tips:</strong> Bruk en advokat for aksjonæravtalen (~5 000–15 000 kr). Det er den billigste forsikringen mot fremtidige konflikter.</p></div>
+</div>
+
+<!-- ============ PHASE 7 ============ -->
+<div class="ph" id="s7"><div class="pn c">⚡</div><div class="pt">Slik Tenker Claude</div></div>
+<p class="ps">Forstå hvordan jeg fungerer, så du kan gi bedre instruksjoner og få bedre resultater.</p>
+
+<div class="cd cc"><h3>🧠 Hvordan Claude Code Fungerer</h3>
+<div class="ai"><div class="ah" onclick="ta(this)"><span>📖 Jeg leser hele prosjektet ditt</span><span class="ar">▼</span></div><div class="ab"><p>Når du starter <code>claude</code> i en mappe, leser jeg filstrukturen, <code>CLAUDE.md</code>, <code>package.json</code> og viktige konfig-filer. <strong>Jo mer kontekst, jo bedre resultat.</strong> Lag alltid en CLAUDE.md!</p></div></div>
+<div class="ai"><div class="ah" onclick="ta(this)"><span>🎯 Jeg foretrekker ett steg om gangen</span><span class="ar">▼</span></div><div class="ab"><p>Gi meg <strong>én klar oppgave</strong> om gangen. Bygg iterativt:<br>✅ <em>«Lag en landingsside med hero og CTA-knapp»</em><br>✅ <em>«Legg til Supabase-auth med e-post»</em><br>❌ <em>«Bygg hele appen med 15 sider, betaling, admin, e-post og mobilapp»</em></p></div></div>
+<div class="ai"><div class="ah" onclick="ta(this)"><span>🔍 Vær spesifikk — jeg gjetter ikke</span><span class="ar">▼</span></div><div class="ab"><p>Disse detaljene hjelper enormt:<br>• <strong>Tech stack:</strong> «Bruk Next.js 14, Tailwind, Supabase»<br>• <strong>Filplassering:</strong> «Legg i src/components/»<br>• <strong>Utseende:</strong> «Mørkt tema, minimalistisk, som Linear.app»<br>• <strong>Oppførsel:</strong> «Knappen sender data til Supabase og viser suksess-melding»<br>• <strong>Språk:</strong> «Norsk UI, engelske variabelnavn»</p></div></div>
+<div class="ai"><div class="ah" onclick="ta(this)"><span>🐛 Feilsøking: gi meg feilmeldingen</span><span class="ar">▼</span></div><div class="ab"><p>Når noe er feil: <strong>kopier hele feilmeldingen</strong> og lim inn. Ikke skriv «det funker ikke» — vis meg den røde teksten. Jeg leser <span class="t">stack traces<span class="tp"><b>Stack trace</b>En detaljert feilmelding som viser nøyaktig hvor i koden feilen oppstod — hvilken fil, hvilken linje, og hele kjeden av funksjoner som førte til feilen.<span class="an">🔍 Et kart som viser nøyaktig hvor ting gikk galt</span></span></span> og finner feilen mye raskere.</p></div></div>
+<div class="ai"><div class="ah" onclick="ta(this)"><span>📝 Jeg kan se og endre filer direkte</span><span class="ar">▼</span></div><div class="ab"><p>I Claude Code kan jeg lese, opprette, redigere og slette filer, og kjøre Terminal-kommandoer. Jeg spør om tillatelse først.<br><br><strong>Viktig:</strong> Bruk <code>git commit</code> jevnlig! Gjør jeg noe galt → <code>git checkout .</code> tar deg tilbake.</p></div></div>
+<div class="ai"><div class="ah" onclick="ta(this)"><span>⚠️ Mine begrensninger</span><span class="ar">▼</span></div><div class="ab"><p>• Jeg ser ikke skjermen din — beskriv visuelle problemer eller ta skjermbilde<br>• Jeg husker ikke mellom økter — ny Terminal = ny start (men leser filene igjen)<br>• Lange samtaler kan forvirre — start ny økt om det blir rotete<br>• Jeg kan gjøre feil — test alltid koden!</p></div></div>
+</div>
+
+<div class="cd cc"><h3>📋 Prompt-Maler å Kopiere</h3>
+<div class="ai"><div class="ah" onclick="ta(this)"><span>🏗 Starte nytt prosjekt</span><span class="ar">▼</span></div><div class="ab"><div class="cb"><code><span class="s">"Lag et Next.js 14-prosjekt med App Router,
+Tailwind CSS og TypeScript. Sett opp:
+- Landingsside med hero-seksjon
+- Brukerregistrering med Supabase Auth
+- Dashboard for innloggede brukere
+- Mørkt tema
+Lag en CLAUDE.md med prosjektbeskrivelse."</span></code></div></div></div>
+<div class="ai"><div class="ah" onclick="ta(this)"><span>🗄 Legge til database</span><span class="ar">▼</span></div><div class="ab"><div class="cb"><code><span class="s">"Sett opp Supabase. Lag tabeller for:
+- profiles (id, user_id, name, avatar_url)
+- [din tabell] (kolonne1, kolonne2)
+Legg til Row Level Security.
+Opprett klient i src/lib/supabase.ts
+Legg env vars i .env.local.example"</span></code></div></div></div>
+<div class="ai"><div class="ah" onclick="ta(this)"><span>💳 Legge til betalinger</span><span class="ar">▼</span></div><div class="ab"><div class="cb"><code><span class="s">"Integrer Stripe. Jeg trenger:
+- Gratis og Pro tier ($10/mnd)
+- Checkout med Stripe Checkout
+- Webhook for å oppdatere brukerens plan
+- Middleware som sjekker betaling
+- Prisliste-komponent på landingssiden"</span></code></div></div></div>
+<div class="ai"><div class="ah" onclick="ta(this)"><span>📱 Konvertere til iOS</span><span class="ar">▼</span></div><div class="ab"><div class="cb"><code><span class="s">"Konverter til iOS med Capacitor.
+- Installer og sett opp iOS-platform
+- Konfigurer app-ikon og splash screen
+- Legg til push-varsler
+- Forbered for App Store-innsending"</span></code></div></div></div>
+<div class="ai"><div class="ah" onclick="ta(this)"><span>🐛 Fikse feil</span><span class="ar">▼</span></div><div class="ab"><div class="cb"><code><span class="s">"Jeg får denne feilen:
+
+[LIM INN HELE FEILMELDINGEN]
+
+Forklar enkelt hva som er galt.
+Vis hva du endrer og hvorfor.
+Test at det fungerer etter fiksen."</span></code></div></div></div>
+</div>
+
+<!-- ============ BONUS ============ -->
+<div class="co tip" style="margin:2.5rem 0;border-color:rgba(245,158,11,.4);background:linear-gradient(135deg,rgba(245,158,11,.06),rgba(244,114,182,.04))"><strong>🧠 AI i Bedriften — Inspirasjon &amp; Praktiske Tips</strong><p>Vil du vite hvordan Oljefondet bruker AI i hverdagen? Nicolai Tangen krever at alle 700 ansatte bruker AI daglig og sparer milliarder. Vi har samlet konkrete bruksområder, eksempel-prompts og verktøy du kan begynne med i dag.</p><p style="margin-top:.7rem"><a href="ai-i-bedriften.html" style="color:var(--or);font-weight:700;text-decoration:underline">→ Åpne AI i Bedriften-guiden</a></p></div>
+
+<div class="ph" id="mob"><div class="pn g">+</div><div class="pt">Jobb Fra Telefonen</div></div>
+<p class="ps">Bruk Claude Code og GitHub fra iPhone — bygg mens du er ute og går.</p>
+
+<div class="cd cc"><h3>📱 Claude Code på iPhone</h3>
+<p>Claude Code er tilgjengelig direkte i <strong>Claude iOS-appen</strong> (fra oktober 2025). Du kan også bruke <span class="t">SSH<span class="tp"><b>SSH — Secure Shell</b>En sikker forbindelse fra telefonen til Mac-en din hjemme. Du skriver kommandoer på telefonen, men de kjøres på Mac-en — som en fjernkontroll.<span class="an">🔗 Fjernkontroll til datamaskinen din</span></span></span> for full kontroll.</p>
+
+<div class="ai"><div class="ah" onclick="ta(this)"><span>🅰️ Enklest: Claude iOS-appen</span><span class="ar">▼</span></div><div class="ab">
+<p>Last ned «Claude» fra App Store (gratis app, krever Claude Pro-abonnement). Claude Code kjører i skyen — ingen ekstra oppsett.</p>
+<ul>
+<li>Skriv instruksjoner på vanlig norsk/engelsk</li>
+<li>Claude lager, redigerer og tester kode</li>
+<li>Perfekt for hurtige endringer og planlegging</li>
+</ul>
+<div class="co tip"><strong>💡 Begrensning</strong><p>iOS-appen jobber i skyen, ikke direkte i ditt lokale prosjekt. Best for nye prosjekter eller når du vil planlegge og generere kode du limer inn etterpå.</p></div>
+</div></div>
+
+<div class="ai"><div class="ah" onclick="ta(this)"><span>🅱️ For full kontroll: SSH fra telefonen</span><span class="ar">▼</span></div><div class="ab">
+<p>Koble til Mac-en din hjemme og kjør Claude Code direkte i prosjektet:</p>
+<div class="st"><div class="sn">1</div><div class="sc"><h4>Aktiver SSH på Mac</h4><p>Systeminnstillinger → Generelt → Deling → Fjernpålogging (Remote Login) → Slå på</p></div></div>
+<div class="st"><div class="sn">2</div><div class="sc"><h4>Installer <span class="t">Tailscale<span class="tp"><b>Tailscale</b>Gratis VPN som kobler enhetene dine i et privat nettverk. Telefon og Mac snakker direkte med hverandre, uansett hvor du er — uten å eksponere noe på internett.<span class="an">🔒 En privat tunnel mellom enhetene dine</span></span></span></h4><p>Last ned Tailscale på Mac + iPhone (gratis). Logg inn med samme konto på begge.</p></div></div>
+<div class="st"><div class="sn">3</div><div class="sc"><h4>Last ned <span class="t">Blink Shell<span class="tp"><b>Blink Shell</b>Premium SSH-klient for iPhone/iPad (~$16). Best i klassen for terminal-bruk på iOS. Alternativ: Termius (gratis med begrensninger).<span class="an">💻 Terminal-app for iPhone</span></span></span> eller Termius</h4><p>Blink Shell ($16, best) eller Termius (gratis). Koble til Mac via Tailscale-IP.</p></div></div>
+<div class="st"><div class="sn">4</div><div class="sc"><h4>Bruk <span class="t">tmux<span class="tp"><b>tmux — Terminal Multiplexer</b>Holder Terminal-økter i live selv om du kobler fra. Start tmux på Mac, koble fra, gå ut — koble til igjen fra telefonen og alt er der du forlot det.<span class="an">💾 Pause-knapp for Terminal</span></span></span> for å holde økten i live</h4>
+<div class="cb"><span class="cl">Mac Terminal (før du går)</span><code><span class="c">brew install</span> tmux
+<span class="c">tmux new</span> <span class="f">-s</span> kode
+<span class="c">cd</span> ~/Projects/min-app
+<span class="c">claude</span>
+<span class="cm"># Start å bygge... gå ut når du vil</span>
+<span class="cm"># tmux holder alt i live!</span></code></div>
+<div class="cb"><span class="cl">iPhone (fra Blink Shell)</span><code><span class="c">ssh</span> dittnavn@mac-tailscale-ip
+<span class="c">tmux attach</span> <span class="f">-t</span> kode
+<span class="cm"># Du er tilbake der du slapp!</span></code></div>
+</div></div>
+<div class="co info"><strong>🔥 Workflow</strong><p>Start Claude Code i tmux på Mac → gå ut → koble til fra iPhone → se hva Claude har gjort → godkjenn eller gi ny instruksjon → legg telefonen i lomma. tmux holder alt i live!</p></div>
+</div></div>
+</div>
+
+<div class="cd"><h3>📱 GitHub på iPhone</h3>
+<p>Last ned «GitHub» fra App Store (gratis):</p>
+<ul>
+  <li>Bla gjennom kode og se endringer</li>
+  <li>Gjennomgå og merge <span class="t">pull requests<span class="tp"><b>Pull Request (PR)</b>En forespørsel om å slå sammen endringer. Du lager en PR slik at koden kan gjennomgås før den blir del av hoved-koden.<span class="an">✋ «Kan noen sjekke dette før vi bruker det?»</span></span></span></li>
+  <li>Godkjenn endringer fra broren din</li>
+  <li>Varsler når <span class="t">builds<span class="tp"><b>Build</b>Prosessen der koden kompileres og gjøres klar. Vercel kjører en build automatisk ved push. Feiler det, er noe galt i koden.<span class="an">🏗 Bygge huset fra tegningene</span></span></span> lykkes/feiler</li>
+  <li>Redigér enkle filer direkte (trykk ✏️)</li>
+</ul>
+<div class="co info"><strong>📲 Mobil-workflow</strong><p>Trykk «.» på et repo i Safari → åpner github.dev (koderedigerer i nettleseren) → rediger → commit → Vercel auto-deployer. Fiks bugs fra sofaen!</p></div>
+</div>
+
+<div class="cd cc"><h3>🤖 Automatiser Samarbeidet</h3>
+<p>Sett opp en gang — jobber automatisk for alltid:</p>
+
+<div class="ai"><div class="ah" onclick="ta(this)"><span>🔄 Auto-deploy med Vercel (allerede satt opp!)</span><span class="ar">▼</span></div><div class="ab"><p>Vercel gjør dette <strong>automatisk</strong> når du kobler GitHub-repoet:<br>Du eller broren pusher → Vercel bygger → Live på 30 sek. Ingen ekstra konfigurasjon nødvendig. Hver <span class="t">branch<span class="tp"><b>Branch (gren)</b>En parallell versjon av koden. Broren jobber på sin branch, du på din. Etterpå slår dere dem sammen (merge).<span class="an">🌿 En kopi du kan eksperimentere med trygt</span></span></span> får sin egen preview-URL!</p></div></div>
+
+<div class="ai"><div class="ah" onclick="ta(this)"><span>🧪 Auto-testing med GitHub Actions</span><span class="ar">▼</span></div><div class="ab"><p>Kjør tester automatisk hver gang noen pusher kode. Be Claude sette det opp:</p>
+<div class="cb"><span class="cl">Be Claude Code</span><code><span class="s">"Sett opp GitHub Actions workflow som
+kjører lint og tester ved push til main.
+Lag filen .github/workflows/test.yml"</span></code></div>
+<p>Claude oppretter YAML-filen. Neste gang dere pusher, kjøres testene automatisk.</p></div></div>
+
+<div class="ai"><div class="ah" onclick="ta(this)"><span>🔔 Varsler mellom dere</span><span class="ar">▼</span></div><div class="ab"><p>GitHub sender automatisk varsler (e-post + GitHub-appen) når:<br>
+• Noen lager en <strong>Pull Request</strong><br>
+• En PR blir godkjent eller får kommentarer<br>
+• En build feiler<br>
+• Noen tagger deg med <code>@brukernavn</code><br><br>
+<strong>Anbefalt workflow for to:</strong><br>
+1. Jobb på egne <strong>branches</strong> (ikke direkte på <code>main</code>)<br>
+2. Lag PR når noe er klart<br>
+3. Den andre godkjenner fra telefonen<br>
+4. Merge → auto-deploy via Vercel</p></div></div>
+
+<div class="ai"><div class="ah" onclick="ta(this)"><span>📋 Branch-strategi for to personer</span><span class="ar">▼</span></div><div class="ab">
+<div class="cb"><span class="cl">Du: Ny feature</span><code><span class="c">git checkout</span> <span class="f">-b</span> feat/prisliste
+<span class="cm"># Jobb med Claude Code...</span>
+<span class="c">git add</span> . &amp;&amp; <span class="c">git commit</span> <span class="f">-m</span> <span class="s">"Prisliste ferdig"</span>
+<span class="c">git push</span> <span class="f">-u origin</span> feat/prisliste
+<span class="cm"># Lag PR på GitHub → broren godkjenner fra iPhone</span></code></div>
+<div class="cb"><span class="cl">Broren: Godkjenn fra iPhone</span><code>GitHub-appen → Pull Requests → Review
+→ Approve → Merge → Auto-deploy ✅</code></div>
+<p>Slik unngår dere konflikter og alt deployes trygt.</p>
+</div></div>
+</div>
+
+<div class="cd"><h3>✅ Alt Du Kanskje Ikke Har Tenkt På</h3>
+<div class="chi"><div class="chb" onclick="tc(this)"></div><span><strong>SEO &amp; Meta-tags</strong> — Sidetitler, beskrivelser, Open Graph-bilder</span></div>
+<div class="chi"><div class="chb" onclick="tc(this)"></div><span><strong>Responsivt design</strong> — Test mobil, nettbrett, desktop</span></div>
+<div class="chi"><div class="chb" onclick="tc(this)"></div><span><strong><span class="t">.env.local<span class="tp"><b>.env.local</b>Fil med hemmelige nøkler. ALDRI last opp til GitHub! Legg den i <code>.gitignore</code>.<span class="an">🔒 Safen med alle passord</span></span></span></strong> — Aldri commit API-nøkler</span></div>
+<div class="chi"><div class="chb" onclick="tc(this)"></div><span><strong>Feilhåndtering</strong> — Lastehjul, feilmeldinger, tomme tilstander</span></div>
+<div class="chi"><div class="chb" onclick="tc(this)"></div><span><strong>Analyse</strong> — Vercel Analytics eller Plausible</span></div>
+<div class="chi"><div class="chb" onclick="tc(this)"></div><span><strong>Brukervilkår &amp; Personvern</strong> — Kreves for App Store</span></div>
+<div class="chi"><div class="chb" onclick="tc(this)"></div><span><strong>App-ikoner</strong> — Spesifikke størrelser for App Store</span></div>
+<div class="chi"><div class="chb" onclick="tc(this)"></div><span><strong><span class="t">TestFlight<span class="tp"><b>TestFlight</b>Apples gratis beta-testing. Inviter opptil 10 000 testere før App Store-lansering.<span class="an">🧪 Smaksprøve for venner og testere</span></span></span></strong> — Beta-test med ekte brukere (gratis)</span></div>
+<div class="chi"><div class="chb" onclick="tc(this)"></div><span><strong>CLAUDE.md</strong> — I prosjektroten for bedre Claude-resultater</span></div>
+<div class="chi"><div class="chb" onclick="tc(this)"></div><span><strong>Backup</strong> — GitHub har koden, Supabase har db-backups</span></div>
+<div class="chi"><div class="chb" onclick="tc(this)"></div><span><strong>Eget domene</strong> — dinapp.com (~$12/år) koble til Vercel</span></div>
+<div class="chi"><div class="chb" onclick="tc(this)"></div><span><strong>E-post</strong> — Resend.com (3k/mnd gratis) for transaksjonelle e-poster</span></div>
+<div class="chi"><div class="chb" onclick="tc(this)"></div><span><strong><span class="t">.gitignore<span class="tp"><b>.gitignore</b>Forteller Git hvilke filer den IKKE skal spore — <code>node_modules/</code>, <code>.env.local</code>, bygde filer. Claude setter opp dette automatisk.<span class="an">🚫 «Ikke rør»-liste for Git</span></span></span></strong> — Hemmeligheter og node_modules ekskludert</span></div>
+</div>
+
+
+
+</div>
+
+<script>
+window.addEventListener('scroll',()=>{const h=document.documentElement;document.getElementById('pbar').style.width=(h.scrollTop/(h.scrollHeight-h.clientHeight))*100+'%'});
+
+// Touch-friendly tooltips for iOS
+let activeTooltip=null;
+function handleTooltip(e){
+  const t=e.target.closest('.t');
+  if(!t){if(activeTooltip){activeTooltip.classList.remove('active');activeTooltip=null}return}
+  if('ontouchstart' in window){
+    e.preventDefault();
+    if(activeTooltip&&activeTooltip!==t){activeTooltip.classList.remove('active')}
+    t.classList.toggle('active');
+    activeTooltip=t.classList.contains('active')?t:null;
+  } else {
+    t.classList.toggle('fl',t.getBoundingClientRect().top<340);
+  }
+}
+document.addEventListener('click',handleTooltip);
+document.addEventListener('mouseover',e=>{
+  if('ontouchstart' in window)return;
+  const t=e.target.closest('.t');if(!t)return;
+  t.classList.toggle('fl',t.getBoundingClientRect().top<340);
+});
+
+function ta(e){e.parentElement.classList.toggle('op')}
+function tw(e){const b=e.nextElementSibling;b.classList.toggle('open');e.querySelector('span').textContent=b.classList.contains('open')?'▼':'▶'}
+function tc(e){e.classList.toggle('ck')}
+</script>
+<style>
+/* Touch tooltip activation */
+.t.active .tp{opacity:1!important;transform:translateX(-50%) scale(1)!important;pointer-events:auto!important}
+@media(max-width:768px){.t.active .tp{transform:none!important}}
+</style>
+</body>
+</html>

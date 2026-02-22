@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>AI i Bedriften — Inspirasjon &amp; Praktiske Tips</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=DM+Sans:wght@400;500;600;700&family=Fraunces:ital,wght@0,700;0,900;1,700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0a0a0f;--sf:#12121a;--sf2:#1a1a26;--sf3:#222233;--bd:#2a2a3a;--tx:#e8e8f0;--dim:#8888a8;--ac:#7c5cff;--gr:#34d399;--or:#f59e0b;--bl:#60a5fa;--pk:#f472b6;--cy:#22d3ee}
+*{margin:0;padding:0;box-sizing:border-box}body{background:var(--bg);color:var(--tx);font-family:'DM Sans',sans-serif;line-height:1.8}
+.hero{padding:5rem 2rem 3rem;text-align:center;position:relative}
+.hero::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:800px;height:800px;background:radial-gradient(circle,rgba(245,158,11,.12),transparent 65%);pointer-events:none}
+.hero h1{font-family:'Fraunces',serif;font-weight:900;font-size:clamp(1.8rem,4.5vw,3rem);margin-bottom:1rem}
+.hero h1 em{font-style:normal;background:linear-gradient(135deg,var(--or),var(--pk));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.hero p{color:var(--dim);max-width:600px;margin:0 auto;font-size:.95rem}
+.ct{max-width:820px;margin:0 auto;padding:0 1.5rem 5rem}
+.q{background:linear-gradient(135deg,rgba(245,158,11,.08),rgba(239,68,68,.05));border:1px solid rgba(245,158,11,.3);border-radius:16px;padding:2rem;margin:2.5rem 0;position:relative}
+.q::before{content:'«';position:absolute;top:.5rem;left:1rem;font-family:'Fraunces',serif;font-size:3.5rem;color:rgba(245,158,11,.25);line-height:1}
+.q p{font-size:1.05rem;font-style:italic;color:var(--tx);padding-left:1.5rem;margin-bottom:.6rem}
+.q .src{font-size:.78rem;color:var(--or);font-weight:600;padding-left:1.5rem}
+h2{font-family:'Fraunces',serif;font-weight:900;font-size:1.6rem;margin:3rem 0 .8rem;display:flex;align-items:center;gap:.7rem}
+h3{font-size:1.1rem;margin:2rem 0 .6rem;color:var(--tx)}
+.cd{background:var(--sf);border:1px solid var(--bd);border-radius:15px;padding:1.5rem;margin-bottom:1.2rem}
+.cd h4{font-size:.95rem;margin-bottom:.5rem;display:flex;align-items:center;gap:.5rem}
+.cd p{color:var(--dim);font-size:.87rem}
+.tg{display:inline-block;padding:.15rem .6rem;border-radius:100px;font-size:.68rem;font-weight:700}
+.tg.easy{background:rgba(52,211,153,.15);color:var(--gr)}.tg.med{background:rgba(96,165,250,.15);color:var(--bl)}.tg.adv{background:rgba(244,114,182,.15);color:var(--pk)}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin:1.2rem 0}
+.pain{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.2);border-radius:12px;padding:1.2rem}
+.pain h4{color:#ef4444;font-size:.88rem;margin-bottom:.4rem}
+.pain p{color:var(--dim);font-size:.82rem}
+.sol{background:rgba(52,211,153,.08);border:1px solid rgba(52,211,153,.2);border-radius:12px;padding:1.2rem}
+.sol h4{color:var(--gr);font-size:.88rem;margin-bottom:.4rem}
+.sol p{color:var(--dim);font-size:.82rem}
+.tip{background:rgba(34,211,238,.08);border:1px solid rgba(34,211,238,.2);border-radius:12px;padding:1.2rem;margin:.8rem 0}
+.tip strong{color:var(--cy);display:block;margin-bottom:.3rem;font-size:.84rem}
+.tip p{color:var(--dim);font-size:.84rem}
+.tools{display:flex;flex-wrap:wrap;gap:.5rem;margin:.8rem 0}
+.tool{padding:.4rem .9rem;border-radius:100px;font-size:.76rem;font-weight:600;border:1px solid var(--bd);background:var(--sf2);color:var(--dim);position:relative;cursor:help;transition:.2s}
+.tool:hover{border-color:var(--ac);color:var(--tx)}
+.tool .tt{position:absolute;bottom:calc(100% + 10px);left:50%;transform:translateX(-50%) scale(.95);background:var(--sf3);border:1px solid var(--ac);border-radius:12px;padding:1rem 1.1rem;width:340px;max-width:88vw;font-size:.8rem;line-height:1.65;color:var(--dim);pointer-events:none;opacity:0;transition:all .25s cubic-bezier(.4,0,.2,1);z-index:1000;box-shadow:0 12px 40px rgba(0,0,0,.55);white-space:normal;text-align:left;font-weight:400}
+.tool .tt::after{content:'';position:absolute;top:100%;left:50%;transform:translateX(-50%);border:6px solid transparent;border-top-color:var(--ac)}
+.tool:hover .tt{opacity:1;transform:translateX(-50%) scale(1);pointer-events:auto}
+.tool .tt b{display:block;color:var(--ac);font-size:.72rem;text-transform:uppercase;letter-spacing:.05em;margin-bottom:.25rem}
+.tool .tt .ex{margin-top:.5rem;padding:.55rem .7rem;background:rgba(0,0,0,.35);border-radius:8px;font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--gr);line-height:1.6;white-space:pre-wrap}
+.tool .tt .why{margin-top:.5rem;color:var(--or);font-style:italic;font-size:.76rem}
+.tool.active .tt{opacity:1!important;transform:translateX(-50%) scale(1)!important;pointer-events:auto!important}
+@media(max-width:768px){.tool .tt{position:fixed!important;bottom:1rem!important;left:.75rem!important;right:.75rem!important;top:auto!important;transform:none!important;width:auto!important;max-width:none!important;font-size:.84rem}.tool .tt::after{display:none}.tool.active .tt{transform:none!important}}
+.back{display:inline-flex;align-items:center;gap:.4rem;color:var(--ac);text-decoration:none;font-size:.85rem;font-weight:600;margin-bottom:1rem}
+.num{width:36px;height:36px;border-radius:50%;background:rgba(245,158,11,.12);color:var(--or);display:flex;align-items:center;justify-content:center;font-family:'Fraunces',serif;font-weight:900;font-size:1rem;flex-shrink:0}
+a{color:var(--ac)}
+@media(max-width:768px){.grid{grid-template-columns:1fr}.hero{padding:3.5rem 1rem 2rem}.ct{padding:0 1rem 4rem}.q{padding:1.3rem}.q p{font-size:.92rem}}
+</style>
+</head>
+<body>
+
+<section class="hero">
+<h1>AI i Bedriften — <em>Inspirasjon</em></h1>
+<p>Praktiske måter å bruke AI i arbeidshverdagen. Inspirert av Oljefondets tilnærming og norsk næringsliv.</p>
+</section>
+
+<div class="ct">
+
+<a href="build-med-claude-code-guide.html" class="back">← Tilbake til Build-Guiden</a>
+
+<div class="q">
+<p>Alle selskaper bør ha en gal person på toppen som aldri slutter å mase om kunstig intelligens.</p>
+<div class="src">— Nicolai Tangen, sjef for Oljefondet (NBIM), februar 2025</div>
+</div>
+
+<h2>🎯 Oljefondets Største Utfordring</h2>
+<p style="color:var(--dim);margin-bottom:1.5rem">Tangen har vært åpen om at den vanskeligste delen ikke er teknologien — det er å <strong>endre vanene til folk</strong>. Møter må fortsatt holdes. E-poster skal fortsatt sendes. Det er i de <em>daglige rutinene</em> AI må bygges inn.</p>
+
+<div class="grid">
+<div class="pain"><h4>🔴 Problemet</h4><p>Folk er «for trege til å forandre måten de jobber på». Det er krevende å endre vaner — folk vil gjøre det de allerede kan.</p></div>
+<div class="sol"><h4>🟢 Oljefondets Løsning</h4><p>Tvungen opplæring i AI. Tech-days. Hackathons. Tangen spør ansatte daglig: «Hvordan har du brukt AI i dag?» 56% av fondet koder nå.</p></div>
+</div>
+
+<div class="q">
+<p>Det kan ikke være frivillig. Hvis du ikke bruker det, vil du aldri bli forfremmet. Du får ikke jobb.</p>
+<div class="src">— Nicolai Tangen til Bloomberg, mai 2025</div>
+</div>
+
+<h2>⚡ Konkrete AI-Bruksområder</h2>
+<p style="color:var(--dim);margin-bottom:.5rem">Her er praktiske måter du kan begynne å bruke AI — fra det enkleste til det mer avanserte.</p>
+<p style="color:var(--ac);font-size:.78rem;margin-bottom:1.5rem">💡 Trykk/hold over verktøy-boblene for å se eksempel-prompts og tips!</p>
+
+<h3>📋 Møter &amp; Dokumenter</h3>
+<div class="cd"><h4><span class="num">1</span> Møteforberedelser <span class="tg easy">Enkel</span></h4>
+<p>Oljefondet sparer <strong>2–3 timer per møte</strong> på forberedelser med AI. Du kan gjøre det samme: mat inn møtedokumenter, agenda, og tidligere notater → få en oppsummering med nøkkelpunkter og foreslåtte spørsmål.</p>
+<div class="tools"><span class="tool">Claude<span class="tt"><b>Claude — Anthropic</b>Best for lange dokumenter (opptil 200k tokens). Last opp møtepapirer direkte.<div class="ex">«Her er agendaen og saksdokumentene for styremøtet. Lag en oppsummering med de 5 viktigste beslutningspunktene og foreslå 3 spørsmål jeg bør stille.»</div><span class="why">💡 Gratis å starte. Forstår norsk godt.</span></span></span><span class="tool">ChatGPT<span class="tt"><b>ChatGPT — OpenAI</b>Generelt sterk. Bra på brainstorming og kreative vinklinger. GPT-4o har også filstøtte.<div class="ex">«Jeg har et møte med investor om 2 timer. Her er pitch-decken vår. Hva er de mest sannsynlige spørsmålene de vil stille, og hva bør jeg svare?»</div><span class="why">💡 Mest brukt i verden. Bred økosystem av plugins.</span></span></span><span class="tool">Perplexity<span class="tt"><b>Perplexity AI</b>AI-søkemotor med kilder. Best for research og fakta-sjekking før møter.<div class="ex">«Hva er de siste nyhetene om [konkurrent]? Gi meg en oversikt med kilder jeg kan referere til i møtet.»</div><span class="why">💡 Viser alltid kildene. Perfekt for forberedelse med fakta.</span></span></span></div></div>
+
+<div class="cd"><h4><span class="num">2</span> Møtereferater <span class="tg easy">Enkel</span></h4>
+<p>Ta opp møtet (med samtykke) → last opp lydfil → AI transkriberer og lager referat med handlingspunkter, ansvarlige og frister. Slipp å skrive notater mens du lytter.</p>
+<div class="tools"><span class="tool">Otter.ai<span class="tt"><b>Otter.ai</b>Transkriberer møter i sanntid. Kobles til Zoom/Teams/Meet. Lager automatisk referat med handlingspunkter.<div class="ex">Koble til Zoom → Otter deltar i møtet → Etter møtet: «Lag en oppsummering med hvem som sa hva og hvilke oppgaver som ble tildelt.»</div><span class="why">💡 $17/mnd. Sparer 30+ min per møte. Perfekt for team.</span></span></span><span class="tool">Fireflies.ai<span class="tt"><b>Fireflies.ai</b>Ligner Otter. Ekstra sterk på CRM-integrasjon — kobler møtenotater direkte til kunder i Salesforce/HubSpot.<div class="ex">Inviter fred@fireflies.ai til møtet → Transkriberer automatisk → «Trekk ut alle beslutninger og deadlines fra dette møtet.»</div><span class="why">💡 Gratis for opptil 800 min/mnd. Perfekt for salgsmøter.</span></span></span><span class="tool">Claude<span class="tt"><b>Claude — manuell upload</b>Last opp lydfil eller tekst-transkripsjon etterpå for grundigere analyse og omskriving av notater.<div class="ex">«Her er en transkripsjon av et kundemøte. Lag et strukturert referat med: beslutninger, åpne spørsmål, neste steg med ansvarlig og frist.»</div><span class="why">💡 Best om du vil tilpasse formatet nøyaktig.</span></span></span></div></div>
+
+<div class="cd"><h4><span class="num">3</span> Lange dokumenter <span class="tg easy">Enkel</span></h4>
+<p>Rapporter, kontrakter, forskningspapirer — last opp og spør AI om å oppsummere, finne risiko, eller sammenligne med andre dokumenter. Oljefondet analyserer 40–50 siders lønnsrapporter slik.</p>
+<div class="tools"><span class="tool">Claude (filer)<span class="tt"><b>Claude — Filopplasting</b>Last opp PDF, Word, Excel direkte. Claude leser opptil ~500 sider i én samtale. Best i klassen for dokumentanalyse.<div class="ex">«Last opp kontrakt.pdf → Oppsummer de viktigste forpliktelsene, identifiser risikoer, og sammenlikn med vår standardkontrakt.»</div><span class="why">💡 Størst kontekstvindu av alle. Kan sammenlikne flere docs.</span></span></span><span class="tool">ChatGPT<span class="tt"><b>ChatGPT — filanalyse</b>Støtter PDF og bilder. Code Interpreter kan kjøre analyse på data. Bra for raske oppsummeringer.<div class="ex">«Les denne årsrapporten. Hva er de 3 viktigste finansielle trendene? Vis i en tabell.»</div><span class="why">💡 Code Interpreter kan lage grafer og kalkulere fra docs.</span></span></span><span class="tool">NotebookLM<span class="tt"><b>Google NotebookLM</b>Googles AI-notatblokk. Last opp flere kilder → still spørsmål på tvers. Lager til og med en «podcast» av innholdet.<div class="ex">Last opp 5 forskningsartikler → «Hva er de viktigste funnene på tvers av disse studiene? Hvor er de uenige?»</div><span class="why">💡 Gratis fra Google. Unik «audio overview»-funksjon.</span></span></span></div></div>
+
+<h3>✍️ Kommunikasjon &amp; Innhold</h3>
+<div class="cd"><h4><span class="num">4</span> E-post og meldinger <span class="tg easy">Enkel</span></h4>
+<p>Skriv en rask stikkordliste → AI formulerer en profesjonell e-post. Spesielt nyttig på engelsk eller når tonen er viktig (klage, forhandling, oppsigelse).</p>
+<div class="tools"><span class="tool">Claude<span class="tt"><b>Claude — E-post</b>Sterk på tone og nyanser. Kan skrive formelle, uformelle, eller diplomatiske e-poster. Forstår norsk kontekst.<div class="ex">«Skriv en høflig men tydelig e-post til leverandøren som forklarer at vi ikke er fornøyde med forsinkelsen. Vi vil beholde samarbeidet men trenger en løsning innen fredag.»</div><span class="why">💡 Kan tilpasse tone perfekt — fra klage til takk.</span></span></span><span class="tool">ChatGPT<span class="tt"><b>ChatGPT — E-post</b>Rask og kreativ. Bra på å lage flere varianter du kan velge mellom.<div class="ex">«Lag 3 varianter av en oppfølgings-e-post til en potensiell kunde som ikke har svart på 2 uker. Variant 1: forsiktig. Variant 2: direkte. Variant 3: med humor.»</div><span class="why">💡 God på å generere varianter raskt.</span></span></span><span class="tool">Grammarly<span class="tt"><b>Grammarly</b>Sjekker grammatikk, stavefeil, tone og klarhet — direkte i e-postklienten. Fungerer i Gmail, Outlook, og nettleseren.<div class="ex">Installér nettleser-extension → Grammarly sjekker automatisk alt du skriver og foreslår forbedringer i sanntid.</div><span class="why">💡 Gratis basisversjon. Premium: $12/mnd. Alltid-på skrivehjelp.</span></span></span></div></div>
+
+<div class="cd"><h4><span class="num">5</span> Sosiale medier &amp; markedsføring <span class="tg med">Middels</span></h4>
+<p>Generer utkast til innlegg, annonsetekster, nyhetsbrev. AI lager 10 varianter på sekunder — du velger den beste og tilpasser. Spar timer per uke.</p>
+<div class="tools"><span class="tool">Claude<span class="tt"><b>Claude — Innhold</b>Sterk på lengre, gjennomtenkt innhold. Nyhetsbrev, bloggposter, LinkedIn-artikler.<div class="ex">«Skriv et LinkedIn-innlegg om hvordan vi bruker AI i [bransje]. Tone: profesjonell men personlig. Inkluder en konkret historie fra vår erfaring. Max 200 ord.»</div><span class="why">💡 Best for innhold som krever dybde og nyanser.</span></span></span><span class="tool">ChatGPT<span class="tt"><b>ChatGPT — SoMe</b>Rask på korte formater. Bra på Instagram-captions, Twitter-tråder, annonsetekster.<div class="ex">«Lag 10 Instagram-captions for produktlansering av [produkt]. Tone: energisk og ungdommelig. Inkluder relevante emojis og CTA.»</div><span class="why">💡 Raskest på å generere mange varianter.</span></span></span><span class="tool">Canva AI<span class="tt"><b>Canva AI — Magic Studio</b>Designverktøy med innebygd AI. Lager bilder, presentasjoner, videoer og SoMe-innhold med tekst + bilde sammen.<div class="ex">Åpne Canva → Velg «Instagram Post» → Magic Write: «Lag grafikk for Black Friday-salg med 30% rabatt» → AI lager designet.</div><span class="why">💡 Gratis plan inkluderer AI. Best for visuelt innhold.</span></span></span></div></div>
+
+<h3>📊 Analyse &amp; Beslutninger</h3>
+<div class="cd"><h4><span class="num">6</span> Data-analyse <span class="tg med">Middels</span></h4>
+<p>Last opp regneark med salgsdata, kundedata, eller økonomi → AI finner trender, avvik og innsikt du ikke ville sett selv. «Hva var den mest lønnsomme måneden, og hvorfor?»</p>
+<div class="tools"><span class="tool">Claude (CSV)<span class="tt"><b>Claude — Dataanalyse</b>Last opp CSV eller Excel-filer. Claude forstår tabeller og kan finne mønster, avvik og trender.<div class="ex">«Her er salgsdata for 2024 (CSV). Hva er de 3 viktigste trendene? Hvilke produkter vokser raskest? Lag en tabell med måned-over-måned endring.»</div><span class="why">💡 Kan behandle store datasett. Forstår norske datoformater.</span></span></span><span class="tool">ChatGPT Code<span class="tt"><b>ChatGPT Code Interpreter</b>Kjører Python-kode for å analysere data. Kan lage grafer, kjøre statistikk, og generere rapporter med visualiseringer.<div class="ex">«Last opp kundedata.xlsx → Lag en graf som viser kundetilfredshet over tid. Identifiser hvilke segmenter som har høyest churn-rate.»</div><span class="why">💡 Lager faktiske grafer og diagrammer. Best for visuell analyse.</span></span></span><span class="tool">Julius AI<span class="tt"><b>Julius AI</b>Spesialisert AI for dataanalyse. Dra-og-slipp grensesnitt for folk uten kodeerfaring. Lager dashboards automatisk.<div class="ex">Last opp regneark → «Vis meg en oversikt over inntekter per region med forecast for neste kvartal.»</div><span class="why">💡 Enklest for ikke-tekniske. Gratis for basisbruk.</span></span></span></div></div>
+
+<div class="cd"><h4><span class="num">7</span> Konkurrentanalyse <span class="tg med">Middels</span></h4>
+<p>«Analyser disse 5 konkurrentene: priser, funksjoner, styrker, svakheter. Lag en tabell og anbefalinger for hvordan vi skiller oss ut.» Oppgave som tar timer → ferdig på minutter.</p>
+<div class="tools"><span class="tool">Claude + web<span class="tt"><b>Claude med websøk</b>Claude kan søke på nettet og analysere resultater. Kombiner research og analyse i én samtale.<div class="ex">«Søk opp [konkurrent A], [konkurrent B] og [konkurrent C]. Lag en sammenlikningstabell: pris, funksjoner, målgruppe, styrker, svakheter. Hvor har vi en fordel?»</div><span class="why">💡 Kombinerer søk og analyse. Alt i én samtale.</span></span></span><span class="tool">Perplexity<span class="tt"><b>Perplexity AI — Research</b>AI-drevet søkemotor som alltid viser kilder. Pro-versjon har «Deep Research» for grundigere rapporter.<div class="ex">«Hva er markedstrendene for [bransje] i Norge 2025? Inkluder statistikk og prognoser med kilder.»</div><span class="why">💡 Best for fakta-basert research med verifiserbare kilder.</span></span></span><span class="tool">Deep Research<span class="tt"><b>Deep Research (OpenAI/Claude)</b>Både OpenAI og Claude tilbyr «Deep Research» — AI som bruker timer på å undersøke et tema grundig og leverer en full rapport.<div class="ex">«Lag en markedsanalyse av [bransje] i Skandinavia. Inkluder markedsstørrelse, nøkkelaktører, trender, og muligheter for nyetablering.»</div><span class="why">💡 For dype analyser. Tar 5–30 min men leverer rapport-kvalitet.</span></span></span></div></div>
+
+<h3>💻 Kode &amp; Automatisering</h3>
+<div class="cd"><h4><span class="num">8</span> Interne verktøy <span class="tg adv">Avansert</span></h4>
+<p>Bygg dashboards, kalkulatorer, skjemaer og interne verktøy — uten utviklere. Claude Code kan bygge en fungerende app på timer. Oljefondet har 56% av ansatte som «vibe-koder».</p>
+<div class="tools"><span class="tool">Claude Code<span class="tt"><b>Claude Code — Terminal-agent</b>Skriv i terminalen hva du vil bygge — Claude skriver koden, kjører den, og fikser feil. Bygger hele apper.<div class="ex">«Lag et internt dashboard som viser salgsdata fra Supabase. Inkluder graf over siste 12 mnd, filtrering per region, og export til CSV.»</div><span class="why">💡 Oljefondets favoritt. 56% av ansatte «vibe-koder» med dette.</span></span></span><span class="tool">Cursor<span class="tt"><b>Cursor — AI-kodeeditor</b>VS Code-lignende editor med innebygd AI. Forstår hele kodebasen din og foreslår endringer i kontekst.<div class="ex">Åpne prosjektet → Ctrl+K: «Legg til mørk modus-toggle på denne siden» → Cursor redigerer filene direkte.</div><span class="why">💡 $20/mnd. Best for de som allerede har et prosjekt å jobbe i.</span></span></span><span class="tool">Replit<span class="tt"><b>Replit — Nettleser-IDE</b>Kode-miljø i nettleseren. Ingen installasjon. AI-assistent bygger og deployer direkte. Bra for prototyper.<div class="ex">«Lag en enkel kalkulator-app for å beregne MVA og fortjeneste. Brukeren legger inn innkjøpspris og salgspris.»</div><span class="why">💡 Gratis start. Alt i nettleseren — ingenting å installere.</span></span></span></div></div>
+
+<div class="cd"><h4><span class="num">9</span> Automatiserte workflows <span class="tg adv">Avansert</span></h4>
+<p>Koble systemer sammen: ny kunde i CRM → automatisk velkomst-e-post → oppretter prosjektmappe → varsler teamet på Slack. AI designer flyten, du godkjenner.</p>
+<div class="tools"><span class="tool">Make.com<span class="tt"><b>Make (tidl. Integromat)</b>Visuell automasjonsbygger. Koble 1000+ apper med dra-og-slipp. Kraftigere enn Zapier for komplekse flyter.<div class="ex">Ny ordre i Shopify → Lag faktura i Fiken → Send bekreftelse via e-post → Legg til i Google Sheets → Varsle Slack.</div><span class="why">💡 Gratis for 1000 operasjoner/mnd. Best for komplekse flyter.</span></span></span><span class="tool">Zapier<span class="tt"><b>Zapier</b>Enkleste automasjonsverktøyet. «Hvis dette skjer, gjør dette.» 7000+ app-integrasjoner. Null kode.<div class="ex">Ny Google Forms-svar → Opprett rad i Notion → Send Slack-melding til teamet → Legg til i HubSpot-kontakt.</div><span class="why">💡 Gratis for 100 tasks/mnd. Lettest å komme i gang med.</span></span></span><span class="tool">n8n<span class="tt"><b>n8n — Self-hosted</b>Open-source alternativ du kan kjøre på egen server. Full kontroll over data. Best for utviklere.<div class="ex">Webhook fra nettside → AI analyserer henvendelse → Ruter til riktig team → Oppretter Jira-sak → Sender svar-e-post.</div><span class="why">💡 Gratis og open-source. Full datakontroll (GDPR-vennlig).</span></span></span></div></div>
+
+<h2>🧠 Tangens 5 Prinsipper</h2>
+<p style="color:var(--dim);margin-bottom:1.5rem">Basert på Oljefondets tilnærming:</p>
+
+<div class="cd" style="border-color:rgba(245,158,11,.3)"><h4>1. Ha en «AI-maniac» på toppen</h4><p>Noen må mase. Daglig. Tangen gjør det selv — spør folk hvordan de brukte AI i dag. Uten press endrer ingen vaner.</p></div>
+
+<div class="cd" style="border-color:rgba(245,158,11,.3)"><h4>2. Ikke si opp folk — endre hva de gjør</h4><p>«En feil mange selskaper gjør, er å si opp folk fordi de skal bruke mer AI. Da stopper du utviklingen før den har begynt.» Bruk frigjort tid til bedre arbeid.</p></div>
+
+<div class="cd" style="border-color:rgba(245,158,11,.3)"><h4>3. Tvungen opplæring — ikke frivillig</h4><p>Oljefondet kjører obligatoriske kurs, Tech Days, hackathons. Terskelen senkes med kontinuerlige «små dytt». Ikke ett stort kurs — mange små.</p></div>
+
+<div class="cd" style="border-color:rgba(245,158,11,.3)"><h4>4. Start med «tid spart»</h4><p>Mål effekten i timer spart, ikke abstrakte KPIer. Oljefondet: 2–3 timer spart per møtforberedelse × 3000 møter/år = enorm gevinst.</p></div>
+
+<div class="cd" style="border-color:rgba(245,158,11,.3)"><h4>5. Klare regler for hva AI IKKE skal brukes til</h4><p>All kode dobbeltsjekkes. Ingen personopplysninger eller sensitiv info mates inn. AI brukes ikke i ansettelsesprosesser. Tydelige retningslinjer fra dag 1.</p></div>
+
+<h2>🛑 Det Vanskeligste: Å Få AI Inn i Workflowen</h2>
+<p style="color:var(--dim);margin-bottom:1.5rem">Tangens poeng — som du refererer til — er at <strong>møtene uansett må holdes</strong>. E-postene må sendes. Rapportene må skrives. AI fjerner ikke arbeidet, den endrer <em>hvordan</em> det gjøres.</p>
+
+<div class="tip"><strong>💡 Det som faktisk fungerer</strong><p>Ikke prøv å erstatte hele prosesser. Putt AI inn i <strong>eksisterende rutiner</strong> i stedet:<br><br>
+❌ «Vi skal bruke AI til alt fra nå av»<br>
+✅ «Før hvert møte, bruk 2 minutter på å la Claude oppsummere agendaen»<br><br>
+❌ «Vi trenger et helt nytt AI-system»<br>
+✅ «Alle bruker Claude/ChatGPT til å lage førsteutkast av dokumenter»<br><br>
+Start med <strong>én vane</strong>. Når den sitter, legg til den neste.</p></div>
+
+<h2>🔧 Oljefondets AI-Verktøy</h2>
+<p style="color:var(--dim);margin-bottom:1rem">Brukt av 100% av de 700 ansatte:</p>
+<div class="tools" style="gap:.6rem">
+<span class="tool" style="border-color:var(--ac)">Claude (Anthropic)</span>
+<span class="tool" style="border-color:var(--bl)">Microsoft Copilot</span>
+<span class="tool" style="border-color:var(--gr)">Perplexity</span>
+<span class="tool" style="border-color:var(--or)">Cursor</span>
+<span class="tool" style="border-color:var(--pk)">OpenAI Deep Research</span>
+<span class="tool" style="border-color:var(--cy)">Google AI</span>
+</div>
+
+<h2>📖 Videre Lesning</h2>
+<div class="cd">
+<p><a href="https://e24.no/boers-og-finans/i/y57Rox/ai-i-oljefondet-sparer-mange-milliarder" target="_blank">E24: AI i Oljefondet — Sparer mange milliarder</a> (feb 2025)</p>
+<p><a href="https://digitalnorway.com/aktuelt/slik-bruker-oljefondet-kunstig-intelligens" target="_blank">Digital Norway: Slik bruker Oljefondet kunstig intelligens</a> (nov 2025)</p>
+<p><a href="https://teknorge.no/meninger/oljefondsjefen-etterspurte-mer-ki-na-gjor-tek-norge-noe-med-det/" target="_blank">TEK Norge: KI til tusen — program for norske bedrifter</a> (feb 2026)</p>
+<p><a href="https://www.finansavisen.no/teknologi/2025/05/27/8267155/tangen-om-ai-du-far-ikke-jobb-uten" target="_blank">Finansavisen: Tangen om AI — Du får ikke jobb uten</a> (mai 2025)</p>
+</div>
+
+</div>
+<script>
+// Touch support for tooltips on mobile
+let activeTool = null;
+document.querySelectorAll('.tool').forEach(tool => {
+  tool.addEventListener('click', function(e) {
+    e.stopPropagation();
+    if (activeTool === this) { this.classList.remove('active'); activeTool = null; return; }
+    if (activeTool) activeTool.classList.remove('active');
+    this.classList.add('active');
+    activeTool = this;
+  });
+});
+document.addEventListener('click', () => { if (activeTool) { activeTool.classList.remove('active'); activeTool = null; }});
+</script>
+</body>
+</html>
