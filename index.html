@@ -2,7 +2,9 @@
 <html lang="no">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <title>Build & Ship Apps med Claude Code — Mac Guide</title>
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=DM+Sans:wght@400;500;600;700&family=Fraunces:ital,wght@0,700;0,900;1,700&display=swap" rel="stylesheet">
 <style>
@@ -47,7 +49,7 @@ body{background:var(--bg);color:var(--tx);font-family:'DM Sans',sans-serif;line-
 .hd{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--cy);animation:pu 2s infinite}
 @keyframes pu{0%,100%{opacity:1}50%{opacity:.3}}
 .pills{display:flex;gap:.4rem;flex-wrap:wrap;justify-content:center}
-.pill{padding:.45rem 1rem;border-radius:100px;font-size:.78rem;font-weight:600;cursor:pointer;border:1px solid var(--bd);background:var(--sf);color:var(--dim);transition:.3s;text-decoration:none}
+.pill{padding:.45rem 1rem;border-radius:100px;font-size:.78rem;font-weight:600;cursor:pointer;border:1px solid var(--bd);background:var(--sf);color:var(--dim);transition:.3s;text-decoration:none;-webkit-tap-highlight-color:transparent}
 .pill:hover{border-color:var(--ac);color:var(--tx);transform:translateY(-2px)}
 
 /* CONTENT */
@@ -116,7 +118,32 @@ body{background:var(--bg);color:var(--tx);font-family:'DM Sans',sans-serif;line-
 .biz .bt{display:inline-block;padding:.15rem .55rem;border-radius:100px;font-size:.68rem;font-weight:700;margin-left:.4rem}
 .biz .bt.no{background:rgba(96,165,250,.15);color:var(--bl)}.biz .bt.us{background:rgba(239,68,68,.15);color:var(--rd)}.biz .bt.all{background:rgba(52,211,153,.15);color:var(--gr)}
 
-@media(max-width:768px){.nav-r{display:none}.cg{grid-template-columns:1fr}.hero{padding:5.5rem 1.2rem 2.5rem}.ct{padding:0 1.1rem 4rem}.cd{padding:1.3rem}.t .tp{width:250px}}
+@media(max-width:768px){
+.nav-r{display:none}
+.cg{grid-template-columns:1fr}
+.hero{min-height:auto;padding:5.5rem 1rem 2rem}
+.hero h1{font-size:1.65rem}
+.hero p{font-size:.9rem}
+.ct{padding:0 .85rem 4rem}
+.cd{padding:1rem}
+.cb{padding:.8rem;font-size:.72rem}
+.cb code{font-size:.72rem;white-space:pre-wrap;word-break:break-all}
+.st{gap:.7rem}
+.t .tp{position:fixed!important;bottom:1rem!important;left:.75rem!important;right:.75rem!important;top:auto!important;transform:none!important;width:auto!important;max-width:none!important;z-index:9999;border-radius:14px;padding:1.1rem;font-size:.88rem}
+.t .tp::after{display:none}
+.ct-t{font-size:.72rem;display:block;overflow-x:auto}
+.pills{gap:.3rem}.pill{font-size:.7rem;padding:.35rem .75rem}
+.ft{font-size:.66rem;overflow-x:auto}
+.ph{margin:3rem 0 1rem}.pt{font-size:1.2rem}
+.biz{padding:1rem}.biz ul li{font-size:.8rem}
+.co{padding:.85rem 1rem}
+.pn{width:36px;height:36px;font-size:1rem}
+.hint{font-size:.78rem}
+}
+@supports(-webkit-touch-callout:none){
+body{-webkit-text-size-adjust:100%}
+.cb code{-webkit-overflow-scrolling:touch}
+}
 </style>
 </head>
 <body>
@@ -125,14 +152,14 @@ body{background:var(--bg);color:var(--tx);font-family:'DM Sans',sans-serif;line-
 <nav class="nav">
   <div class="nav-l">🛠 Build med Claude Code</div>
   <div class="nav-r">
-    <a href="#s1">Setup</a><a href="#s2">Verktøy</a><a href="#s3">Bygg</a><a href="#s4">Deploy</a><a href="#s5">iOS</a><a href="#s6">Kostnader</a><a href="#s7">Claude Tips</a>
+    <a href="#s1">Setup</a><a href="#s2">Verktøy</a><a href="#s3">Bygg</a><a href="#s4">Deploy</a><a href="#s5">iOS</a><a href="#s6">Kostnader</a><a href="#s7">Claude Tips</a><a href="#mob">📱 Mobil</a>
   </div>
 </nav>
 
 <section class="hero">
   <h1>Bygg &amp; Publiser Apper med <em>Claude Code</em></h1>
   <p>Komplett nybegynner-guide for Mac. Hold musen over <span class="t" style="border-color:var(--cy)">stiplede begreper<span class="tp"><b>Tooltip-system</b>Alle tekniske ord i denne guiden har slike forklaringsbokser. Hold musen over for å lære hva de betyr.<span class="an">💡 En innebygd ordbok rett i siden</span></span></span> for å forstå hva de betyr.</p>
-  <div class="hint"><span class="hd"></span> Hold musen over stiplede ord = forklaring</div>
+  <div class="hint"><span class="hd"></span> Trykk/hold over stiplede ord = forklaring</div>
   <div class="pills">
     <a href="#s1" class="pill">① Mac Setup</a>
     <a href="#s2" class="pill">② Verktøy</a>
@@ -141,6 +168,7 @@ body{background:var(--bg);color:var(--tx);font-family:'DM Sans',sans-serif;line-
     <a href="#s5" class="pill">⑤ iOS App</a>
     <a href="#s6" class="pill">⑥ Kostnader</a>
     <a href="#s7" class="pill">⑦ Slik Tenker Claude</a>
+    <a href="ai-i-bedriften.html" class="pill" style="border-color:var(--or);color:var(--or)">🧠 AI i Bedriften</a>
   </div>
 </section>
 
@@ -312,6 +340,34 @@ body{background:var(--bg);color:var(--tx);font-family:'DM Sans',sans-serif;line-
 <tr><td><strong><span class="t">Capacitor<span class="tp"><b>Capacitor</b>Verktøy fra Ionic som pakker web-appen i en native mobilapp. Du beholder web-koden men får tilgang til kamera, push-varsler, og kan publisere på App Store.<span class="an">📱 Konvolutt som gjør web-appen til en iPhone-app</span></span></span></strong></td><td>Web → native mobilapp</td><td>📱 Konvolutt</td></tr>
 <tr><td><strong><span class="t">PWA<span class="tp"><b>PWA — Progressive Web App</b>En nettside som oppfører seg som en app. Brukere «installerer» den på hjemskjermen, fungerer offline, kan sende push-varsler. Ingen App Store nødvendig.<span class="an">🌐 Nettside som later som den er en app</span></span></span></strong></td><td>Nettside som oppfører seg som app</td><td>🌐 Nett-app</td></tr>
 </tbody></table></div>
+
+<div class="cd"><h3>💾 Diskplass — Hva Tar Hvor Mye</h3>
+<p>Slik ser det ut på harddisken etter at alt er installert:</p>
+<table class="ct-t"><thead><tr><th>Verktøy</th><th>Størrelse</th><th>Merknader</th></tr></thead><tbody>
+<tr><td><strong>Xcode Command Line Tools</strong></td><td>~1.5 GB</td><td>Installeres én gang</td></tr>
+<tr><td><strong>Homebrew</strong></td><td>~0.5 GB</td><td>+ pakker du installerer</td></tr>
+<tr><td><strong>Node.js (via nvm)</strong></td><td>~0.3 GB</td><td>Per versjon</td></tr>
+<tr><td><strong>Claude Code CLI</strong></td><td>~0.1 GB</td><td>Liten — det meste er i skyen</td></tr>
+<tr><td><strong>VS Code</strong></td><td>~0.5 GB</td><td>+ extensions</td></tr>
+<tr><td><strong>Git + GitHub CLI</strong></td><td>~0.2 GB</td><td>Inkludert i CLI Tools</td></tr>
+<tr><td><strong>Xcode (full — kun iOS)</strong></td><td>~12 GB</td><td>Bare fase 5, krever ~35 GB ledig</td></tr>
+<tr><td><strong>Typisk Next.js-prosjekt</strong></td><td>~0.3–1 GB</td><td>node_modules er store!</td></tr>
+<tr><td><strong>Tailscale</strong></td><td>~0.05 GB</td><td>For mobil-workflow</td></tr>
+</tbody></table>
+<div class="co info"><strong>📊 Totalt uten iOS: ~3–4 GB · Med iOS: ~15–17 GB</strong><p>Sørg for minst 20 GB ledig disk. Sjekk: → Om denne Macen → Lagring.</p></div>
+</div>
+
+<div class="cd"><h3>🎬 YouTube-Videoer for Hver Fase</h3>
+<p>Korte videoer som forklarer hvert steg visuelt:</p>
+<table class="ct-t"><thead><tr><th>Fase</th><th>Video</th><th>Lengde</th></tr></thead><tbody>
+<tr><td><strong>Setup</strong></td><td><a href="https://youtu.be/GepHGs_CZdk" target="_blank" style="color:var(--ac)">Claude Code Beginner Tutorial — Peter Yang</a></td><td>~17 min</td></tr>
+<tr><td><strong>Setup</strong></td><td><a href="https://www.youtube.com/results?search_query=install+homebrew+node+mac+2025" target="_blank" style="color:var(--ac)">Install Homebrew & Node (søk)</a></td><td>~10 min</td></tr>
+<tr><td><strong>Bygg</strong></td><td><a href="https://www.youtube.com/results?search_query=claude+code+build+app+beginner+2025" target="_blank" style="color:var(--ac)">Build App med Claude Code (søk)</a></td><td>~15 min</td></tr>
+<tr><td><strong>Deploy</strong></td><td><a href="https://www.youtube.com/results?search_query=deploy+next.js+vercel+tutorial+2025" target="_blank" style="color:var(--ac)">Deploy Next.js til Vercel (søk)</a></td><td>~10 min</td></tr>
+<tr><td><strong>Git</strong></td><td><a href="https://www.youtube.com/results?search_query=git+github+beginner+tutorial+2025" target="_blank" style="color:var(--ac)">Git & GitHub for nybegynnere (søk)</a></td><td>~20 min</td></tr>
+<tr><td><strong>Claude Tips</strong></td><td><a href="https://www.youtube.com/results?search_query=claude+code+tips+tricks+2025" target="_blank" style="color:var(--ac)">Claude Code tips & triks (søk)</a></td><td>~30 min</td></tr>
+</tbody></table>
+</div>
 
 <!-- ============ PHASE 3 ============ -->
 <div class="ph" id="s3"><div class="pn o">3</div><div class="pt">Bygg Appen</div></div>
@@ -568,18 +624,88 @@ Test at det fungerer etter fiksen."</span></code></div></div></div>
 </div>
 
 <!-- ============ BONUS ============ -->
-<div class="ph" id="mob"><div class="pn g">+</div><div class="pt">GitHub på Mobilen</div></div>
-<p class="ps">Administrer kode og trigger deploys fra telefonen.</p>
+<div class="co tip" style="margin:2.5rem 0;border-color:rgba(245,158,11,.4);background:linear-gradient(135deg,rgba(245,158,11,.06),rgba(244,114,182,.04))"><strong>🧠 AI i Bedriften — Inspirasjon &amp; Praktiske Tips</strong><p>Vil du vite hvordan Oljefondet bruker AI i hverdagen? Nicolai Tangen krever at alle 700 ansatte bruker AI daglig og sparer milliarder. Vi har samlet konkrete bruksområder, eksempel-prompts og verktøy du kan begynne med i dag.</p><p style="margin-top:.7rem"><a href="ai-i-bedriften.html" style="color:var(--or);font-weight:700;text-decoration:underline">→ Åpne AI i Bedriften-guiden</a></p></div>
 
-<div class="cd"><h3>📱 GitHub Mobile</h3>
+<div class="ph" id="mob"><div class="pn g">+</div><div class="pt">Jobb Fra Telefonen</div></div>
+<p class="ps">Bruk Claude Code og GitHub fra iPhone — bygg mens du er ute og går.</p>
+
+<div class="cd cc"><h3>📱 Claude Code på iPhone</h3>
+<p>Claude Code er tilgjengelig direkte i <strong>Claude iOS-appen</strong> (fra oktober 2025). Du kan også bruke <span class="t">SSH<span class="tp"><b>SSH — Secure Shell</b>En sikker forbindelse fra telefonen til Mac-en din hjemme. Du skriver kommandoer på telefonen, men de kjøres på Mac-en — som en fjernkontroll.<span class="an">🔗 Fjernkontroll til datamaskinen din</span></span></span> for full kontroll.</p>
+
+<div class="ai"><div class="ah" onclick="ta(this)"><span>🅰️ Enklest: Claude iOS-appen</span><span class="ar">▼</span></div><div class="ab">
+<p>Last ned «Claude» fra App Store (gratis app, krever Claude Pro-abonnement). Claude Code kjører i skyen — ingen ekstra oppsett.</p>
+<ul>
+<li>Skriv instruksjoner på vanlig norsk/engelsk</li>
+<li>Claude lager, redigerer og tester kode</li>
+<li>Perfekt for hurtige endringer og planlegging</li>
+</ul>
+<div class="co tip"><strong>💡 Begrensning</strong><p>iOS-appen jobber i skyen, ikke direkte i ditt lokale prosjekt. Best for nye prosjekter eller når du vil planlegge og generere kode du limer inn etterpå.</p></div>
+</div></div>
+
+<div class="ai"><div class="ah" onclick="ta(this)"><span>🅱️ For full kontroll: SSH fra telefonen</span><span class="ar">▼</span></div><div class="ab">
+<p>Koble til Mac-en din hjemme og kjør Claude Code direkte i prosjektet:</p>
+<div class="st"><div class="sn">1</div><div class="sc"><h4>Aktiver SSH på Mac</h4><p>Systeminnstillinger → Generelt → Deling → Fjernpålogging (Remote Login) → Slå på</p></div></div>
+<div class="st"><div class="sn">2</div><div class="sc"><h4>Installer <span class="t">Tailscale<span class="tp"><b>Tailscale</b>Gratis VPN som kobler enhetene dine i et privat nettverk. Telefon og Mac snakker direkte med hverandre, uansett hvor du er — uten å eksponere noe på internett.<span class="an">🔒 En privat tunnel mellom enhetene dine</span></span></span></h4><p>Last ned Tailscale på Mac + iPhone (gratis). Logg inn med samme konto på begge.</p></div></div>
+<div class="st"><div class="sn">3</div><div class="sc"><h4>Last ned <span class="t">Blink Shell<span class="tp"><b>Blink Shell</b>Premium SSH-klient for iPhone/iPad (~$16). Best i klassen for terminal-bruk på iOS. Alternativ: Termius (gratis med begrensninger).<span class="an">💻 Terminal-app for iPhone</span></span></span> eller Termius</h4><p>Blink Shell ($16, best) eller Termius (gratis). Koble til Mac via Tailscale-IP.</p></div></div>
+<div class="st"><div class="sn">4</div><div class="sc"><h4>Bruk <span class="t">tmux<span class="tp"><b>tmux — Terminal Multiplexer</b>Holder Terminal-økter i live selv om du kobler fra. Start tmux på Mac, koble fra, gå ut — koble til igjen fra telefonen og alt er der du forlot det.<span class="an">💾 Pause-knapp for Terminal</span></span></span> for å holde økten i live</h4>
+<div class="cb"><span class="cl">Mac Terminal (før du går)</span><code><span class="c">brew install</span> tmux
+<span class="c">tmux new</span> <span class="f">-s</span> kode
+<span class="c">cd</span> ~/Projects/min-app
+<span class="c">claude</span>
+<span class="cm"># Start å bygge... gå ut når du vil</span>
+<span class="cm"># tmux holder alt i live!</span></code></div>
+<div class="cb"><span class="cl">iPhone (fra Blink Shell)</span><code><span class="c">ssh</span> dittnavn@mac-tailscale-ip
+<span class="c">tmux attach</span> <span class="f">-t</span> kode
+<span class="cm"># Du er tilbake der du slapp!</span></code></div>
+</div></div>
+<div class="co info"><strong>🔥 Workflow</strong><p>Start Claude Code i tmux på Mac → gå ut → koble til fra iPhone → se hva Claude har gjort → godkjenn eller gi ny instruksjon → legg telefonen i lomma. tmux holder alt i live!</p></div>
+</div></div>
+</div>
+
+<div class="cd"><h3>📱 GitHub på iPhone</h3>
 <p>Last ned «GitHub» fra App Store (gratis):</p>
 <ul>
-  <li>Bla gjennom kode</li>
+  <li>Bla gjennom kode og se endringer</li>
   <li>Gjennomgå og merge <span class="t">pull requests<span class="tp"><b>Pull Request (PR)</b>En forespørsel om å slå sammen endringer. Du lager en PR slik at koden kan gjennomgås før den blir del av hoved-koden.<span class="an">✋ «Kan noen sjekke dette før vi bruker det?»</span></span></span></li>
-  <li>Bruke Copilot til å spørre om koden</li>
+  <li>Godkjenn endringer fra broren din</li>
   <li>Varsler når <span class="t">builds<span class="tp"><b>Build</b>Prosessen der koden kompileres og gjøres klar. Vercel kjører en build automatisk ved push. Feiler det, er noe galt i koden.<span class="an">🏗 Bygge huset fra tegningene</span></span></span> lykkes/feiler</li>
+  <li>Redigér enkle filer direkte (trykk ✏️)</li>
 </ul>
-<div class="co info"><strong>📲 Mobil-workflow</strong><p>GitHub.dev i Safari (trykk «.» på et repo) → rediger → commit → Vercel auto-deployer. Fiks bugs fra sofaen!</p></div>
+<div class="co info"><strong>📲 Mobil-workflow</strong><p>Trykk «.» på et repo i Safari → åpner github.dev (koderedigerer i nettleseren) → rediger → commit → Vercel auto-deployer. Fiks bugs fra sofaen!</p></div>
+</div>
+
+<div class="cd cc"><h3>🤖 Automatiser Samarbeidet</h3>
+<p>Sett opp en gang — jobber automatisk for alltid:</p>
+
+<div class="ai"><div class="ah" onclick="ta(this)"><span>🔄 Auto-deploy med Vercel (allerede satt opp!)</span><span class="ar">▼</span></div><div class="ab"><p>Vercel gjør dette <strong>automatisk</strong> når du kobler GitHub-repoet:<br>Du eller broren pusher → Vercel bygger → Live på 30 sek. Ingen ekstra konfigurasjon nødvendig. Hver <span class="t">branch<span class="tp"><b>Branch (gren)</b>En parallell versjon av koden. Broren jobber på sin branch, du på din. Etterpå slår dere dem sammen (merge).<span class="an">🌿 En kopi du kan eksperimentere med trygt</span></span></span> får sin egen preview-URL!</p></div></div>
+
+<div class="ai"><div class="ah" onclick="ta(this)"><span>🧪 Auto-testing med GitHub Actions</span><span class="ar">▼</span></div><div class="ab"><p>Kjør tester automatisk hver gang noen pusher kode. Be Claude sette det opp:</p>
+<div class="cb"><span class="cl">Be Claude Code</span><code><span class="s">"Sett opp GitHub Actions workflow som
+kjører lint og tester ved push til main.
+Lag filen .github/workflows/test.yml"</span></code></div>
+<p>Claude oppretter YAML-filen. Neste gang dere pusher, kjøres testene automatisk.</p></div></div>
+
+<div class="ai"><div class="ah" onclick="ta(this)"><span>🔔 Varsler mellom dere</span><span class="ar">▼</span></div><div class="ab"><p>GitHub sender automatisk varsler (e-post + GitHub-appen) når:<br>
+• Noen lager en <strong>Pull Request</strong><br>
+• En PR blir godkjent eller får kommentarer<br>
+• En build feiler<br>
+• Noen tagger deg med <code>@brukernavn</code><br><br>
+<strong>Anbefalt workflow for to:</strong><br>
+1. Jobb på egne <strong>branches</strong> (ikke direkte på <code>main</code>)<br>
+2. Lag PR når noe er klart<br>
+3. Den andre godkjenner fra telefonen<br>
+4. Merge → auto-deploy via Vercel</p></div></div>
+
+<div class="ai"><div class="ah" onclick="ta(this)"><span>📋 Branch-strategi for to personer</span><span class="ar">▼</span></div><div class="ab">
+<div class="cb"><span class="cl">Du: Ny feature</span><code><span class="c">git checkout</span> <span class="f">-b</span> feat/prisliste
+<span class="cm"># Jobb med Claude Code...</span>
+<span class="c">git add</span> . &amp;&amp; <span class="c">git commit</span> <span class="f">-m</span> <span class="s">"Prisliste ferdig"</span>
+<span class="c">git push</span> <span class="f">-u origin</span> feat/prisliste
+<span class="cm"># Lag PR på GitHub → broren godkjenner fra iPhone</span></code></div>
+<div class="cb"><span class="cl">Broren: Godkjenn fra iPhone</span><code>GitHub-appen → Pull Requests → Review
+→ Approve → Merge → Auto-deploy ✅</code></div>
+<p>Slik unngår dere konflikter og alt deployes trygt.</p>
+</div></div>
 </div>
 
 <div class="cd"><h3>✅ Alt Du Kanskje Ikke Har Tenkt På</h3>
@@ -598,16 +724,42 @@ Test at det fungerer etter fiksen."</span></code></div></div></div>
 <div class="chi"><div class="chb" onclick="tc(this)"></div><span><strong><span class="t">.gitignore<span class="tp"><b>.gitignore</b>Forteller Git hvilke filer den IKKE skal spore — <code>node_modules/</code>, <code>.env.local</code>, bygde filer. Claude setter opp dette automatisk.<span class="an">🚫 «Ikke rør»-liste for Git</span></span></span></strong> — Hemmeligheter og node_modules ekskludert</span></div>
 </div>
 
-<div class="co tip" style="margin-top:2.5rem"><strong>🎯 Husk Starter Story-modellen</strong><p>1. <strong>Start smått</strong> — enkleste versjon først. 2. <strong>Ship raskt</strong> — live URL innen dager. 3. <strong>Brukere &amp; data</strong> — auth, database. 4. <strong>Penger</strong> — betalinger etter du har brukere. Ikke bygg alt på én gang!</p></div>
+
 
 </div>
 
 <script>
 window.addEventListener('scroll',()=>{const h=document.documentElement;document.getElementById('pbar').style.width=(h.scrollTop/(h.scrollHeight-h.clientHeight))*100+'%'});
-document.addEventListener('mouseover',e=>{const t=e.target.closest('.t');if(!t)return;t.classList.toggle('fl',t.getBoundingClientRect().top<340)});
+
+// Touch-friendly tooltips for iOS
+let activeTooltip=null;
+function handleTooltip(e){
+  const t=e.target.closest('.t');
+  if(!t){if(activeTooltip){activeTooltip.classList.remove('active');activeTooltip=null}return}
+  if('ontouchstart' in window){
+    e.preventDefault();
+    if(activeTooltip&&activeTooltip!==t){activeTooltip.classList.remove('active')}
+    t.classList.toggle('active');
+    activeTooltip=t.classList.contains('active')?t:null;
+  } else {
+    t.classList.toggle('fl',t.getBoundingClientRect().top<340);
+  }
+}
+document.addEventListener('click',handleTooltip);
+document.addEventListener('mouseover',e=>{
+  if('ontouchstart' in window)return;
+  const t=e.target.closest('.t');if(!t)return;
+  t.classList.toggle('fl',t.getBoundingClientRect().top<340);
+});
+
 function ta(e){e.parentElement.classList.toggle('op')}
 function tw(e){const b=e.nextElementSibling;b.classList.toggle('open');e.querySelector('span').textContent=b.classList.contains('open')?'▼':'▶'}
 function tc(e){e.classList.toggle('ck')}
 </script>
+<style>
+/* Touch tooltip activation */
+.t.active .tp{opacity:1!important;transform:translateX(-50%) scale(1)!important;pointer-events:auto!important}
+@media(max-width:768px){.t.active .tp{transform:none!important}}
+</style>
 </body>
 </html>
