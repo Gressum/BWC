@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
+<title>Finansiell Storytelling med AI</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=DM+Sans:wght@400;500;600;700&family=Fraunces:ital,wght@0,700;0,900;1,700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#06060c;--sf:#0f0f1a;--sf2:#161625;--sf3:#1e1e30;--bd:#2a2a42;--tx:#e8e8f2;--dim:#8888aa;--ac:#6366f1;--gr:#34d399;--or:#f59e0b;--bl:#60a5fa;--pk:#f472b6;--cy:#22d3ee;--gld:#fbbf24}
+*{margin:0;padding:0;box-sizing:border-box}body{background:var(--bg);color:var(--tx);font-family:'DM Sans',sans-serif;line-height:1.8}
+a{color:var(--ac)}a:hover{text-decoration:underline}
+.nav{position:sticky;top:0;z-index:100;background:rgba(6,6,12,.92);backdrop-filter:blur(20px);border-bottom:1px solid var(--bd);padding:.7rem 1.5rem;display:flex;align-items:center;gap:1rem;flex-wrap:wrap}
+.nav-brand{font-family:'Fraunces',serif;font-weight:900;font-size:1rem;background:linear-gradient(135deg,var(--bl),var(--ac));-webkit-background-clip:text;-webkit-text-fill-color:transparent;text-decoration:none}
+.nav-links{display:flex;gap:.5rem;flex-wrap:nowrap;margin-left:auto;overflow-x:auto;-webkit-overflow-scrolling:touch}
+.nav-links a{font-size:.75rem;padding:.3rem .7rem;border-radius:100px;border:1px solid var(--bd);color:var(--dim);transition:.2s;text-decoration:none;white-space:nowrap;flex-shrink:0}
+.nav-links a:hover,.nav-links a.active{border-color:var(--ac);color:var(--tx)}
+.ct{max-width:820px;margin:0 auto;padding:2.5rem 1.5rem 5rem}
+h1{font-family:'Fraunces',serif;font-weight:900;font-size:clamp(1.6rem,4vw,2.4rem);margin-bottom:.5rem}
+h1 em{font-style:normal;background:linear-gradient(135deg,var(--gr),var(--cy));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.sub{color:var(--dim);font-size:.88rem;margin-bottom:2.5rem}
+h2{font-family:'Fraunces',serif;font-weight:700;font-size:1.3rem;margin:2.5rem 0 .8rem}
+p{color:var(--dim);margin-bottom:.8rem;font-size:.9rem}
+.box{background:var(--sf);border:1px solid var(--bd);border-radius:14px;padding:1.5rem;margin:1rem 0}
+.box strong{display:block;margin-bottom:.3rem;color:var(--tx);font-size:.92rem}
+.box.green{border-color:rgba(52,211,153,.3);background:linear-gradient(135deg,rgba(52,211,153,.06),rgba(34,211,238,.03))}
+.box.gold{border-color:rgba(251,191,36,.3);background:linear-gradient(135deg,rgba(251,191,36,.06),rgba(245,158,11,.03))}
+.box.red{border-color:rgba(239,68,68,.3);background:linear-gradient(135deg,rgba(239,68,68,.06),rgba(244,114,182,.03))}
+pre{background:rgba(0,0,0,.4);border:1px solid var(--bd);border-radius:10px;padding:1rem 1.2rem;font-family:'JetBrains Mono',monospace;font-size:.76rem;color:var(--gr);overflow-x:auto;line-height:1.7;margin:.8rem 0;white-space:pre-wrap}
+.label{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--gr);margin-bottom:.3rem}
+.arc{display:flex;gap:0;margin:1.5rem 0;flex-wrap:wrap}
+.arc-step{flex:1;min-width:150px;padding:1.2rem;background:var(--sf);border:1px solid var(--bd);text-align:center;position:relative}
+.arc-step:first-child{border-radius:14px 0 0 14px}.arc-step:last-child{border-radius:0 14px 14px 0}
+.arc-step+.arc-step{border-left:0}
+.arc-step .num{font-family:'Fraunces',serif;font-weight:900;font-size:1.8rem;margin-bottom:.2rem}
+.arc-step .num.c1{color:var(--pk)}.arc-step .num.c2{color:var(--bl)}.arc-step .num.c3{color:var(--gr)}.arc-step .num.c4{color:var(--gld)}
+.arc-step h4{font-size:.85rem;margin-bottom:.2rem}.arc-step p{font-size:.72rem;color:var(--dim);margin:0}
+.vs{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin:1.2rem 0}
+.vs-card{background:var(--sf);border:1px solid var(--bd);border-radius:12px;padding:1.2rem}
+.vs-card h4{font-size:.88rem;margin-bottom:.4rem}.vs-card p{font-size:.82rem;color:var(--dim)}
+.nav-bottom{display:flex;justify-content:space-between;flex-wrap:wrap;gap:1rem;margin-top:3rem;padding-top:2rem;border-top:1px solid var(--bd)}
+.nav-bottom a{font-size:.82rem;padding:.5rem 1rem;border-radius:100px;border:1px solid var(--bd);color:var(--dim);transition:.2s;text-decoration:none}
+.nav-bottom a:hover{border-color:var(--ac);color:var(--tx)}
+@media(max-width:768px){.ct{padding:1.5rem 1rem 4rem}.vs{grid-template-columns:1fr}.arc{flex-direction:column}.arc-step{border-radius:0!important}.arc-step+.arc-step{border-left:1px solid var(--bd);border-top:0}.arc-step:first-child{border-radius:14px 14px 0 0!important}.arc-step:last-child{border-radius:0 0 14px 14px!important}.nav-links{margin-left:0}}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+<a href="presentasjoner.html" class="nav-brand">🎤 Presentasjoner</a>
+<div class="nav-links">
+<a href="pres-1-excel-til-pptx.html">Excel → PPTX</a>
+<a href="pres-2-storytelling.html" class="active">Storytelling</a>
+<a href="pres-3-typer.html">Typer</a>
+<a href="pres-4-design.html">Design</a>
+</div>
+</nav>
+
+<div class="ct">
+
+<h1>📖 Finansiell <em>Storytelling</em></h1>
+<p class="sub">Tall alene overbeviser ingen. Mennesker husker historier — ikke regneark. Lær å bygge et narrativ rundt dataen som gjør at styret, investorer og teamet <strong>forstår og handler</strong>.</p>
+
+<h2>🎭 Story-Arken</h2>
+<p>Enhver god presentasjon følger denne strukturen:</p>
+
+<div class="arc">
+<div class="arc-step"><div class="num c1">①</div><h4>Problemet</h4><p>Hva er utfordringen? Sett konteksten.</p></div>
+<div class="arc-step"><div class="num c2">②</div><h4>Innsikten</h4><p>Hva viser dataen? Overrask litt.</p></div>
+<div class="arc-step"><div class="num c3">③</div><h4>Muligheten</h4><p>Hva betyr dette? Kvantifisér.</p></div>
+<div class="arc-step"><div class="num c4">④</div><h4>Handlingen</h4><p>Hva bør vi gjøre? Vær tydelig.</p></div>
+</div>
+
+<h2>❌ vs ✅ Eksempel</h2>
+
+<div class="vs">
+<div class="vs-card" style="border-color:rgba(239,68,68,.3)">
+<h4 style="color:var(--pk)">❌ Uten storytelling</h4>
+<p>«Revenue Q3: 142 MNOK. EBITDA: 38 MNOK. Margin: 26.8%. YoY vekst: 18%. EV/EBITDA: 12.3x. DCF impliserer 85 NOK/aksje.»</p>
+<p style="margin-top:.5rem;font-style:italic;font-size:.76rem">Styret nikker høflig. Ingen husker noe.</p>
+</div>
+<div class="vs-card" style="border-color:rgba(52,211,153,.3)">
+<h4 style="color:var(--gr)">✅ Med storytelling</h4>
+<p>«Vi sa at SaaS-markedet ville vokse 15%. Vi vokste 18% — og tok markedsandel for tredje kvartal på rad. Marginen klatret til 27%, som betyr at veksten er lønnsom. Ved dagens kurs på 63 kr handler vi 35% under hva modellen vår sier er fair value. Spørsmålet er ikke <em>om</em> vi skal kjøpe — men <em>hvor mye</em>.»</p>
+<p style="margin-top:.5rem;font-style:italic;font-size:.76rem">Styret lener seg fremover. Husker alt.</p>
+</div>
+</div>
+
+<h2>💬 La Claude Skrive Narrativet</h2>
+
+<div class="label">Prompt — Story fra modellresultater</div>
+<pre>Her er min finansielle modell [last opp Excel].
+
+Skriv et narrativ (5-7 avsnitt) som presenterer resultatene
+som en fortelling, IKKE som en oppramsing av tall.
+
+Bruk denne strukturen:
+1. HOOK — Åpne med den viktigste innsikten. Overrask.
+2. KONTEKST — Hva er markedssituasjonen? Kort.
+3. BEVISENE — 3-4 nøkkeltall fra modellen, innvevd i teksten.
+4. SÅ HVA? — Hva betyr dette for oss / investorer?
+5. ANBEFALING — Tydelig handling med begrunnelse.
+6. RISIKO — Ærlig om hva som kan gå galt (bygger tillit).
+
+Tone: Selvsikker men ikke arrogant. Datadrevet men menneskelig.
+Målgruppe: [Styre / Investorer / Internt team]
+Språk: Norsk.
+
+Inkluder forslag til slide-titler for hver del.</pre>
+
+<h2>🧠 5 Storytelling-Prinsipper</h2>
+
+<div class="box green">
+<strong>1. Én hovedinnsikt per slide</strong>
+<p>Hvis du ikke kan si slide-poenget i én setning, har du for mye. «Revenue vokser raskere enn markedet» er en slide. Detaljene er backup.</p>
+</div>
+
+<div class="box">
+<strong>2. Slide-tittelen ER budskapet</strong>
+<p>Skriv «Revenue vokser 18% — over markedssnittet» istedenfor «Q3 Revenue Overview». Tittelen skal fortelle leseren hva de skal ta med seg uten å lese resten.</p>
+</div>
+
+<div class="box">
+<strong>3. Tall trenger kontekst</strong>
+<p>«EBITDA: 38M» betyr ingenting alene. «EBITDA: 38M — opp 24%, høyeste margin på 3 år» forteller en historie. Sammenlikn alltid: vs fjoråret, vs plan, vs konkurrenter.</p>
+</div>
+
+<div class="box">
+<strong>4. Si det negative selv</strong>
+<p>Hvis du presenterer risikofaktorer ærlig, bygger du tillit. «Ja, WACC-antagelsen vår er aggressiv — her er hva som skjer hvis den er 2% høyere.» Bedre at du sier det enn at noen spør.</p>
+</div>
+
+<div class="box gold">
+<strong>5. Avslutt med handling</strong>
+<p>Aldri avslutt med «Spørsmål?». Avslutt med «Basert på dette anbefaler vi X. Neste steg er Y. Vi trenger beslutning på Z innen [dato].» Folk husker det siste du sier.</p>
+</div>
+
+<div class="box red">
+<strong>⚠️ Vanlige Feil</strong>
+<p>For mange tall per slide (maks 3-5). Grafer uten innsikt («hva skal jeg se på?»). Ingen tydelig anbefaling. Appendix som egentlig er presentasjonen. Les av slides i stedet for å fortelle historien.</p>
+</div>
+
+<div class="nav-bottom">
+<a href="pres-1-excel-til-pptx.html">← Excel → PPTX</a>
+<a href="pres-3-typer.html">Neste: Presentasjonstyper →</a>
+</div>
+
+</div>
+</body>
+</html>

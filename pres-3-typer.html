@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
+<title>Presentasjonstyper & Templates</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=DM+Sans:wght@400;500;600;700&family=Fraunces:ital,wght@0,700;0,900;1,700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#06060c;--sf:#0f0f1a;--sf2:#161625;--sf3:#1e1e30;--bd:#2a2a42;--tx:#e8e8f2;--dim:#8888aa;--ac:#6366f1;--gr:#34d399;--or:#f59e0b;--bl:#60a5fa;--pk:#f472b6;--cy:#22d3ee;--gld:#fbbf24}
+*{margin:0;padding:0;box-sizing:border-box}body{background:var(--bg);color:var(--tx);font-family:'DM Sans',sans-serif;line-height:1.8}
+a{color:var(--ac)}a:hover{text-decoration:underline}
+.nav{position:sticky;top:0;z-index:100;background:rgba(6,6,12,.92);backdrop-filter:blur(20px);border-bottom:1px solid var(--bd);padding:.7rem 1.5rem;display:flex;align-items:center;gap:1rem;flex-wrap:wrap}
+.nav-brand{font-family:'Fraunces',serif;font-weight:900;font-size:1rem;background:linear-gradient(135deg,var(--bl),var(--ac));-webkit-background-clip:text;-webkit-text-fill-color:transparent;text-decoration:none}
+.nav-links{display:flex;gap:.5rem;flex-wrap:nowrap;margin-left:auto;overflow-x:auto;-webkit-overflow-scrolling:touch}
+.nav-links a{font-size:.75rem;padding:.3rem .7rem;border-radius:100px;border:1px solid var(--bd);color:var(--dim);transition:.2s;text-decoration:none;white-space:nowrap;flex-shrink:0}
+.nav-links a:hover,.nav-links a.active{border-color:var(--ac);color:var(--tx)}
+.ct{max-width:820px;margin:0 auto;padding:2.5rem 1.5rem 5rem}
+h1{font-family:'Fraunces',serif;font-weight:900;font-size:clamp(1.6rem,4vw,2.4rem);margin-bottom:.5rem}
+h1 em{font-style:normal;background:linear-gradient(135deg,var(--pk),var(--or));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.sub{color:var(--dim);font-size:.88rem;margin-bottom:2.5rem}
+h2{font-family:'Fraunces',serif;font-weight:700;font-size:1.3rem;margin:2.5rem 0 .8rem}
+p{color:var(--dim);margin-bottom:.8rem;font-size:.9rem}
+pre{background:rgba(0,0,0,.4);border:1px solid var(--bd);border-radius:10px;padding:1rem 1.2rem;font-family:'JetBrains Mono',monospace;font-size:.76rem;color:var(--gr);overflow-x:auto;line-height:1.7;margin:.8rem 0;white-space:pre-wrap}
+.label{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--pk);margin-bottom:.3rem}
+.type{background:var(--sf);border:1px solid var(--bd);border-radius:14px;padding:1.5rem;margin:1.2rem 0;position:relative;overflow:hidden}
+.type::before{content:'';position:absolute;top:0;left:0;right:0;height:3px}
+.type.a::before{background:linear-gradient(90deg,var(--gld),var(--or))}.type.b::before{background:linear-gradient(90deg,var(--bl),var(--ac))}.type.c::before{background:linear-gradient(90deg,var(--gr),var(--cy))}.type.d::before{background:linear-gradient(90deg,var(--pk),var(--or))}.type.e::before{background:linear-gradient(90deg,var(--ac),#a78bfa)}
+.type h3{font-size:1.05rem;margin-bottom:.3rem;display:flex;align-items:center;gap:.5rem}
+.type p{font-size:.84rem}
+.type .meta{display:flex;gap:1rem;margin-top:.6rem;font-size:.72rem;color:var(--dim)}
+.type .meta span{display:flex;align-items:center;gap:.3rem}
+.slides{font-size:.8rem;color:var(--dim);margin:.5rem 0;padding:.5rem .8rem;background:var(--sf2);border-radius:8px;font-family:'JetBrains Mono',monospace;line-height:1.9}
+.nav-bottom{display:flex;justify-content:space-between;flex-wrap:wrap;gap:1rem;margin-top:3rem;padding-top:2rem;border-top:1px solid var(--bd)}
+.nav-bottom a{font-size:.82rem;padding:.5rem 1rem;border-radius:100px;border:1px solid var(--bd);color:var(--dim);transition:.2s;text-decoration:none}
+.nav-bottom a:hover{border-color:var(--ac);color:var(--tx)}
+@media(max-width:768px){.ct{padding:1.5rem 1rem 4rem}.nav-links{margin-left:0}}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+<a href="presentasjoner.html" class="nav-brand">🎤 Presentasjoner</a>
+<div class="nav-links">
+<a href="pres-1-excel-til-pptx.html">Excel → PPTX</a>
+<a href="pres-2-storytelling.html">Storytelling</a>
+<a href="pres-3-typer.html" class="active">Typer</a>
+<a href="pres-4-design.html">Design</a>
+</div>
+</nav>
+
+<div class="ct">
+
+<h1>🎯 Presentasjonstyper & <em>Templates</em></h1>
+<p class="sub">Ulike situasjoner krever ulike presentasjoner. Her er de vanligste typene med slide-struktur og AI-prompts for hver.</p>
+
+<div class="type a">
+<h3>💰 Investor Pitch Deck</h3>
+<p>For å hente kapital. 10-15 slides. Fokus: mulighet, team, traction, finansielle tall, «ask».</p>
+<div class="meta"><span>📏 10-15 slides</span><span>⏱ 20 min</span><span>👥 Investorer / VC</span></div>
+<div class="slides">1. Tittel & Hook · 2. Problem · 3. Løsning · 4. Markedsstørrelse (TAM/SAM/SOM) · 5. Produkt/Demo · 6. Forretningsmodell · 7. Traction & KPIer · 8. Konkurrenter · 9. Team · 10. Finansielle projeksjoner · 11. The Ask (hvor mye, til hva) · 12. Avslutning</div>
+<div class="label" style="margin-top:.8rem">Prompt</div>
+<pre>Lag en investor pitch deck (PowerPoint, 12 slides) for [selskap].
+
+Her er vår finansielle modell [last opp Excel] og info om selskapet:
+[Kort beskrivelse, eller last opp pitch-dokument]
+
+Viktig:
+- «The Ask»: Vi søker [X] MNOK i Series [A/Seed] til [X] verdsettelse
+- Bruk tall fra modellen for traction og projeksjoner
+- Én nøkkelgraf per slide der det er relevant
+- Minimal tekst — slides støtter presentatøren, erstatter ikke
+- Profesjonell tone, selvsikker men ikke arrogant</pre>
+</div>
+
+<div class="type b">
+<h3>📋 Styre-Rapportering</h3>
+<p>Kvartalsvis oppdatering til styret. Faktabasert, strukturert, med tydelige beslutningspunkter.</p>
+<div class="meta"><span>📏 15-20 slides</span><span>⏱ 30-45 min</span><span>👥 Styre</span></div>
+<div class="slides">1. Agenda · 2. Executive Summary · 3-4. Nøkkeltall & KPIer (vs plan og fjoråret) · 5-7. Finansiell gjennomgang (P&L, BS, CF) · 8. Pipeline / Salg · 9. Produkt-oppdatering · 10. Organisasjon · 11. Risikofaktorer · 12. Outlook / Guidance · 13. Beslutningspunkter · 14+. Appendix</div>
+<div class="label" style="margin-top:.8rem">Prompt</div>
+<pre>Lag en styrepresentasjon (PPTX) basert på disse kvartalstallene
+[last opp Excel med Q-resultater og modell].
+
+Krav:
+- Sammenlign med: budsjett, forrige kvartal, og fjoråret
+- Bruk trafikklys (🟢🟡🔴) for KPIer over/under plan
+- Tydelige beslutningspunkter merket med «VEDTAK:»
+- Tone: Saklig, objektiv, ingen salg — bare fakta
+- Inkluder risikomatrise (sannsynlighet × konsekvens)
+- 3 slides i appendix med detaljerte tabeller</pre>
+</div>
+
+<div class="type c">
+<h3>📊 Kvartals-/Årsrapport Presentasjon</h3>
+<p>For analytikere og aksjonærer. Resultater, outlook, guidance-oppdatering.</p>
+<div class="meta"><span>📏 20-25 slides</span><span>⏱ 45-60 min</span><span>👥 Analytikere / Aksjonærer</span></div>
+<div class="label" style="margin-top:.8rem">Prompt</div>
+<pre>Lag en kvartalspresentasjon for [selskap] Q[X] [ÅRSTALL].
+
+Her er resultatene [last opp Excel/rapport].
+
+Inkluder:
+- Highlights & Key Takeaways (slide 2)
+- Revenue breakdown per segment med YoY endring
+- Margin-utvikling (graf) med peer-sammenligning
+- Oppdatert guidance for resten av året
+- Capex og cash flow-oversikt
+- Strategiske initiativer og milepæler
+- Q&A backup-slides med sensitiv info
+
+Format: Selskapets fargepalett [spesifiser farger].
+Norsk og engelsk versjon.</pre>
+</div>
+
+<div class="type d">
+<h3>💼 Investerings-Komité / Deal Memo</h3>
+<p>Internt beslutningsgrunnlag for å gjøre en investering eller oppkjøp.</p>
+<div class="meta"><span>📏 15-20 slides</span><span>⏱ 30-45 min</span><span>👥 Investment Committee</span></div>
+<div class="label" style="margin-top:.8rem">Prompt</div>
+<pre>Lag en Investment Committee-presentasjon for [selskap/deal].
+
+Her er: DCF-modell, comps, og research [last opp filer].
+
+Struktur:
+1. Deal Summary (1 slide: target, pris, type, struktur)
+2. Investment Thesis (3 bullets)
+3. Selskapet — Hva, hvem, hvordan
+4-5. Marked & Konkurrenter
+6-8. Finansiell Analyse (historikk + projeksjon)
+9. Verdsettelse (DCF + Comps + Football Field)
+10. Risikofaktorer med mitigering
+11. Deal-struktur og kilder/bruk
+12. Returns-analyse (IRR/MOIC ved ulike scenarioer)
+13. Due Diligence-funn
+14. Anbefaling: Investér / Pass
+15+. Appendix
+
+Tone: Analytisk, balansert, ærlighet om risiko.</pre>
+</div>
+
+<div class="type e">
+<h3>📢 Intern Statusrapport</h3>
+<p>Ukentlig eller månedlig oppdatering for teamet. Kort, visuell, handlingsorientert.</p>
+<div class="meta"><span>📏 5-8 slides</span><span>⏱ 10-15 min</span><span>👥 Internt team</span></div>
+<div class="label" style="margin-top:.8rem">Prompt</div>
+<pre>Lag en kort intern status-presentasjon (PPTX, 6 slides).
+
+Data: [Last opp ukentlige KPIer / tall].
+
+Slide 1: Denne ukens highlights (3 bullet points)
+Slide 2: KPI-dashboard — trafikklys-format
+Slide 3: Pipeline / Salgs-update
+Slide 4: Blokkere / Utfordringer som trenger hjelp
+Slide 5: Neste ukes prioriteringer (maks 5)
+Slide 6: Spørsmål / Diskusjon
+
+Design: Enkelt, rent, maks 4 linjer per slide.
+Bruk emojis for visuell scanning.</pre>
+</div>
+
+<div class="nav-bottom">
+<a href="pres-2-storytelling.html">← Storytelling</a>
+<a href="pres-4-design.html">Neste: Design →</a>
+</div>
+
+</div>
+</body>
+</html>

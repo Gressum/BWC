@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
+<title>Excel → PowerPoint med AI</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=DM+Sans:wght@400;500;600;700&family=Fraunces:ital,wght@0,700;0,900;1,700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#06060c;--sf:#0f0f1a;--sf2:#161625;--sf3:#1e1e30;--bd:#2a2a42;--tx:#e8e8f2;--dim:#8888aa;--ac:#6366f1;--gr:#34d399;--or:#f59e0b;--bl:#60a5fa;--pk:#f472b6;--cy:#22d3ee;--gld:#fbbf24}
+*{margin:0;padding:0;box-sizing:border-box}body{background:var(--bg);color:var(--tx);font-family:'DM Sans',sans-serif;line-height:1.8}
+a{color:var(--ac)}a:hover{text-decoration:underline}
+.nav{position:sticky;top:0;z-index:100;background:rgba(6,6,12,.92);backdrop-filter:blur(20px);border-bottom:1px solid var(--bd);padding:.7rem 1.5rem;display:flex;align-items:center;gap:1rem;flex-wrap:wrap}
+.nav-brand{font-family:'Fraunces',serif;font-weight:900;font-size:1rem;background:linear-gradient(135deg,var(--bl),var(--ac));-webkit-background-clip:text;-webkit-text-fill-color:transparent;text-decoration:none}
+.nav-links{display:flex;gap:.5rem;flex-wrap:nowrap;margin-left:auto;overflow-x:auto;-webkit-overflow-scrolling:touch}
+.nav-links a{font-size:.75rem;padding:.3rem .7rem;border-radius:100px;border:1px solid var(--bd);color:var(--dim);transition:.2s;text-decoration:none;white-space:nowrap;flex-shrink:0}
+.nav-links a:hover,.nav-links a.active{border-color:var(--ac);color:var(--tx)}
+.ct{max-width:820px;margin:0 auto;padding:2.5rem 1.5rem 5rem}
+h1{font-family:'Fraunces',serif;font-weight:900;font-size:clamp(1.6rem,4vw,2.4rem);margin-bottom:.5rem}
+h1 em{font-style:normal;background:linear-gradient(135deg,var(--bl),var(--ac));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.sub{color:var(--dim);font-size:.88rem;margin-bottom:2.5rem}
+h2{font-family:'Fraunces',serif;font-weight:700;font-size:1.3rem;margin:2.5rem 0 .8rem}
+h3{font-size:1.05rem;margin:1.5rem 0 .5rem}
+p{color:var(--dim);margin-bottom:.8rem;font-size:.9rem}
+.box{background:var(--sf);border:1px solid var(--bd);border-radius:14px;padding:1.5rem;margin:1rem 0}
+.box.blue{border-color:rgba(96,165,250,.3);background:linear-gradient(135deg,rgba(96,165,250,.06),rgba(99,102,241,.03))}
+.box.gold{border-color:rgba(251,191,36,.3);background:linear-gradient(135deg,rgba(251,191,36,.06),rgba(245,158,11,.03))}
+.box.green{border-color:rgba(52,211,153,.3);background:linear-gradient(135deg,rgba(52,211,153,.06),rgba(34,211,238,.03))}
+.box strong{display:block;margin-bottom:.3rem;color:var(--tx);font-size:.92rem}
+pre{background:rgba(0,0,0,.4);border:1px solid var(--bd);border-radius:10px;padding:1rem 1.2rem;font-family:'JetBrains Mono',monospace;font-size:.76rem;color:var(--gr);overflow-x:auto;line-height:1.7;margin:.8rem 0;white-space:pre-wrap}
+.label{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--bl);margin-bottom:.3rem}
+.step{display:flex;gap:1rem;margin:1.2rem 0;align-items:flex-start}
+.step-n{width:36px;height:36px;border-radius:50%;background:rgba(96,165,250,.12);color:var(--bl);display:flex;align-items:center;justify-content:center;font-family:'Fraunces',serif;font-weight:900;flex-shrink:0;font-size:1rem}
+.step-c{flex:1}.step-c strong{color:var(--tx);font-size:.92rem}.step-c p{margin-top:.2rem;font-size:.84rem}
+.slide-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:.8rem;margin:1rem 0}
+.slide{background:var(--sf2);border:1px solid var(--bd);border-radius:10px;padding:1rem;font-size:.78rem}
+.slide b{display:block;color:var(--tx);margin-bottom:.2rem}.slide span{color:var(--dim);font-size:.72rem}
+.slide em{color:var(--bl);font-style:normal;font-size:.68rem;display:block;margin-top:.3rem}
+.nav-bottom{display:flex;justify-content:space-between;flex-wrap:wrap;gap:1rem;margin-top:3rem;padding-top:2rem;border-top:1px solid var(--bd)}
+.nav-bottom a{font-size:.82rem;padding:.5rem 1rem;border-radius:100px;border:1px solid var(--bd);color:var(--dim);transition:.2s;text-decoration:none}
+.nav-bottom a:hover{border-color:var(--ac);color:var(--tx)}
+@media(max-width:768px){.ct{padding:1.5rem 1rem 4rem}.slide-grid{grid-template-columns:1fr 1fr}.nav-links{margin-left:0}}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+<a href="presentasjoner.html" class="nav-brand">🎤 Presentasjoner</a>
+<div class="nav-links">
+<a href="pres-1-excel-til-pptx.html" class="active">Excel → PPTX</a>
+<a href="pres-2-storytelling.html">Storytelling</a>
+<a href="pres-3-typer.html">Typer</a>
+<a href="pres-4-design.html">Design</a>
+</div>
+</nav>
+
+<div class="ct">
+
+<h1>📊 Excel → <em>PowerPoint</em></h1>
+<p class="sub">Du har en ferdig finansiell modell. Slik ber du Claude lage en profesjonell slide-deck direkte fra Excel-filen — med tabeller, grafer, og nøkkeltall.</p>
+
+<h2>⚡ Raskeste Metode: Én Prompt</h2>
+
+<div class="label">Prompt — Komplett deck fra Excel</div>
+<pre>Her er min finansielle modell [last opp .xlsx].
+
+Lag en PowerPoint-presentasjon (15 slides) som presenterer
+resultatene for styret / investorer.
+
+Struktur:
+Slide 1: Tittel + dato + «Investeringscase: [Selskap]»
+Slide 2: Executive Summary — 3 bullet points + nøkkeltall
+Slide 3: Selskapet — Hva gjør de? Kort.
+Slide 4-5: Markedsmulighet — TAM/SAM/SOM
+Slide 6-7: Finansiell oversikt — Revenue, EBITDA, marginer (graf)
+Slide 8: DCF-verdsettelse — Implisert pris + metode
+Slide 9: Sensitivitetstabell — WACC vs Growth (fargekodet)
+Slide 10: Bull / Base / Bear case — Side-by-side sammenligning
+Slide 11: Risikofaktorer — Top 3 med mitigering
+Slide 12: Konkurrentlandskap — Posisjonering
+Slide 13: Katalysatorer — Hva driver kursen de neste 12 mnd
+Slide 14: Anbefaling — Kjøp / Hold / Selg med begrunnelse
+Slide 15: Appendix — Detaljerte tabeller
+
+Design: Mørkt tema. Minimal tekst per slide. Tall fremhevet stort.
+Grafer: Blå/grønn palett. Ingen 3D-effekter.</pre>
+
+<h2>📋 Slide-Oppbygging</h2>
+<p>En god presentasjon har denne flyten:</p>
+
+<div class="slide-grid">
+<div class="slide"><b>1. Tittel</b><span>Selskapsnavn, dato, type analyse</span><em>→ Første inntrykk</em></div>
+<div class="slide"><b>2. Executive Summary</b><span>3 setninger: Hva, Hvorfor, Konklusjon</span><em>→ «Hva bør jeg huske?»</em></div>
+<div class="slide"><b>3-4. Kontekst</b><span>Selskap, marked, mulighet</span><em>→ Sett scenen</em></div>
+<div class="slide"><b>5-7. Data & Analyse</b><span>Grafer, tabeller, modellresultater</span><em>→ Bevisene</em></div>
+<div class="slide"><b>8-9. Verdsettelse</b><span>DCF, comps, sensitivitet</span><em>→ «Hva er det verdt?»</em></div>
+<div class="slide"><b>10-11. Risiko & Scenarioer</b><span>Bull/Base/Bear, risikofaktorer</span><em>→ Ærlig balanse</em></div>
+<div class="slide"><b>12-13. Handling</b><span>Anbefaling, katalysatorer, neste steg</span><em>→ «Hva gjør vi?»</em></div>
+<div class="slide"><b>14+. Appendix</b><span>Detaljerte tall for de som vil dykke dypere</span><em>→ Backup</em></div>
+</div>
+
+<h2>🔧 Tre Metoder</h2>
+
+<div class="step"><div class="step-n">1</div><div class="step-c"><strong>Claude.ai → Last opp Excel → Be om PPTX</strong><p>Enklest. Claude lager en .pptx-fil direkte som du kan laste ned. Fungerer bra for enkle presentasjoner. Begrensning: begrenset kontroll over design.</p></div></div>
+
+<div class="step"><div class="step-n">2</div><div class="step-c"><strong>Claude → Lag innhold → Du setter inn i en template</strong><p>Bedre kvalitet. Be Claude lage: slide-tekster, nøkkeltall, og graf-data. Du setter det inn i selskapets egen PowerPoint-mal. Mer jobb, finere resultat.</p></div></div>
+
+<div class="step"><div class="step-n">3</div><div class="step-c"><strong>Claude Code → python-pptx → Full kontroll</strong><p>For avanserte: Claude Code bruker Python-biblioteket python-pptx til å programmere perfekte slides med eksakt layout, fonter, og farger. Reproduserbar — kjør igjen med nye data.</p></div></div>
+
+<div class="box blue">
+<strong>💡 Metode 2 i praksis</strong>
+<p>Si til Claude: «Lag slide-innhold for en investorpresentasjon basert på denne modellen. For hver slide, gi meg: tittelforslag, 3-4 bullet points, og eventuelle tall/grafer jeg bør inkludere. Ikke lag PPTX — bare innholdet.» Du kopierer deretter inn i selskapets template.</p>
+</div>
+
+<h2>📈 Grafer og Visualiseringer</h2>
+
+<div class="label">Prompt — Grafer fra modell</div>
+<pre>Basert på modellen [last opp Excel], lag disse grafene:
+
+1. Revenue-utvikling: Historisk (3 år) + Projeksjon (5 år)
+   → Stolpediagram med historisk i mørkblå, projeksjon i lyseblå
+
+2. EBITDA-margin: Linjegraf med trend over tid
+   → Inkluder peer-gjennomsnitt som stiplet linje
+
+3. Verdsettelse football field:
+   → Horisontal bar: DCF range, Comps range, nåværende kurs markert
+
+4. Sensitivitetsheatmap:
+   → WACC vs Terminal Growth, fargekodet grønn-gul-rød
+
+5. Bull/Base/Bear waterfall:
+   → Fra Enterprise Value → Netto gjeld → Equity → Per aksje
+
+Eksporter som bilder (PNG) jeg kan sette inn i presentasjonen.
+Alternativt: lag en .pptx med disse grafene allerede plassert.</pre>
+
+<div class="box gold">
+<strong>🎯 Pro-Tip: «Slide-Worthy» Tall</strong>
+<p>Ikke putt hele regneark på en slide. Trekk ut <strong>3-5 nøkkeltall</strong> per slide. Eksempel: «Revenue: 450M (+32%) | EBITDA: 135M (30% margin) | Target Price: 142 NOK (+35% oppside)». Stort, tydelig, lett å huske.</p>
+</div>
+
+<h2>🔄 Oppdatér Presentasjonen Automatisk</h2>
+<p>Den virkelige kraften: bygg en presentasjon som oppdaterer seg selv når modellen endres.</p>
+
+<div class="label">Prompt — Claude Code: Automatisert deck</div>
+<pre>Lag et Python-script som:
+
+1. Leser finansiell modell fra «modell.xlsx»
+2. Trekker ut nøkkeltall fra angitte celler
+3. Genererer grafer med matplotlib
+4. Bygger en 12-slide PowerPoint med python-pptx
+5. Bruker denne fargepaletten: #1e293b, #3b82f6, #22c55e, #f59e0b
+6. Font: Calibri for tekst, Calibri Bold for tall
+
+Slik at: Neste gang modellen oppdateres, kjører jeg bare
+«python lag_presentasjon.py» og får en fersk presentasjon.
+
+Inkluder: Tittelside, executive summary, revenue-graf,
+EBITDA-graf, DCF-resultat, sensitivitetstabell,
+bull/base/bear, risikofaktorer, anbefaling.</pre>
+
+<div class="box green">
+<strong>✅ Resultatet</strong>
+<p>Du har nå en pipeline: <strong>Oppdater Excel → Kjør script → Ferdig presentasjon</strong>. Ingen manuell kopiering. Ingen formaterings-feil. Oppdaterte tall hver gang.</p>
+</div>
+
+<div class="nav-bottom">
+<a href="presentasjoner.html">← Hub</a>
+<a href="pres-2-storytelling.html">Neste: Storytelling →</a>
+</div>
+
+</div>
+</body>
+</html>
